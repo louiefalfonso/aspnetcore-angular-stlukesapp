@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StLukesMedicalApp.API.Data;
 
@@ -11,9 +12,11 @@ using StLukesMedicalApp.API.Data;
 namespace StLukesMedicalApp.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312182117_Second Migration")]
+    partial class SecondMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,39 +25,10 @@ namespace StLukesMedicalApp.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Appointment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Diagnosis")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Appointments");
-                });
-
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Doctor", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AppointmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContactNumber")
@@ -87,8 +61,6 @@ namespace StLukesMedicalApp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentId");
-
                     b.ToTable("Doctors");
                 });
 
@@ -105,9 +77,6 @@ namespace StLukesMedicalApp.API.Migrations
                     b.Property<string>("Age")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("AppointmentId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -139,30 +108,7 @@ namespace StLukesMedicalApp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentId");
-
                     b.ToTable("Patients");
-                });
-
-            modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Doctor", b =>
-                {
-                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Appointment", null)
-                        .WithMany("Doctors")
-                        .HasForeignKey("AppointmentId");
-                });
-
-            modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Patient", b =>
-                {
-                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Appointment", null)
-                        .WithMany("Patients")
-                        .HasForeignKey("AppointmentId");
-                });
-
-            modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Appointment", b =>
-                {
-                    b.Navigation("Doctors");
-
-                    b.Navigation("Patients");
                 });
 #pragma warning restore 612, 618
         }

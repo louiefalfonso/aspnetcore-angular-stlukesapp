@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StLukesMedicalApp.API.Data;
+using StLukesMedicalApp.API.Repositories.Implementation;
+using StLukesMedicalApp.API.Repositories.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("StLukesAppConnectionString"));
 });
+
+// inject repository into Application
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
 var app = builder.Build();
 

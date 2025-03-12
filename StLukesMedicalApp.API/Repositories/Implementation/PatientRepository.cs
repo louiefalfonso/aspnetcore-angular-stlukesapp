@@ -49,10 +49,10 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
 
         }
 
-        // Delete Patient
+        // Delete Patient & Save Changes
         public async Task<Patient?> DeleteAsync(Guid id)
         {
-           var existingPatient = dbContext.Patients.FirstOrDefault(x => x.Id == id);
+           var existingPatient = await dbContext.Patients.FirstOrDefaultAsync( x => x.Id == id);
 
             if (existingPatient is null) 
             {

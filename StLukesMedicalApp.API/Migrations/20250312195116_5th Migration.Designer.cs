@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StLukesMedicalApp.API.Data;
 
@@ -11,9 +12,11 @@ using StLukesMedicalApp.API.Data;
 namespace StLukesMedicalApp.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312195116_5th Migration")]
+    partial class _5thMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace StLukesMedicalApp.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AppointmentDoctor", b =>
+                {
+                    b.Property<Guid>("AppointmentsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DoctorsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppointmentsId", "DoctorsId");
+
+                    b.HasIndex("DoctorsId");
+
+                    b.ToTable("AppointmentDoctor");
+                });
 
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Appointment", b =>
                 {
@@ -54,9 +72,6 @@ namespace StLukesMedicalApp.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AppointmentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("ContactNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -86,8 +101,6 @@ namespace StLukesMedicalApp.API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppointmentId");
 
                     b.ToTable("Doctors");
                 });
@@ -144,11 +157,19 @@ namespace StLukesMedicalApp.API.Migrations
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Doctor", b =>
+            modelBuilder.Entity("AppointmentDoctor", b =>
                 {
                     b.HasOne("StLukesMedicalApp.API.Models.Domain.Appointment", null)
-                        .WithMany("Doctors")
-                        .HasForeignKey("AppointmentId");
+                        .WithMany()
+                        .HasForeignKey("AppointmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Doctor", null)
+                        .WithMany()
+                        .HasForeignKey("DoctorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Patient", b =>
@@ -160,8 +181,6 @@ namespace StLukesMedicalApp.API.Migrations
 
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Appointment", b =>
                 {
-                    b.Navigation("Doctors");
-
                     b.Navigation("Patients");
                 });
 #pragma warning restore 612, 618

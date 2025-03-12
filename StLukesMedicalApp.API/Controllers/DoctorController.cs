@@ -136,5 +136,79 @@ namespace StLukesMedicalApp.API.Controllers
             };
             return Ok(response);
         }
+
+
+        // Update Doctor
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateDoctor([FromRoute] Guid id, UpdateDoctorRequestDto request)
+        {
+            // Convert DTO to Domain Model
+            var doctor = new Doctor
+            {
+                Id = id,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Email = request.Email,
+                ContactNumber = request.ContactNumber,
+                Specialization = request.Specialization,
+                Department = request.Department,
+                Schedule = request.Schedule,
+            };
+
+            // Update Doctor
+            doctor = await doctorRepository.UpdateAsync(doctor);
+
+            // Check if Doctor is null
+            if(doctor == null) 
+            {
+                return NotFound();
+            }
+
+            // Map Domain Model to DTO
+            var response = new DoctorDto
+            {
+                Id = doctor.Id,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                Email = doctor.Email,
+                ContactNumber = doctor.ContactNumber,
+                Specialization = doctor.Specialization,
+                Department = doctor.Department,
+                Schedule = doctor.Schedule,
+            };
+
+            return Ok(response);
+        }
+
+        // Delete Doctor
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> DeleteDoctor([FromRoute] Guid id)
+        {
+            // Delete Doctor
+            var doctor = await doctorRepository.DeleteAsync(id);
+
+            // Check is Doctor is Null
+            if( doctor == null)
+            {
+                return NotFound();
+            }
+
+            // Map Domain Model to DTO
+            var response = new DoctorDto
+            {
+                Id = doctor.Id,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                Email = doctor.Email,
+                ContactNumber = doctor.ContactNumber,
+                Specialization = doctor.Specialization,
+                Department = doctor.Department,
+                Schedule = doctor.Schedule,
+            };
+            return Ok(response);
+        }
+
     }
 }

@@ -37,7 +37,7 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         // Get Doctor By Department
         public async Task<Doctor?> GetByDepartmentAsync(string department)
         {
-            return await dbContext.Doctors.FirstOrDefaultAsync( x => x.Department == department);
+            return await dbContext.Doctors.FirstOrDefaultAsync(x => x.Department == department);
         }
 
 
@@ -51,8 +51,28 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             if (existingDoctor != null) 
             { 
                 dbContext.Entry(existingDoctor).CurrentValues.SetValues(doctor);
+                await dbContext.SaveChangesAsync();
+                return doctor;
             }
             return null;
+        }
+
+        // Delete Doctor
+        public async Task<Doctor?> DeleteAsync(Guid id)
+        {
+            // Get existing Doctor By ID
+            var existingDoctor = await dbContext.Doctors.FirstOrDefaultAsync(x => x.Id == id);
+
+            // Check if Exixsting Doctor is null
+            if (existingDoctor is null)
+            {
+                return null;
+            }
+
+            // Delete Doctor & Save Changes
+            dbContext.Doctors.Remove(existingDoctor);
+            await dbContext.SaveChangesAsync();
+            return existingDoctor;
         }
     }
 }
