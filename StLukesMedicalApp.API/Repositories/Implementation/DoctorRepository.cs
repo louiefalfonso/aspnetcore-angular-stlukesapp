@@ -37,7 +37,7 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         // Get Doctor By Department
         public async Task<Doctor?> GetByDepartmentAsync(string department)
         {
-            return await dbContext.Doctors.FirstOrDefaultAsync( x => x.Department == department);
+            return await dbContext.Doctors.FirstOrDefaultAsync(x => x.Department == department);
         }
 
 
