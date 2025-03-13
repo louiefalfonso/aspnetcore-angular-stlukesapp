@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StLukesMedicalApp.API.Data;
 
@@ -11,9 +12,11 @@ using StLukesMedicalApp.API.Data;
 namespace StLukesMedicalApp.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250313104216_Add Admissions, Nurses & Perscriptions")]
+    partial class AddAdmissionsNursesPerscriptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,36 @@ namespace StLukesMedicalApp.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AdmissionNurse", b =>
+                {
+                    b.Property<Guid>("AdmissionsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("NursesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AdmissionsId", "NursesId");
+
+                    b.HasIndex("NursesId");
+
+                    b.ToTable("AdmissionNurse");
+                });
+
+            modelBuilder.Entity("AdmissionPatient", b =>
+                {
+                    b.Property<Guid>("AdmissionsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PatientsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AdmissionsId", "PatientsId");
+
+                    b.HasIndex("PatientsId");
+
+                    b.ToTable("AdmissionPatient");
+                });
 
             modelBuilder.Entity("AppointmentDoctor", b =>
                 {
@@ -65,6 +98,44 @@ namespace StLukesMedicalApp.API.Migrations
                     b.HasIndex("PerscriptionsId");
 
                     b.ToTable("DoctorPerscription");
+                });
+
+            modelBuilder.Entity("PatientPerscription", b =>
+                {
+                    b.Property<Guid>("PatientsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PerscriptionsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PatientsId", "PerscriptionsId");
+
+                    b.HasIndex("PerscriptionsId");
+
+                    b.ToTable("PatientPerscription");
+                });
+
+            modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Admission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AvailabilityStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admission");
                 });
 
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Appointment", b =>
@@ -164,7 +235,7 @@ namespace StLukesMedicalApp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Nurses");
+                    b.ToTable("Nurse");
                 });
 
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Patient", b =>
@@ -208,9 +279,6 @@ namespace StLukesMedicalApp.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("PerscriptionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Sex")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -218,8 +286,6 @@ namespace StLukesMedicalApp.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NurseId");
-
-                    b.HasIndex("PerscriptionId");
 
                     b.ToTable("Patients");
                 });
@@ -244,6 +310,36 @@ namespace StLukesMedicalApp.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Perscription");
+                });
+
+            modelBuilder.Entity("AdmissionNurse", b =>
+                {
+                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Admission", null)
+                        .WithMany()
+                        .HasForeignKey("AdmissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Nurse", null)
+                        .WithMany()
+                        .HasForeignKey("NursesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AdmissionPatient", b =>
+                {
+                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Admission", null)
+                        .WithMany()
+                        .HasForeignKey("AdmissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Patient", null)
+                        .WithMany()
+                        .HasForeignKey("PatientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AppointmentDoctor", b =>
@@ -291,23 +387,29 @@ namespace StLukesMedicalApp.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PatientPerscription", b =>
+                {
+                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Patient", null)
+                        .WithMany()
+                        .HasForeignKey("PatientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Perscription", null)
+                        .WithMany()
+                        .HasForeignKey("PerscriptionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Patient", b =>
                 {
                     b.HasOne("StLukesMedicalApp.API.Models.Domain.Nurse", null)
                         .WithMany("Patients")
                         .HasForeignKey("NurseId");
-
-                    b.HasOne("StLukesMedicalApp.API.Models.Domain.Perscription", null)
-                        .WithMany("Patients")
-                        .HasForeignKey("PerscriptionId");
                 });
 
             modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Nurse", b =>
-                {
-                    b.Navigation("Patients");
-                });
-
-            modelBuilder.Entity("StLukesMedicalApp.API.Models.Domain.Perscription", b =>
                 {
                     b.Navigation("Patients");
                 });
