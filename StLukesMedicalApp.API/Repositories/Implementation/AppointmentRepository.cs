@@ -9,7 +9,7 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
     {
         private readonly ApplicationDbContext dbContext;
 
-        // Create COnstructor
+        // Create Constructor
         public AppointmentRepository (ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
