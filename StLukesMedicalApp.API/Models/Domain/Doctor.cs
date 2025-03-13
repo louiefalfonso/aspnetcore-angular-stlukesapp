@@ -10,6 +10,7 @@
         public string Specialization { get; set; }
         public string Department { get; set; }
         public string Schedule { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
     }
 }
 

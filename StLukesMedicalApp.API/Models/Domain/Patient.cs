@@ -12,6 +12,7 @@
         public string Address { get; set; }
         public string Diagnosis { get; set; }
         public string PatientType { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
 
     }
 }
