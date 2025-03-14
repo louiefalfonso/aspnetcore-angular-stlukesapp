@@ -9,5 +9,9 @@ namespace StLukesMedicalApp.API.Repositories.Interface
         Task<Nurse?> GetByIdAsync(Guid id);
 
         Task<IEnumerable<Nurse>> GetAllAsync();
+
+        Task<Nurse?> UpdateAsync(Nurse nurse);
+
+        Task<Nurse?> DeleteAsync(Guid id);
     }
 }

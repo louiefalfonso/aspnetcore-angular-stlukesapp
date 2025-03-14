@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
 using StLukesMedicalApp.API.Repositories.Interface;
@@ -7,38 +8,38 @@ namespace StLukesMedicalApp.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class AppointmentController : ControllerBase
+    public class PrescriptionController : ControllerBase
     {
-        private readonly IAppointmentRepository appointmentRepository;
-        private readonly IPatientRepository patientRepository;
+        private readonly IPrescriptionRepository prescriptionRepository;
         private readonly IDoctorRepository doctorRepository;
+        private readonly IPatientRepository patientRepository;
 
         // add constructor
-        public AppointmentController(
-            IAppointmentRepository appointmentRepository,
-            IPatientRepository patientRepository,
-            IDoctorRepository doctorRepository
+        public PrescriptionController(
+            IPrescriptionRepository prescriptionRepository,
+            IDoctorRepository doctorRepository,
+            IPatientRepository patientRepository
             )
         {
-            this.appointmentRepository = appointmentRepository;
-            this.patientRepository = patientRepository;
+            this.prescriptionRepository = prescriptionRepository;
             this.doctorRepository = doctorRepository;
+            this.patientRepository = patientRepository;
         }
 
-        // Add New Appointment
+        // Add New Prescription
         [HttpPost]
-        public async Task<IActionResult> CreateNewAppointment([FromBody] CreateAppointmentRequestDto request)
+        public async Task<IActionResult> CreateNewPrescription([FromBody] CreatePrescriptionRequestDto request)
         {
             // Map DTO to Domain Model
-            var appointment = new Appointment
+            var prescription = new Prescription
             {
-                Status = request.Status,
-                Comments = request.Comments,
-                Diagnosis = request.Diagnosis,
-                Date = request.Date,
+                MedicationList = request.MedicationList,
+                Dosage = request.Dosage,
+                DateIssued = request.DateIssued,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>(),
             };
+
 
             // Add Doctor to Appointment
             foreach (var doctorGuid in request.Doctors)
@@ -49,7 +50,7 @@ namespace StLukesMedicalApp.API.Controllers
                 // check if doctor is null
                 if (exisitingDoctor is not null)
                 {
-                    appointment.Doctors.Add(exisitingDoctor);
+                    prescription.Doctors.Add(exisitingDoctor);
                 }
 
             }
@@ -63,22 +64,21 @@ namespace StLukesMedicalApp.API.Controllers
                 // check if patient is nulll
                 if (exisitingPatient is not null)
                 {
-                    appointment.Patients.Add(exisitingPatient);
+                    prescription.Patients.Add(exisitingPatient);
                 }
             }
 
-            // Add New Appointment
-            appointment = await appointmentRepository.CreateAsync(appointment);
+            // Add New Prescription
+            prescription = await prescriptionRepository.CreateAsync(prescription);
 
-            // Map Domain to DTO
-            var response = new AppointmentDto
+            // Map Domain Model to DTO
+            var response = new PrescriptionDto
             {
-                Id = appointment.Id,
-                Status = appointment.Status,
-                Comments = appointment.Comments,
-                Diagnosis = appointment.Diagnosis,
-                Date = appointment.Date,
-                Doctors = appointment.Doctors.Select(x => new DoctorDto
+                Id = prescription.Id,
+                MedicationList = prescription.MedicationList,
+                Dosage = prescription.Dosage,
+                DateIssued = prescription.DateIssued,
+                Doctors = prescription.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -90,7 +90,7 @@ namespace StLukesMedicalApp.API.Controllers
                     Schedule = x.Schedule,
                 }).ToList(),
 
-                Patients = appointment.Patients.Select(x => new PatientDto
+                Patients = prescription.Patients.Select(x => new PatientDto
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -103,33 +103,31 @@ namespace StLukesMedicalApp.API.Controllers
                     Diagnosis = x.Diagnosis,
                     PatientType = x.PatientType,
                 }).ToList()
+
             };
-
             return Ok(response);
-
         }
 
-
-        // Get All Appointments
+        // Get All Prescriptions
         [HttpGet]
-        public async Task<IActionResult> GetAllAppointments()
+        public async Task<IActionResult> GetAllPrescriptions()
         {
-            // Get All Appointments
-            var appointments = await appointmentRepository.GetAllAsync();
+            // get all prescriptions from repository
+            var prescriptions = await prescriptionRepository.GetAllAsync();
 
-            // Map Domain Model to DTO
-            var response = new List<AppointmentDto>();
+            // map domain model to DTO
+            var response = new List<PrescriptionDto>();
             {
-                foreach (var appointment in appointments)
+                foreach (var prescription in prescriptions)
                 {
-                    response.Add(new AppointmentDto
+                    response.Add(new PrescriptionDto
                     {
-                        Id = appointment.Id,
-                        Status = appointment.Status,
-                        Comments = appointment.Comments,
-                        Diagnosis = appointment.Diagnosis,
-                        Date = appointment.Date,
-                        Doctors = appointment.Doctors.Select(x => new DoctorDto
+                        Id= prescription.Id,
+                        MedicationList = prescription.MedicationList,
+                        Dosage = prescription.Dosage,
+                        DateIssued = prescription.DateIssued,
+
+                        Doctors = prescription.Doctors.Select(x => new DoctorDto
                         {
                             Id = x.Id,
                             FirstName = x.FirstName,
@@ -140,7 +138,8 @@ namespace StLukesMedicalApp.API.Controllers
                             Department = x.Department,
                             Schedule = x.Schedule,
                         }).ToList(),
-                        Patients = appointment.Patients.Select(x => new PatientDto
+
+                        Patients = prescription.Patients.Select(x => new PatientDto
                         {
                             Id = x.Id,
                             FirstName = x.FirstName,
@@ -154,36 +153,34 @@ namespace StLukesMedicalApp.API.Controllers
                             PatientType = x.PatientType,
                         }).ToList()
                     });
-                }
+                } 
             }
-
             return Ok(response);
         }
 
-
-        // Get Appointment By Id
+        // Get Prescription by ID
         [HttpGet]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> GetAppointmentById([FromRoute] Guid id)
+        public async Task<IActionResult> GetPrescriptionById([FromRoute] Guid id)
         {
-            // Get Appointment By ID
-            var appointment = await appointmentRepository.GetByIdAsync(id);
+            // get prescription by ID
+            var prescription = await prescriptionRepository.GetByIdAsync(id);
 
-            // Check if Appointment is null
-            if (appointment == null)
+            // check if prescription is null
+            if (prescription == null)
             {
                 return NotFound();
             }
 
-            // Map Domain Model to DTO
-            var response = new AppointmentDto
+            // map domain model to DTO
+            var response = new PrescriptionDto 
             {
-                Id = appointment.Id,
-                Status = appointment.Status,
-                Comments = appointment.Comments,
-                Diagnosis = appointment.Diagnosis,
-                Date = appointment.Date,
-                Doctors = appointment.Doctors.Select(x => new DoctorDto
+                Id = prescription.Id,
+                MedicationList = prescription.MedicationList,
+                Dosage = prescription.Dosage,
+                DateIssued = prescription.DateIssued,
+
+                Doctors = prescription.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -194,7 +191,8 @@ namespace StLukesMedicalApp.API.Controllers
                     Department = x.Department,
                     Schedule = x.Schedule,
                 }).ToList(),
-                Patients = appointment.Patients.Select(x => new PatientDto
+
+                Patients = prescription.Patients.Select(x => new PatientDto
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -212,68 +210,66 @@ namespace StLukesMedicalApp.API.Controllers
             return Ok(response);
         }
 
-
-        // Update Appointment
+        // Update Prescription
         [HttpPut]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdateAppointment([FromRoute] Guid id, UpdateAppointmentRequestDto request)
+        public async Task<IActionResult> UpdatePrescription([FromRoute] Guid id, UpdatePrescriptionRequestDto request)
         {
-            // Convert DTO to Domain Model
-            var appointment = new Appointment
+            // convert DTO to Domain Model
+            var prescription = new Prescription
             {
                 Id = id,
-                Status = request.Status,
-                Comments = request.Comments,
-                Diagnosis = request.Diagnosis,
-                Date = request.Date,
+                MedicationList = request.MedicationList,
+                Dosage = request.Dosage,
+                DateIssued = request.DateIssued,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>()
             };
 
-            // Add Doctor to Appointment
+            // Add Doctor to Prescription
             foreach (var doctorGuid in request.Doctors)
             {
                 // Get Doctor By ID from Doctor Repository
                 var exisitingDoctor = await doctorRepository.GetByIdAsync(doctorGuid);
 
                 // Check if Doctor Exists
-                if (exisitingDoctor is not null) 
+                if (exisitingDoctor is not null)
                 {
-                    appointment.Doctors.Add(exisitingDoctor);
+                    prescription.Doctors.Add(exisitingDoctor);
                 }
             }
 
-            // Add Patient to Appointment
+            // Add Patient to Prescription
             foreach (var patientGuid in request.Patients)
             {
                 // Get Patient By ID from Patient Repository
                 var existingPatient = await patientRepository.GetByIdAsync(patientGuid);
 
                 // Check if Patient Exist
-                if (existingPatient is not null) 
-                { 
-                    appointment.Patients.Add(existingPatient);
+                if (existingPatient is not null)
+                {
+                    prescription.Patients.Add(existingPatient);
                 }
             }
 
-            // Call Repository to update Appointment Domain Model
-            var updatedAppointment = await appointmentRepository.UpdateAsync(appointment);
+            // Call Repository to update Prescription Domain Model
+            var updatedPrescription = await prescriptionRepository.UpdateAsync(prescription);
 
-            // Check if Updated Appointment is Null
-            if (updatedAppointment == null) 
+            // Check if Updated Prescription is Null
+            if (updatedPrescription == null)
             {
                 return NotFound();
             }
 
-            // Convert Domain Model to DTO
-            var response = new AppointmentDto
+            // Convert domain model to DTO
+            var response = new PrescriptionDto
             {
-                Id = appointment.Id,
-                Status = appointment.Status,
-                Comments = appointment.Comments,
-                Diagnosis = appointment.Diagnosis,
-                Date = appointment.Date,
-                Doctors = appointment.Doctors.Select(x => new DoctorDto
+                Id = prescription.Id,
+                MedicationList = prescription.MedicationList,
+                Dosage = prescription.Dosage,
+                DateIssued = prescription.DateIssued,
+
+                Doctors = prescription.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -284,7 +280,8 @@ namespace StLukesMedicalApp.API.Controllers
                     Department = x.Department,
                     Schedule = x.Schedule,
                 }).ToList(),
-                Patients = appointment.Patients.Select(x => new PatientDto
+
+                Patients = prescription.Patients.Select(x => new PatientDto
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
@@ -303,32 +300,29 @@ namespace StLukesMedicalApp.API.Controllers
 
         }
 
-        // Delete Appointment
+        // Delete Prescription
         [HttpDelete]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> DeleteAppointment([FromRoute] Guid id)
-        {
-            // Delete Appointment
-            var deletedAppointment = await appointmentRepository.DeleteAsync(id);
+        public async Task<IActionResult> DeletePrescription([FromRoute] Guid id) 
+        { 
+            // delete prescription
+            var deletedPrescription = await prescriptionRepository.DeleteAsync(id);
 
-            // Check if Deleted Appointment is Null
-            if (deletedAppointment == null)
+            // check if deleted prescription is null
+            if (deletedPrescription == null)
             {
                 return NotFound();
             }
 
-            // Convert Domain Model to DTO
-            var response = new AppointmentDto
+            // convert Domain Model to DTO
+            var response = new PrescriptionDto
             {
-                Id = deletedAppointment.Id,
-                Status = deletedAppointment.Status,
-                Comments = deletedAppointment.Comments,
-                Diagnosis = deletedAppointment.Diagnosis,
-                Date = deletedAppointment.Date,
-
+                Id = deletedPrescription.Id,
+                MedicationList = deletedPrescription.MedicationList,
+                Dosage = deletedPrescription.Dosage,
+                DateIssued = deletedPrescription.DateIssued,
             };
             return Ok(response);
         }
-
     }
 }

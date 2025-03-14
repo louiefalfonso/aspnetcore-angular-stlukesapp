@@ -11,7 +11,7 @@
         public string Department { get; set; }
         public string Schedule { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
-        public ICollection<Perscription> Perscriptions { get; set; }
+        public ICollection<Prescription> Perscriptions { get; set; }
     }
 }
 
