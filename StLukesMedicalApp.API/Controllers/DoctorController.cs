@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
+using StLukesMedicalApp.API.Repositories.Implementation;
 using StLukesMedicalApp.API.Repositories.Interface;
 
 namespace StLukesMedicalApp.API.Controllers
@@ -51,7 +52,6 @@ namespace StLukesMedicalApp.API.Controllers
             return Ok(response);
         }
 
-
         // Get All Doctors
         [HttpGet]
         public async Task<IActionResult> GetAllDoctors()
@@ -76,7 +76,6 @@ namespace StLukesMedicalApp.API.Controllers
             };
             return Ok(response);
         }
-
 
         // Get Doctor By ID
         [HttpGet]
@@ -106,37 +105,6 @@ namespace StLukesMedicalApp.API.Controllers
             };
             return Ok(response);
         }
-
-
-        // Get Doctor By Department
-        [HttpGet]
-        [Route("{department}")]
-        public async Task<IActionResult> GetDoctorByDepartment([FromRoute] string department)
-        {
-            // Get Doctor Details From Repository
-            var doctor = await doctorRepository.GetByDepartmentAsync(department);
-
-            // Check if Doctor is Null
-            if (doctor is null)
-            {
-                return NotFound();
-            }
-
-            // Map Domain Model to DTO
-            var response = new DoctorDto
-            {
-                Id = doctor.Id,
-                FirstName = doctor.FirstName,
-                LastName = doctor.LastName,
-                Email = doctor.Email,
-                ContactNumber = doctor.ContactNumber,
-                Specialization = doctor.Specialization,
-                Department = doctor.Department,
-                Schedule = doctor.Schedule,
-            };
-            return Ok(response);
-        }
-
 
         // Update Doctor
         [HttpPut]
@@ -208,6 +176,20 @@ namespace StLukesMedicalApp.API.Controllers
                 Schedule = doctor.Schedule,
             };
             return Ok(response);
+        }
+
+        // Get All Doctors by Department
+        [HttpGet("{department}")]
+        public async Task<ActionResult<IEnumerable<Doctor>>> GetAllDoctosByDepartment(string department)
+        {
+            var doctors = await doctorRepository.GetAllDoctorsByDepartment(department);
+
+            if (doctors == null || !doctors.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(doctors);
         }
 
     }

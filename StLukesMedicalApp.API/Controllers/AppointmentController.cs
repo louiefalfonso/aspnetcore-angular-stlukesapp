@@ -109,7 +109,6 @@ namespace StLukesMedicalApp.API.Controllers
 
         }
 
-
         // Get All Appointments
         [HttpGet]
         public async Task<IActionResult> GetAllAppointments()
@@ -159,7 +158,6 @@ namespace StLukesMedicalApp.API.Controllers
 
             return Ok(response);
         }
-
 
         // Get Appointment By Id
         [HttpGet]
@@ -211,7 +209,6 @@ namespace StLukesMedicalApp.API.Controllers
 
             return Ok(response);
         }
-
 
         // Update Appointment
         [HttpPut]

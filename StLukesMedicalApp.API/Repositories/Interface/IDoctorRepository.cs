@@ -10,10 +10,10 @@ namespace StLukesMedicalApp.API.Repositories.Interface
 
         Task<Doctor?> GetByIdAsync(Guid id);
 
-        Task<Doctor?> GetByDepartmentAsync(string department);
-
         Task<Doctor?> UpdateAsync(Doctor doctor);
 
         Task<Doctor?> DeleteAsync(Guid id);
+
+        Task<IEnumerable<Doctor>> GetAllDoctorsByDepartment(string department);
     }
 }
