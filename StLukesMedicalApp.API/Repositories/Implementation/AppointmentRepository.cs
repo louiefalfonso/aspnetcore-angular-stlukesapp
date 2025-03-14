@@ -23,7 +23,6 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
            return appointment;
         }
 
-
         // Get All Appointments
         public async Task<IEnumerable<Appointment>> GetAllAsync()
         {

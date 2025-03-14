@@ -8,13 +8,10 @@ namespace StLukesMedicalApp.API.Repositories.Interface
 
         Task<Prescription?> GetByIdAsync(Guid id);
 
-        /*
-      
-        Task<Appointment?> GetByIdAsync(Guid id);
+        Task<IEnumerable<Prescription>> GetAllAsync();
 
-        Task<Appointment?> UpdateAsync(Appointment appointment);
+        Task<Prescription?> UpdateAsync(Prescription prescription);
 
-        Task<Appointment?> DeleteAsync(Guid id);
-         */
+        Task<Prescription?> DeleteAsync(Guid id);
     }
 }

@@ -331,6 +331,4 @@ namespace StLukesMedicalApp.API.Controllers
         }
 
     }
-
-
 }
