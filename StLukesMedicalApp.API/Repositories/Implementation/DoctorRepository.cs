@@ -34,13 +34,6 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             return await dbContext.Doctors.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        // Get Doctor By Department
-        public async Task<Doctor?> GetByDepartmentAsync(string department)
-        {
-            return await dbContext.Doctors.FirstOrDefaultAsync(x => x.Department == department);
-        }
-
-
         // Update Doctor
         public  async Task<Doctor?> UpdateAsync(Doctor doctor)
         {
@@ -73,6 +66,12 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             dbContext.Doctors.Remove(existingDoctor);
             await dbContext.SaveChangesAsync();
             return existingDoctor;
+        }
+
+        // Get All Doctors By Department
+        public async Task<IEnumerable<Doctor>> GetAllDoctorsByDepartment(string department)
+        {
+            return await dbContext.Doctors.Where(b => b.Department.ToLower() == department.ToLower()).ToListAsync();
         }
     }
 }
