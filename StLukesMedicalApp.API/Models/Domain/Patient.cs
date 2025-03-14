@@ -13,7 +13,7 @@
         public string Diagnosis { get; set; }
         public string PatientType { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
-  
-
+        public ICollection<Prescription> Prescriptions { get; set; }
+ 
     }
 }

@@ -34,5 +34,36 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         {
             return await dbContext.Nurses.ToListAsync();
         }
+
+        // Update Nurse
+        public async Task<Nurse?> UpdateAsync(Nurse nurse)
+        {
+           // Get Nurse By ID
+           var existingNurse = dbContext.Nurses.FirstOrDefault( x=> x.Id == nurse.Id);
+
+            // Check if Nurse is Null
+            if (existingNurse != null) 
+            {
+                dbContext.Entry(existingNurse).CurrentValues.SetValues(nurse);
+                await dbContext.SaveChangesAsync();
+                return nurse;
+            }
+            return null;
+        }
+
+        // Delete Nurse
+        public async Task<Nurse?> DeleteAsync(Guid id)
+        {
+            // Get Nurse By ID
+            var existingNurse = dbContext.Nurses.FirstOrDefault(x => x.Id == id);
+
+            if (existingNurse != null) 
+            { 
+                dbContext.Nurses.Remove(existingNurse);
+                await dbContext.SaveChangesAsync();
+                return existingNurse;
+            }
+            return null;
+        }
     }
 }

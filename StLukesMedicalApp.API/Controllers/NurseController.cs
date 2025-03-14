@@ -103,5 +103,74 @@ namespace StLukesMedicalApp.API.Controllers
 
             return Ok(response);
         }
+
+        // Update Nurse
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateNurse([FromRoute] Guid id, UpdateNurseRequestDto request)
+        {
+            // Convert DTO to Domain
+            var nurse = new Nurse
+            {
+                Id = id,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                PhoneNumber = request.PhoneNumber,
+                EmailAddress = request.EmailAddress,
+                BadgeNumber = request.BadgeNumber,
+                Qualifications = request.Qualifications,
+            };
+
+            // Update Nurse
+            nurse = await nurseRepository.UpdateAsync(nurse);
+
+            // Check if nurse is null
+            if(nurse == null)
+            {
+                return NotFound();
+            }
+
+            // Map Domain Model to DTO
+            var response = new NurseDto
+            {
+                Id = nurse.Id,
+                FirstName = nurse.FirstName,
+                LastName = nurse.LastName,
+                PhoneNumber = nurse.PhoneNumber,
+                EmailAddress = nurse.EmailAddress,
+                BadgeNumber = nurse.BadgeNumber,
+                Qualifications = nurse.Qualifications,
+            };
+
+            return Ok(response);
+        }
+
+        // Delete Nurse
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> DeleteNurse([FromRoute] Guid id)
+        {
+            // Get Nurse By Id
+            var nurse = await nurseRepository.DeleteAsync(id);
+
+            // Check if Nurse is Null
+            if (nurse == null) 
+            { 
+                return NotFound();
+            }
+
+            // Map Domain Model DTO
+            var response = new NurseDto
+            { 
+                Id = nurse.Id,
+                FirstName = nurse.FirstName,
+                LastName = nurse.LastName,
+                PhoneNumber = nurse.PhoneNumber,
+                EmailAddress = nurse.EmailAddress,
+                BadgeNumber = nurse.BadgeNumber,
+                Qualifications = nurse.Qualifications,
+            };
+            return Ok(response);
+        }
     }
 }

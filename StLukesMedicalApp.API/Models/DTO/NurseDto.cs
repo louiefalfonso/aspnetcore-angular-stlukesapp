@@ -11,6 +11,5 @@ namespace StLukesMedicalApp.API.Models.DTO
         public string PhoneNumber { get; set; }
         public string BadgeNumber { get; set; }
         public string Qualifications { get; set; }
-
     }
 }
