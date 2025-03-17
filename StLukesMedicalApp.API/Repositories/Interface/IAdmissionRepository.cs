@@ -11,5 +11,7 @@ namespace StLukesMedicalApp.API.Repositories.Interface
         Task<Admission?> GetByIdAsync (Guid id);
 
         Task<Admission?> UpdateAsync(Admission admission);
+
+        Task<Admission?> DeleteAsync(Guid id);
     }
 }

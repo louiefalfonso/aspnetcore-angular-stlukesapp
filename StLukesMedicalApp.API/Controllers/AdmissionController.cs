@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
+using StLukesMedicalApp.API.Repositories.Implementation;
 using StLukesMedicalApp.API.Repositories.Interface;
 
 namespace StLukesMedicalApp.API.Controllers
@@ -266,6 +267,149 @@ namespace StLukesMedicalApp.API.Controllers
 
             return Ok(response);
 
+        }
+
+        // update admission
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> UpdateAdmission([FromRoute] Guid id, UpdateAdmissionRequestDto request)
+        {
+            // convert DTO to domain model
+            var admission = new Admission
+            {
+                RoomNumber = request.RoomNumber,
+                RoomType = request.RoomType,
+                AvailabilityStatus = request.AvailabilityStatus,
+                Date = request.Date,
+                Doctors = new List<Doctor>(),
+                Patients = new List<Patient>(),
+                Nurses = new List<Nurse>(),
+            };
+
+
+            // add doctor to this admission
+            foreach (var doctorGuid in request.Doctors)
+            {
+                // get doctor by ID from doctor repository
+                var exisitingDoctor = await doctorRepository.GetByIdAsync(doctorGuid);
+
+                // Check if Doctor Exists
+                if (exisitingDoctor is not null)
+                {
+                    admission.Doctors.Add(exisitingDoctor);
+                }
+            }
+
+            // add nurse to this admission
+            foreach (var nurseGuid in request.Nurses)
+            {
+                // get nurse by ID from doctor repository
+                var exisitingNurse = await nurseRepository.GetByIdAsync(nurseGuid);
+
+                // Check if Doctor Exists
+                if (exisitingNurse is not null)
+                {
+                    admission.Nurses.Add(exisitingNurse);
+                }
+            }
+
+            // add patient to this admission
+            foreach (var patientGuid in request.Patients)
+            {
+                // get patient by ID from doctor repository
+                var exisitingPatient = await patientRepository.GetByIdAsync(patientGuid);
+
+                // Check if Doctor Exists
+                if (exisitingPatient is not null)
+                {
+                    admission.Patients.Add(exisitingPatient);
+                }
+            }
+
+            // call repository to update admission Domain Model
+            var updatedAdmission = await admissionRepository.UpdateAsync(admission);
+
+            // check if updated admission is Null
+            if (updatedAdmission == null)
+            {
+                return NotFound();
+            }
+
+            // map domain model to DTO
+            var response = new AdmissionDto
+            {
+                Id = admission.Id,
+                RoomNumber = admission.RoomNumber,
+                RoomType = admission.RoomType,
+                AvailabilityStatus = admission.AvailabilityStatus,
+                Date = admission.Date,
+                Doctors = admission.Doctors.Select(x => new DoctorDto
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    ContactNumber = x.ContactNumber,
+                    Specialization = x.Specialization,
+                    Department = x.Department,
+                    Schedule = x.Schedule,
+                }).ToList(),
+
+                Patients = admission.Patients.Select(x => new PatientDto
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email,
+                    ContactNumber = x.ContactNumber,
+                    Sex = x.Sex,
+                    Age = x.Age,
+                    Address = x.Address,
+                    Diagnosis = x.Diagnosis,
+                    PatientType = x.PatientType,
+                }).ToList(),
+
+                Nurses = admission.Nurses.Select(x => new NurseDto
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    EmailAddress = x.EmailAddress,
+                    PhoneNumber = x.PhoneNumber,
+                    BadgeNumber = x.BadgeNumber,
+                    Qualifications = x.Qualifications,
+
+                }).ToList()
+            };
+
+            return Ok(response);
+        }
+
+        // delete admission
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> DeleteAdmission([FromRoute] Guid id)
+        {
+            // delete admission
+            var deletedAdmission = await admissionRepository.DeleteAsync(id);
+
+            // check if deleted admission is null
+            if (deletedAdmission == null) 
+            {
+                return NotFound();
+            }
+
+            // convert domain model to DTO
+            var response = new AdmissionDto
+            {
+                Id = deletedAdmission.Id,
+                RoomNumber = deletedAdmission.RoomNumber,
+                RoomType = deletedAdmission.RoomType,
+                AvailabilityStatus = deletedAdmission.AvailabilityStatus,
+                Date = deletedAdmission.Date,
+            };
+
+            return Ok(response);
         }
     }
 }

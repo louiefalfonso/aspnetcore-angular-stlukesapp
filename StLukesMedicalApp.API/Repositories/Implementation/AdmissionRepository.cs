@@ -64,5 +64,23 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
 
             return existingAdmission;
         }
+
+        // delete admission
+        public async Task<Admission?> DeleteAsync(Guid id)
+        {
+            // fetch the admission by ID
+            var existingAdmission = await dbContext.Admissions.FirstOrDefaultAsync(x => x.Id == id);
+
+            // check if existing admission is Null
+            if (existingAdmission != null)
+            {
+                dbContext.Admissions.Remove(existingAdmission);
+                await dbContext.SaveChangesAsync();
+                return existingAdmission;
+            }
+
+            return null;
+        }
+
     }
 }
