@@ -15,6 +15,7 @@
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<Prescription> Prescriptions { get; set; }
         public ICollection<Billing> Billings { get; set; }
+        public ICollection <Admission> Admissions  { get; set; }
  
     }
 }
