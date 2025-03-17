@@ -12,5 +12,6 @@ namespace StLukesMedicalApp.API.Data
             public DbSet<Nurse> Nurses { get; set; }
             public DbSet<Prescription> Prescriptions { get; set; }
             public DbSet<Billing> Billings { get; set; }
+            public DbSet<Admission> Admissions { get; set; }
     }
 }

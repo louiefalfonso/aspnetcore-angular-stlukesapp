@@ -10,5 +10,6 @@
         public string BadgeNumber { get; set; }
         public string Qualifications { get; set; }
         public ICollection<Patient> Patients { get; set; }
+        public ICollection<Admission> Admissions { get; set; }
     }
 }
