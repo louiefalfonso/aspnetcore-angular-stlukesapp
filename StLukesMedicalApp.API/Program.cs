@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using StLukesMedicalApp.API.Data;
 using StLukesMedicalApp.API.Repositories.Implementation;
 using StLukesMedicalApp.API.Repositories.Interface;
@@ -32,6 +33,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StLukesAppConnectionString"));
 });
 
+// Inject Auth DbContext Into Application
+builder.Services.AddDbContext<AuthDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StLukesAppConnectionString"));
+
+    // Add this if Migration error occurs before updating database for AuthDbContext
+    options.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+});
+
 // inject repository into Application
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
@@ -40,6 +50,7 @@ builder.Services.AddScoped<INurseRepository, NurseRepository>();
 builder.Services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
 builder.Services.AddScoped<IBillingRepository, BillingRepository>();
 builder.Services.AddScoped<IAdmissionRepository, AdmissionRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 var app = builder.Build();
 
