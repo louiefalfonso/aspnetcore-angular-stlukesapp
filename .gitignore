@@ -97,10 +97,6 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-*.vs
-
-# env file
-.env
 
 # Chutzpah Test files
 _Chutzpah*
@@ -366,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+# .env at DotNetEnv
+.env
