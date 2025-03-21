@@ -13,6 +13,8 @@ namespace StLukesMedicalApp.API.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             // Load .env file
             DotNetEnv.Env.Load();
 
