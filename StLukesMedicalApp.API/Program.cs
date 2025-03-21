@@ -12,6 +12,20 @@ builder.Services.AddControllers();
 // Add & Configure Swagger
 builder.Services.AddSwaggerGen();
 
+// Load .env file
+DotNetEnv.Env.Load();
+
+// Configure connection string from environment variable
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings_StLukesApp");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new Exception("Connection string not found. Ensure the .env file is correctly configured and placed in the root directory.");
+}
+
+// Add connection string to the application's configuration system
+builder.Configuration.AddInMemoryCollection(new Dictionary<string, string> { { "ConnectionStrings:StLukesAppConnectionString", connectionString } });
+
 // inject DbContect Into Application
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
