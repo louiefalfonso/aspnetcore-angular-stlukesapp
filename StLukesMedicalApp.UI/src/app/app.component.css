@@ -11,14 +11,30 @@
 .is-mobile .toolbar {
   position: fixed;
   z-index: 2;
+  
 }
 
 .sidenav-container {
-  flex: 1;
- 
+  flex: 1; 
 }
 
 .is-mobile .sidenav-container {
   flex: 1 0 auto;
 
+}
+
+.sidenav{
+  background-color: #d7e3ff;
+  border-radius: 0;
+  border-right: 1px solid #c4c6d0;
+}
+
+.sidenav-content{
+  padding: 30px;
+  background-color: #fff;
+}
+
+.toolbar{
+  background-color: #d7e3ff;
+  border-bottom: 1px solid #c4c6d0; 
 }

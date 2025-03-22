@@ -1,39 +1,38 @@
-
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './core/components/navbar/navbar.component';
-
-import {MediaMatcher} from '@angular/cdk/layout';
-import {Component, OnDestroy, inject, signal} from '@angular/core';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { SideMenuComponent } from './core/components/sidemenu/sidemenu.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavbarComponent,SideMenuComponent,
-     MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule],
+  imports: [RouterOutlet, NavbarComponent, SideMenuComponent,
+    MatToolbarModule, MatButtonModule, MatIconModule, MatSidenavModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class AppComponent implements OnDestroy {
+  
   title = 'StLukesMedicalApp.UI';
+  public isMobile = false;
+  private breakpointSubscription: Subscription;
 
-  protected readonly isMobile = signal(true);
-  private readonly _mobileQuery: MediaQueryList;
-  private readonly _mobileQueryListener: () => void;
-
-  constructor() {
-    const media = inject(MediaMatcher);
-
-    this._mobileQuery = media.matchMedia('(max-width: 600px)');
-    this.isMobile.set(this._mobileQuery.matches);
-    this._mobileQueryListener = () => this.isMobile.set(this._mobileQuery.matches);
-    this._mobileQuery.addEventListener('change', this._mobileQueryListener);
+  constructor(private breakpointObserver: BreakpointObserver) {
+    this.breakpointSubscription = this.breakpointObserver.observe([
+      Breakpoints.Handset
+    ]).subscribe({
+      next: result => this.isMobile = result.matches,
+      error: err => { console.error('Error observing breakpoints', err)}
+    });
   }
 
   ngOnDestroy(): void {
-    this._mobileQuery.removeEventListener('change', this._mobileQueryListener);
+    this.breakpointSubscription.unsubscribe();
   }
 }
