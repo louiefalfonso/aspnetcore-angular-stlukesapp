@@ -1,0 +1,32 @@
+<h1>Latest Appointments</h1>
+<div class="appointments-table-container">
+    <table mat-table [dataSource]="dataSource" aria-label="Appointments Table" class="appointments-table">
+      <ng-container matColumnDef="Id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.Status}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="Date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="Doctor">
+        <th mat-header-cell *matHeaderCellDef> Doctor </th>
+        <td mat-cell *matCellDef="let element"> {{element.Doctor}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="Patient">
+          <th mat-header-cell *matHeaderCellDef> Patient </th>
+          <td mat-cell *matCellDef="let element"> {{element.Patient}} </td>
+        </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

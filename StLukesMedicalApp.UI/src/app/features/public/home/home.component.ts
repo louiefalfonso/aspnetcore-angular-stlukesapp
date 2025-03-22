@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { AppointmentComponent } from '../appointment/appointment.component';
 
 @Component({
   selector: 'app-home',
-  imports: [MatSidenavModule],
+  imports: [AppointmentComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent  {
 
 }
