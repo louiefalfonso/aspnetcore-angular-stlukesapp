@@ -14,7 +14,6 @@ export class SideMenuComponent {
   menuItems = [
     { name: 'Home', link: '/' },
     { name: 'Admissions', link: '/admissions' },
-    { name: 'Appointments', link: '/appointments' },
-    { name: 'Prescriptions', link: '/prescriptions' }
+    { name: 'Patients', link: '/admin/patients' },
   ];
 }

@@ -1,0 +1,31 @@
+table {
+    width: 100%;
+  }
+ 
+.appointments-table-container {
+  overflow-x: auto;
+}
+
+.appointments-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border: 1px solid #74777f;
+}
+
+@media (max-width: 600px) {
+  .appointments-table th, .appointments-table td {
+    white-space: nowrap;
+  }
+}
+
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+
+.appointments-table-container {
+  margin-top: 0px;
+}
