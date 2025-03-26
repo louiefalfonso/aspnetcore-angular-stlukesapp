@@ -1,16 +1,1 @@
-<div class="container" [class.example-is-mobile]="isMobile">
-  <mat-toolbar class="toolbar">
-    <button mat-icon-button (click)="snav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <app-navbar></app-navbar>
-  </mat-toolbar>
-  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="isMobile ? 0 : 0">
-    <mat-sidenav class="sidenav"  #snav [mode]="isMobile ? 'over' : 'side'" [fixedInViewport]="isMobile" fixedTopGap="56">
-      <app-sidemenu></app-sidemenu>
-    </mat-sidenav>
-    <mat-sidenav-content class="sidenav-content">
-      <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+<router-outlet />
