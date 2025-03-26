@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "StLukesMedicalApp.UI": {
+    "dev": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/st-lukes-medical-app.ui",
+            "outputPath": "dist/dev",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -27,7 +27,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -60,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "StLukesMedicalApp.UI:build:production"
+              "buildTarget": "dev:build:production"
             },
             "development": {
-              "buildTarget": "StLukesMedicalApp.UI:build:development"
+              "buildTarget": "dev:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,7 +85,6 @@
               }
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
             "scripts": []
