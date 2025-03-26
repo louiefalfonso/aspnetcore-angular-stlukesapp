@@ -7,7 +7,7 @@ namespace StLukesMedicalApp.API.Data
     public class AuthDbContext : IdentityDbContext
     {
         // create contructor
-        public AuthDbContext(DbContextOptions options) : base(options)
+        public AuthDbContext(DbContextOptions <AuthDbContext> options) : base(options)
         {
         }
 
