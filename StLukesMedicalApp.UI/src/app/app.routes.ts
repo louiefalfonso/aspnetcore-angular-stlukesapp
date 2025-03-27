@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { PatientListComponent } from './features/patient/patient-list/patient-list.component';
 import { HomeComponent } from './features/public/home/home.component';
 import { AddPatientComponent } from './features/patient/add-patient/add-patient.component';
+import { EditPatientComponent } from './features/patient/edit-patient/edit-patient.component';
 
 export const routes: Routes = [
     {
@@ -16,5 +17,9 @@ export const routes: Routes = [
     {
         path:"admin/patients/add",
         component: AddPatientComponent, 
+    },
+    {
+        path:"admin/patients/:id",
+        component: EditPatientComponent, 
     },
 ];
