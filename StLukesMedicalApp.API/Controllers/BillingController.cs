@@ -83,10 +83,18 @@ namespace StLukesMedicalApp.API.Controllers
 
         // Get All Billings
         [HttpGet]
-        public async Task<IActionResult> GetAllBillings()
+        public async Task<IActionResult> GetAllBillings
+            (
+                // add filtering, sorting & pagination
+                [FromQuery] string? query,
+                [FromQuery] string? sortBy,
+                [FromQuery] string? sortDirection,
+                [FromQuery] int? pageNumber,
+                [FromQuery] int? pageSize
+            )
         {
             // get all billings
-            var billings = await billingRepository.GetAllAsync();
+            var billings = await billingRepository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
 
             // map domain model to DTO
             var response = new List<BillingDto>();
@@ -262,6 +270,15 @@ namespace StLukesMedicalApp.API.Controllers
                 DateOfBilling = deletedBilling.DateOfBilling
             };
             return Ok(response);
+        }
+
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetPatientsTotal()
+        {
+            var count = await billingRepository.GetCount();
+            return Ok(count);
         }
     }
 }

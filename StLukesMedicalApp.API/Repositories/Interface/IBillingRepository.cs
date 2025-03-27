@@ -8,12 +8,22 @@ namespace StLukesMedicalApp.API.Repositories.Interface
 
         Task<Billing?> GetByIdAsync(Guid id);
 
-        Task<IEnumerable<Billing>> GetAllAsync();
+        Task<IEnumerable<Billing>> GetAllAsync
+            (
+                // add filtering, sorting & pagination
+                string? query = null,
+                string? sortBy = null,
+                string? sortDirection = null,
+                int? pageNumber = 1,
+                int? pageSize = 100
+            );
 
         Task<Billing?> UpdateAsync(Billing billing);
 
         Task<Billing?> DeleteAsync(Guid id);
 
         Task<IEnumerable<Billing>> GetAllBillingByPaymentStatusAsync(string paymentStatus);
+
+        Task<int> GetCount();
     }
 }

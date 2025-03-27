@@ -57,9 +57,17 @@ namespace StLukesMedicalApp.API.Controllers
 
         // Get All Patients
         [HttpGet]
-        public async Task<IActionResult> GetAllPatients()
+        public async Task<IActionResult> GetAllPatients
+            (
+                // add filtering, sorting & pagination
+                [FromQuery] string? query,
+                [FromQuery] string? sortBy,
+                [FromQuery] string? sortDirection,
+                [FromQuery] int? pageNumber,
+                [FromQuery] int? pageSize
+            )
         {
-            var patients = await patientRepository.GetAllAsync();
+            var patients = await patientRepository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
 
             // map Domain model to DTO
             var response = new List<PatientDto>();
@@ -192,6 +200,15 @@ namespace StLukesMedicalApp.API.Controllers
             };
 
             return Ok(response);
+        }
+
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetPatientsTotal()
+        {
+            var count = await patientRepository.GetCount();
+            return Ok(count);
         }
     }
 }
