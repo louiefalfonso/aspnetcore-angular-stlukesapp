@@ -18,16 +18,12 @@ namespace StLukesMedicalApp.API.Data
             // Load .env file
             DotNetEnv.Env.Load();
 
-            // Retrieve JWT configuration from environment variables
-            var readerRoleId_env = Environment.GetEnvironmentVariable("readerRoleId_env");
-            var writerRoleId_env = Environment.GetEnvironmentVariable("readerRoleId_env");
-            var adminUserId_env = Environment.GetEnvironmentVariable("adminUserId_env");
+            // Retrieve JWT configuration from env
+            var readerId = Environment.GetEnvironmentVariable("readerRoleId");
+            var writerId = Environment.GetEnvironmentVariable("writerRoleId");
 
-            var adminEmail_env = Environment.GetEnvironmentVariable("adminEmail_env");
-            var adminPass_env = Environment.GetEnvironmentVariable("adminPass_env");
-
-            var readerRoleId = "readerRoleId_env";
-            var writerRoleId = "writerRoleId_env ";
+            var readerRoleId = readerId;
+            var writerRoleId = writerId;
 
             // create reader & writter role
             var roles = new List<IdentityRole>
@@ -52,17 +48,21 @@ namespace StLukesMedicalApp.API.Data
             builder.Entity<IdentityRole>().HasData(roles);
 
             // create admin user
-            var adminUserId = "adminUserId_env";
+            var adminUserId = Environment.GetEnvironmentVariable("adminUserId");
+            var adminUserEmail = Environment.GetEnvironmentVariable("adminEmail");
+            var adminUserPass = Environment.GetEnvironmentVariable("adminPass");
+
+
             var admin = new IdentityUser()
             {
                 Id = adminUserId,
-                UserName = "adminEmail_env",
-                Email = "adminEmail_env",
-                NormalizedEmail = "adminEmail_env".ToUpper(),
-                NormalizedUserName = "adminEmail_env".ToUpper()
+                UserName = adminUserEmail,
+                Email = adminUserEmail,
+                NormalizedEmail = adminUserEmail.ToUpper(),
+                NormalizedUserName = adminUserEmail.ToUpper()
             };
 
-            admin.PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(admin, "adminPass_env");
+            admin.PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(admin, adminUserPass);
 
             builder.Entity<IdentityUser>().HasData(admin);
 

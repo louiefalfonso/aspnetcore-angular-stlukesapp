@@ -51,15 +51,15 @@ namespace StLukesMedicalApp.API.Migrations.AuthDb
                     b.HasData(
                         new
                         {
-                            Id = "readerRoleId_env",
-                            ConcurrencyStamp = "readerRoleId_env",
+                            Id = "37718b17-9483-497a-995b-f9388c0288cd",
+                            ConcurrencyStamp = "37718b17-9483-497a-995b-f9388c0288cd",
                             Name = "Reader",
                             NormalizedName = "READER"
                         },
                         new
                         {
-                            Id = "writerRoleId_env ",
-                            ConcurrencyStamp = "writerRoleId_env ",
+                            Id = "53eb5141-7eb3-4719-8023-2ff00d7449f2",
+                            ConcurrencyStamp = "53eb5141-7eb3-4719-8023-2ff00d7449f2",
                             Name = "Writter",
                             NormalizedName = "WRITTER"
                         });
@@ -157,19 +157,19 @@ namespace StLukesMedicalApp.API.Migrations.AuthDb
                     b.HasData(
                         new
                         {
-                            Id = "adminUserId_env",
+                            Id = "821c4bb9-a23d-4df3-a719-c7cebb7579fa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c2f65ff4-bcf5-4b53-bfc9-e82bdf77e85d",
-                            Email = "adminEmail_env",
+                            ConcurrencyStamp = "905b78cd-ac05-49bf-b9cb-36be90fc3cbf",
+                            Email = "admin@testmode.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMINEMAIL_ENV",
-                            NormalizedUserName = "ADMINEMAIL_ENV",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBdTCllN0Em4B/X78Wrn970yTRdDriOB6PXESKIZcshSdjY1iHtWF+1FX1QN+j++kQ==",
+                            NormalizedEmail = "ADMIN@TESTMODE.COM",
+                            NormalizedUserName = "ADMIN@TESTMODE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEAF+dDw17VUtkzW/z8jgrTob5AgySqGlXQ7aURoJ839CKSfKwK+z8OerdyHiil85A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "751369ea-7ed6-4487-a5f5-eeacca6b7fcc",
+                            SecurityStamp = "2aceb065-9615-475b-8709-780138177d05",
                             TwoFactorEnabled = false,
-                            UserName = "adminEmail_env"
+                            UserName = "admin@testmode.com"
                         });
                 });
 
@@ -237,13 +237,13 @@ namespace StLukesMedicalApp.API.Migrations.AuthDb
                     b.HasData(
                         new
                         {
-                            UserId = "adminUserId_env",
-                            RoleId = "readerRoleId_env"
+                            UserId = "821c4bb9-a23d-4df3-a719-c7cebb7579fa",
+                            RoleId = "37718b17-9483-497a-995b-f9388c0288cd"
                         },
                         new
                         {
-                            UserId = "adminUserId_env",
-                            RoleId = "writerRoleId_env "
+                            UserId = "821c4bb9-a23d-4df3-a719-c7cebb7579fa",
+                            RoleId = "53eb5141-7eb3-4719-8023-2ff00d7449f2"
                         });
                 });
 
