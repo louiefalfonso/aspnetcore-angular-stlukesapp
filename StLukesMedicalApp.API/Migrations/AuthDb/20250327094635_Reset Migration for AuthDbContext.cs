@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace StLukesMedicalApp.API.Migrations.AuthDb
 {
     /// <inheritdoc />
-    public partial class AuthModelMigration : Migration
+    public partial class ResetMigrationforAuthDbContext : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -163,22 +163,22 @@ namespace StLukesMedicalApp.API.Migrations.AuthDb
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "readerRoleId_env", "readerRoleId_env", "Reader", "READER" },
-                    { "writerRoleId_env ", "writerRoleId_env ", "Writter", "WRITTER" }
+                    { "37718b17-9483-497a-995b-f9388c0288cd", "37718b17-9483-497a-995b-f9388c0288cd", "Reader", "READER" },
+                    { "53eb5141-7eb3-4719-8023-2ff00d7449f2", "53eb5141-7eb3-4719-8023-2ff00d7449f2", "Writter", "WRITTER" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "adminUserId_env", 0, "c2f65ff4-bcf5-4b53-bfc9-e82bdf77e85d", "adminEmail_env", false, false, null, "ADMINEMAIL_ENV", "ADMINEMAIL_ENV", "AQAAAAIAAYagAAAAEBdTCllN0Em4B/X78Wrn970yTRdDriOB6PXESKIZcshSdjY1iHtWF+1FX1QN+j++kQ==", null, false, "751369ea-7ed6-4487-a5f5-eeacca6b7fcc", false, "adminEmail_env" });
+                values: new object[] { "821c4bb9-a23d-4df3-a719-c7cebb7579fa", 0, "905b78cd-ac05-49bf-b9cb-36be90fc3cbf", "admin@testmode.com", false, false, null, "ADMIN@TESTMODE.COM", "ADMIN@TESTMODE.COM", "AQAAAAIAAYagAAAAEEAF+dDw17VUtkzW/z8jgrTob5AgySqGlXQ7aURoJ839CKSfKwK+z8OerdyHiil85A==", null, false, "2aceb065-9615-475b-8709-780138177d05", false, "admin@testmode.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "readerRoleId_env", "adminUserId_env" },
-                    { "writerRoleId_env ", "adminUserId_env" }
+                    { "37718b17-9483-497a-995b-f9388c0288cd", "821c4bb9-a23d-4df3-a719-c7cebb7579fa" },
+                    { "53eb5141-7eb3-4719-8023-2ff00d7449f2", "821c4bb9-a23d-4df3-a719-c7cebb7579fa" }
                 });
 
             migrationBuilder.CreateIndex(
