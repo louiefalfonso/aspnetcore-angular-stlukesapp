@@ -5,7 +5,6 @@
   </div>
   <div class="overflow-x-auto">
     <ng-container *ngIf="patients$ | async as patients">
-
       <table class="min-w-full bg-white border border-gray-200">
         <thead>
           <tr class="bg-gray-100">
@@ -14,8 +13,9 @@
             <th class="px-4 py-2 text-left text-gray-600">Age</th>
             <th class="px-4 py-2 text-left text-gray-600">Sex</th>
             <th class="px-4 py-2 text-left text-gray-600">Contact Number</th>
-            <th class="px-4 py-2 text-left text-gray-600">Diagnosis</th>
+            <th class="px-4 py-2 text-left text-gray-600">Address</th>
             <th class="px-4 py-2 text-left text-gray-600">Patient Type</th>
+            <th class="px-4 py-2 text-left text-gray-600">Diagnosis</th>
             <th></th>
           </tr>
         </thead>
@@ -26,17 +26,14 @@
             <td class="px-4 py-2">{{patient.age}}</td>
             <td class="px-4 py-2">{{patient.sex}}</td>
             <td class="px-4 py-2">{{patient.contactNumber}}</td>
-            <td class="px-4 py-2">{{patient.diagnosis}}</td>
+            <td class="px-4 py-2">{{patient.address}}</td>
             <td class="px-4 py-2">{{patient.patientType}}</td>
+            <td class="px-4 py-2">{{patient.diagnosis}}</td>
             <td class="px-4 py-2">
               <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"  [routerLink]="['/admin/patients', patient.id]" >Edit</button>
             </td>
           </tr>
-         
         </tbody>
       </table>
-      
     </ng-container>
-
-    
   </div>
