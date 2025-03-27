@@ -22,8 +22,51 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         }
 
         // Get All Patients
-        public async Task<IEnumerable<Patient>> GetAllAsync()
+        public async Task<IEnumerable<Patient>> GetAllAsync
+            (
+                // add filtering, sorting & pagination
+                string? query = null,
+                string? sortBy = null,
+                string? sortDirection = null,
+                int? pageNumber = 1,
+                int? pageSize = 100
+            )
         {
+            // query
+            var patients = dbContext.Patients.AsQueryable();
+
+            // filtering
+            if(string.IsNullOrWhiteSpace(query) == false)
+            {
+                patients = patients.Where(x =>x.FirstName.Contains(query));
+            }
+
+            // sorting
+            if (string.IsNullOrWhiteSpace(sortBy) == false) 
+            { 
+                if(string.Equals(sortBy,"firstName", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection,"asc", StringComparison.OrdinalIgnoreCase)? true : false;
+                    patients = isAsc ? patients.OrderBy(x => x.FirstName) : patients.OrderByDescending(x => x.FirstName);
+                }
+
+                if (string.Equals(sortBy, "lastName", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    patients = isAsc ? patients.OrderBy(x => x.LastName) : patients.OrderByDescending(x => x.LastName);
+                }
+
+                if (string.Equals(sortBy, "patientType", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    patients = isAsc ? patients.OrderBy(x => x.PatientType) : patients.OrderByDescending(x => x.PatientType);
+                }
+            }
+
+            // pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            patients = patients.Skip(skipResults ?? 0).Take(pageSize ?? 100);
+
             return await dbContext.Patients.ToListAsync();
         }
 
@@ -62,6 +105,12 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             dbContext.Patients.Remove(existingPatient);
             await dbContext.SaveChangesAsync();
             return existingPatient;
+        }
+
+        // Get Count
+        public async Task<int> GetCount()
+        {
+            return await dbContext.Patients.CountAsync();
         }
     }
 }
