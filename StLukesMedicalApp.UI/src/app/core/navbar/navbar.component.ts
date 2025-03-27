@@ -11,4 +11,9 @@ import { RouterModule } from '@angular/router';
 })
 export class NavbarComponent {
 
+  isMobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
 }
