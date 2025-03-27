@@ -1,36 +1,43 @@
 
-<div class="top-header" fxLayout="row" fxLayoutAlign="space-between center">
-    <h1>Full Patient List</h1>
-    <button mat-flat-button [routerLink]="['/admin/patients/add']">Add New Patient</button>
-</div>
-<div class="appointments-table-container">
-    <table mat-table [dataSource]="dataSource" aria-label="Appointments Table" class="appointments-table">
-      <ng-container matColumnDef="Id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="Status">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let element"> {{element.Status}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="Date">
-        <th mat-header-cell *matHeaderCellDef> Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="Doctor">
-        <th mat-header-cell *matHeaderCellDef> Doctor </th>
-        <td mat-cell *matCellDef="let element"> {{element.Doctor}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="Patient">
-          <th mat-header-cell *matHeaderCellDef> Patient </th>
-          <td mat-cell *matCellDef="let element"> {{element.Patient}} </td>
-        </ng-container>
-    
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold text-gray-700">Patient List</h2>
+    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/patients/add']" >Add Patient</button>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left text-gray-600">Song</th>
+          <th class="px-4 py-2 text-left text-gray-600">Artist</th>
+          <th class="px-4 py-2 text-left text-gray-600">Year</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-t border-gray-200">
+          <td class="px-4 py-2">The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+          <td class="px-4 py-2">Malcolm Lockyer</td>
+          <td class="px-4 py-2">1961</td>
+          <td class="px-4 py-2">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
+          </td>
+        </tr>
+        <tr class="border-t border-gray-200">
+          <td class="px-4 py-2">Witchy Woman</td>
+          <td class="px-4 py-2">The Eagles</td>
+          <td class="px-4 py-2">1972</td>
+          <td class="px-4 py-2">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
+          </td>
+        </tr>
+        <tr class="border-t border-gray-200">
+          <td class="px-4 py-2">Shining Star</td>
+          <td class="px-4 py-2">Earth, Wind, and Fire</td>
+          <td class="px-4 py-2">1975</td>
+          <td class="px-4 py-2">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
+          </td>
+        </tr>
+      </tbody>
     </table>
-</div>
+  </div>

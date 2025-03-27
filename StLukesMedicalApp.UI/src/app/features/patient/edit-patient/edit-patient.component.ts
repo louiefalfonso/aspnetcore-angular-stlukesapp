@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-edit-patient',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './edit-patient.component.html',
   styleUrl: './edit-patient.component.css'
 })
