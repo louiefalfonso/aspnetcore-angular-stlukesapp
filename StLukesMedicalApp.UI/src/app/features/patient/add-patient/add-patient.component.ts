@@ -21,11 +21,6 @@ export class AddPatientComponent implements OnDestroy{
   // add unsubcribe from observables
  private addPatientSubscription ?: Subscription;
 
-  // add alertMessage and alertType
- alertMessage: string = '';
- alertType: string = '';
-
-
   // add constructor
   constructor(
     private patientService : PatientService,
@@ -50,23 +45,10 @@ export class AddPatientComponent implements OnDestroy{
   this.addPatientSubscription = this.patientService.addPatient(this.model)
     .subscribe({
       next: (response) => {
-        this.alertMessage = 'Patient Added Successfully';
-        this.alertType = 'success';
-        setTimeout(() => {
-          this.alertMessage = '';
-          this.alertType = '';
-          this.router.navigate(['/admin/patients']);
-        }, 2000);
+        this.router.navigate(['/admin/patients']);  
       },
       error: (error) => {
         console.error(error);
-        this.alertMessage = 'An error occurred while adding the patient';
-        this.alertType = 'danger';
-        setTimeout(() => {
-          this.alertMessage = '';
-          this.alertType = '';
-          this.router.navigate(['/admin/patients']);
-        }, 2000);
       }
     });
 }

@@ -5,6 +5,7 @@ import { RouterModule, ActivatedRoute, Router} from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Patient } from '../models/patient.models';
 import { PatientService } from '../services/patient.service';
+import { UpdatePatientRequest } from '../models/update-patient-request.models';
 
 @Component({
   selector: 'app-edit-patient',
@@ -20,6 +21,7 @@ export class EditPatientComponent implements OnInit, OnDestroy {
   // add Subscription
   paramsSubscription?: Subscription;
   editPatientSubscription?: Subscription;
+  deletePatientSubscription? : Subscription;
 
   // add patient object
   patient?: Patient;
@@ -51,9 +53,55 @@ export class EditPatientComponent implements OnInit, OnDestroy {
    })
   }
 
+   // implement onFormSubmit
+   onFormSubmit():void{
+
+    // create a new UpdatePatientRequest object
+    const updatePatientRequest: UpdatePatientRequest ={
+      firstName: this.patient?.firstName?? '',
+      lastName:this.patient?.lastName?? '',
+      email: this.patient?.email?? '',
+      contactNumber: this.patient?.contactNumber?? '',
+      sex: this.patient?.sex?? '',
+      age: this.patient?.age?? '',
+      address: this.patient?.address?? '',
+      diagnosis: this.patient?.diagnosis?? '',
+      patientType: this.patient?.patientType?? '',
+    }
+
+     //pass this object to the service
+     if(this.id){
+    this.editPatientSubscription =  this.patientService.updatePatient(this.id,updatePatientRequest).subscribe({
+        next: (response) => {
+          this.router.navigate(['/admin/patients']);  
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+     }
+   }
+
+    // implement onDelete
+    onDelete():void{
+      if(this.id){
+        this.patientService.deletePatient(this.id).subscribe({
+          next: (response) => {
+            this.router.navigate(['/admin/patients']);  
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+      }
+    }
+
+
  // implement ngOnDestroy lifecycle hook
   ngOnDestroy(): void {
     this.paramsSubscription?.unsubscribe();
+    this.editPatientSubscription?.unsubscribe();
+    this.deletePatientSubscription?.unsubscribe();
   }
 
 

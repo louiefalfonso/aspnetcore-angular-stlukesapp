@@ -1,9 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
-
 import { environment } from '../../../../environments/environment';
-import { AddPatientComponent } from '../add-patient/add-patient.component';
 import { Observable } from 'rxjs';
 import { Patient } from '../models/patient.models';
 import { UpdatePatientRequest } from '../models/update-patient-request.models';

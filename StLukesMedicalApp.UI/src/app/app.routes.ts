@@ -3,6 +3,7 @@ import { PatientListComponent } from './features/patient/patient-list/patient-li
 import { HomeComponent } from './features/public/home/home.component';
 import { AddPatientComponent } from './features/patient/add-patient/add-patient.component';
 import { EditPatientComponent } from './features/patient/edit-patient/edit-patient.component';
+import { BillingListComponent } from './features/billing/billing-list/billing-list.component';
 
 export const routes: Routes = [
     {
@@ -21,5 +22,9 @@ export const routes: Routes = [
     {
         path:"admin/patients/:id",
         component: EditPatientComponent, 
+    },
+    {
+        path:"admin/billings",
+        component: BillingListComponent, 
     },
 ];
