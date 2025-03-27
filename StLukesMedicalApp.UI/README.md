@@ -1,4 +1,4 @@
-# Dev
+# ASP.NET Core with Entity Framework & Angular - St. Lukes Medical Ap
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.5.
 

@@ -7,11 +7,11 @@ namespace StLukesMedicalApp.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PatientController: ControllerBase
+    public class PatientsController: ControllerBase
     {
         private readonly IPatientRepository patientRepository;
 
-        public PatientController(IPatientRepository patientRepository) 
+        public PatientsController(IPatientRepository patientRepository) 
         {
             this.patientRepository = patientRepository;
         }

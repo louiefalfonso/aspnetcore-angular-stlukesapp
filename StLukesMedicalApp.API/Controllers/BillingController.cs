@@ -9,13 +9,13 @@ namespace StLukesMedicalApp.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class BillingController : ControllerBase
+    public class BillingsController : ControllerBase
     {
         private readonly IBillingRepository billingRepository;
         private readonly IPatientRepository patientRepository;
 
         // add constructor
-        public BillingController(
+        public BillingsController(
             IBillingRepository  billingRepository,
             IPatientRepository  patientRepository
             ) 
