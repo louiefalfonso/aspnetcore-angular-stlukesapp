@@ -8,14 +8,14 @@ namespace StLukesMedicalApp.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PrescriptionController : ControllerBase
+    public class PrescriptionsController : ControllerBase
     {
         private readonly IPrescriptionRepository prescriptionRepository;
         private readonly IDoctorRepository doctorRepository;
         private readonly IPatientRepository patientRepository;
 
         // add constructor
-        public PrescriptionController(
+        public PrescriptionsController(
             IPrescriptionRepository prescriptionRepository,
             IDoctorRepository doctorRepository,
             IPatientRepository patientRepository

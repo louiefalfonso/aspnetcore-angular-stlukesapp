@@ -4,40 +4,39 @@
     <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/patients/add']" >Add Patient</button>
   </div>
   <div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200">
-      <thead>
-        <tr class="bg-gray-100">
-          <th class="px-4 py-2 text-left text-gray-600">Song</th>
-          <th class="px-4 py-2 text-left text-gray-600">Artist</th>
-          <th class="px-4 py-2 text-left text-gray-600">Year</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="border-t border-gray-200">
-          <td class="px-4 py-2">The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-          <td class="px-4 py-2">Malcolm Lockyer</td>
-          <td class="px-4 py-2">1961</td>
-          <td class="px-4 py-2">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
-          </td>
-        </tr>
-        <tr class="border-t border-gray-200">
-          <td class="px-4 py-2">Witchy Woman</td>
-          <td class="px-4 py-2">The Eagles</td>
-          <td class="px-4 py-2">1972</td>
-          <td class="px-4 py-2">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
-          </td>
-        </tr>
-        <tr class="border-t border-gray-200">
-          <td class="px-4 py-2">Shining Star</td>
-          <td class="px-4 py-2">Earth, Wind, and Fire</td>
-          <td class="px-4 py-2">1975</td>
-          <td class="px-4 py-2">
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <ng-container *ngIf="patients$ | async as patients">
+
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 text-left text-gray-600">First Name</th>
+            <th class="px-4 py-2 text-left text-gray-600">Last Name</th>
+            <th class="px-4 py-2 text-left text-gray-600">Age</th>
+            <th class="px-4 py-2 text-left text-gray-600">Sex</th>
+            <th class="px-4 py-2 text-left text-gray-600">Contact Number</th>
+            <th class="px-4 py-2 text-left text-gray-600">Diagnosis</th>
+            <th class="px-4 py-2 text-left text-gray-600">Patient Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-200" *ngFor="let patient of patients">
+            <td class="px-4 py-2">{{patient.firstName}}</td>
+            <td class="px-4 py-2">{{patient.lastName}}</td>
+            <td class="px-4 py-2">{{patient.age}}</td>
+            <td class="px-4 py-2">{{patient.sex}}</td>
+            <td class="px-4 py-2">{{patient.contactNumber}}</td>
+            <td class="px-4 py-2">{{patient.diagnosis}}</td>
+            <td class="px-4 py-2">{{patient.patientType}}</td>
+            <td class="px-4 py-2">
+              <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"  [routerLink]="['/admin/patients', patient.id]" >Edit</button>
+            </td>
+          </tr>
+         
+        </tbody>
+      </table>
+      
+    </ng-container>
+
+    
   </div>

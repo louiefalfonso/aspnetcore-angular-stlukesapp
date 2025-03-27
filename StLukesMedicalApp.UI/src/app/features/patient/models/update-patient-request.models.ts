@@ -1,5 +1,4 @@
-export interface Patient {
-    id: string;
+export interface UpdatePatientRequest{
     firstName: string;
     lastName: string;
     email: string;
@@ -9,4 +8,4 @@ export interface Patient {
     address: string;
     diagnosis: string;
     patientType: string;
-  }
+}
