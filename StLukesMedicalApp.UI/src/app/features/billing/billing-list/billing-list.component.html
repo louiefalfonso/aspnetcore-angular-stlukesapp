@@ -1,6 +1,6 @@
 <div class="flex justify-between items-center mb-4">
     <h2 class="text-xl font-semibold text-gray-700">Billing List</h2>
-    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" >Add Billing</button>
+    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/billings/add']" >Add Billing</button>
 </div>
 <div class="overflow-x-auto">
     <ng-container *ngIf="billings$ | async as billings">
@@ -8,28 +8,28 @@
             <thead>
               <tr class="bg-gray-100">
                 <th class="px-4 py-2 text-left text-gray-600">Billing Id</th>
-                <th class="px-4 py-2 text-left text-gray-600">Patient's Full Name</th>
+                <th class="px-4 py-2 text-left text-gray-600">Date Of Billing</th>
                 <th class="px-4 py-2 text-left text-gray-600">Payment Status</th>
                 <th class="px-4 py-2 text-left text-gray-600">Payment Method</th>
-                <th class="px-4 py-2 text-left text-gray-600">Date Of Billing</th>
                 <th class="px-4 py-2 text-left text-gray-600">Total Amount</th>
+                <th class="px-4 py-2 text-left text-gray-600">Patient's Full Name</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
                 <tr class="border-t border-gray-200" *ngFor="let billing of billings">
                     <td class="px-4 py-2">{{billing.id}}</td>
+                    <td class="px-4 py-2">{{billing.dateOfBilling | date: 'short'}}</td>
+                    <td class="px-4 py-2">{{billing.paymentStatus}}</td>
+                    <td class="px-4 py-2">{{billing.paymentMethod}}</td>
+                    <td class="px-4 py-2">£{{billing.totalAmount}}</td>
                     <td class="px-4 py-2">
                         <span *ngFor="let patient of billing.patients; let i = index">
                             {{ patient.firstName }} {{ patient.lastName }} <span *ngIf="i < billing.patients.length - 1">, </span>
                         </span>
                     </td>
-                    <td class="px-4 py-2">{{billing.paymentStatus}}</td>
-                    <td class="px-4 py-2">{{billing.paymentMethod}}</td>
-                    <td class="px-4 py-2">{{billing.dateOfBilling | date: 'short'}}</td>
-                    <td class="px-4 py-2">£{{billing.totalAmount}}</td>
                     <td class="px-4 py-2">
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Edit</button>
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/billings', billing.id]" >Edit</button>
                       </td>
                 </tr>
             </tbody>    

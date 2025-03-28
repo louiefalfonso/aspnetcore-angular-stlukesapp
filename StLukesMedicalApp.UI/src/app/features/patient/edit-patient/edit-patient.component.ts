@@ -19,12 +19,12 @@ export class EditPatientComponent implements OnInit, OnDestroy {
   id : string | null = null;
   
   // add Subscription
-  paramsSubscription?: Subscription;
+  routeSubscription?: Subscription;
   editPatientSubscription?: Subscription;
   deletePatientSubscription? : Subscription;
 
   // add patient object
-  patient?: Patient;
+  model?: Patient;
 
   // add constructor and inject the necessary services
   constructor(
@@ -35,14 +35,14 @@ export class EditPatientComponent implements OnInit, OnDestroy {
   // implement ngOnInit lifecycle hook
   ngOnInit(): void {
    // get the id of the patient to edit
-  this.paramsSubscription = this.route.paramMap.subscribe({
+  this.routeSubscription = this.route.paramMap.subscribe({
     next: (params) => {
       this.id = params.get('id');
 
       if(this.id){
         this.patientService.getPatientById(this.id).subscribe({
           next: (response)=>{
-            this.patient = response
+            this.model= response
           },
           error: (error) => {
             console.error(error);
@@ -55,37 +55,39 @@ export class EditPatientComponent implements OnInit, OnDestroy {
 
    // implement onFormSubmit
    onFormSubmit():void{
+    // convert this model to Request Object
+    if (this.model && this.id) {
+      var updatePatientRequest : UpdatePatientRequest ={
+        firstName: this.model?.firstName?? '',
+        lastName:this.model?.lastName?? '',
+        email: this.model?.email?? '',
+        contactNumber: this.model?.contactNumber?? '',
+        sex: this.model?.sex?? '',
+        age: this.model?.age?? '',
+        address: this.model?.address?? '',
+        diagnosis: this.model?.diagnosis?? '',
+        patientType: this.model?.patientType?? '',
+      }
 
-    // create a new UpdatePatientRequest object
-    const updatePatientRequest: UpdatePatientRequest ={
-      firstName: this.patient?.firstName?? '',
-      lastName:this.patient?.lastName?? '',
-      email: this.patient?.email?? '',
-      contactNumber: this.patient?.contactNumber?? '',
-      sex: this.patient?.sex?? '',
-      age: this.patient?.age?? '',
-      address: this.patient?.address?? '',
-      diagnosis: this.patient?.diagnosis?? '',
-      patientType: this.patient?.patientType?? '',
-    }
-
-     //pass this object to the service
+      //pass this object to the service
      if(this.id){
-    this.editPatientSubscription =  this.patientService.updatePatient(this.id,updatePatientRequest).subscribe({
-        next: (response) => {
-          this.router.navigate(['/admin/patients']);  
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
-     }
+      this.editPatientSubscription =  this.patientService.updatePatient(this.id,updatePatientRequest)
+      .subscribe({
+          next: (response) => {
+            this.router.navigate(['/admin/patients']);  
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+       }
+    }
    }
 
     // implement onDelete
     onDelete():void{
       if(this.id){
-        this.patientService.deletePatient(this.id).subscribe({
+       this.deletePatientSubscription = this.patientService.deletePatient(this.id).subscribe({
           next: (response) => {
             this.router.navigate(['/admin/patients']);  
           },
@@ -96,13 +98,10 @@ export class EditPatientComponent implements OnInit, OnDestroy {
       }
     }
 
-
  // implement ngOnDestroy lifecycle hook
   ngOnDestroy(): void {
-    this.paramsSubscription?.unsubscribe();
+    this.routeSubscription?.unsubscribe();
     this.editPatientSubscription?.unsubscribe();
     this.deletePatientSubscription?.unsubscribe();
   }
-
-
 }
