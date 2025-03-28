@@ -16,11 +16,11 @@ export class BillingService {
    constructor(private http: HttpClient) { }
 
   // add new billing
-  addBilling(model: AddBillingRequest) : Observable<Billing>{
-    return this.http.post<Billing>(`${environment.apiBaseUrl}/billings`, model);
+  addBilling(model: AddBillingRequest) : Observable<void>{
+    return this.http.post<void>(`${environment.apiBaseUrl}/billings`, model);
   }
 
-  // get all bilings
+  // get all billings
   getAllBillings(query?: string, sortBy?: string, sortDirection?: string, pageNumber?: number, pageSize?: number,): Observable<Billing[]>{
     
     let params = new HttpParams();

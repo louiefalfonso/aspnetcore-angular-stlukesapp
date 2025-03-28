@@ -1,1 +1,60 @@
-<p>edit-billing works!</p>
+<div class="flex justify-center items-center p-6">
+
+    <ng-container *ngIf="model">
+        <form class="w-full max-w-3xl" #form="ngForm" (ngSubmit)="onFormSubmit()">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Update Billing Information Form</h2>
+            <div class="border-b border-gray-300 mb-6"></div> <!-- Divider -->
+    
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="paymentStatus">
+                        Payment Status:
+                    </label>
+                    <input class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paymentStatus" type="text" name="paymentStatus" [(ngModel)]="model.paymentStatus">
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="dateOfBilling">
+                        Date Of Billing
+                    </label>
+                    <input class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="dateOfBilling" type="date" name="dateOfBilling" [ngModel]="model.dateOfBilling | date: 'yyy-MM-dd'" (ngModelChange)="model.dateOfBilling = $event" value="{{model.dateOfBilling}}">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="paymentMethod">
+                        Payment Method:
+                    </label>
+                    <input class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paymentMethod" type="text" name="paymentMethod" [(ngModel)]="model.paymentMethod">
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="totalAmount">
+                        Total Amount (GBP):
+                    </label>
+                    <input class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="totalAmount" type="text" name="totalAmount" [(ngModel)]="model.totalAmount">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-2/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="patients">
+                        Patient:
+                    </label>
+                    <ng-container *ngIf="patients$ | async as patients">
+                        <div class="relative">
+                            <select class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    name="patients" id="patients" [(ngModel)]="selectedPatients" required multiple >
+                                <option *ngFor="let patient of patients" [value]="patient.id" class="p-2">{{ patient.firstName }} {{ patient.lastName }} - {{ patient.id}}</option>
+                            </select>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="flex justify-start space-x-2">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Update</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" (click)="onDelete()">Delete</button>
+                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" [routerLink]="['/admin/billings']">Back</button>
+            </div>
+        </form>    
+    </ng-container>
+
+    
+</div>
