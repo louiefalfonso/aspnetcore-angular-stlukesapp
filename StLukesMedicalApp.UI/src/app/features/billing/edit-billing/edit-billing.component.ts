@@ -26,6 +26,7 @@ export class EditBillingComponent implements OnInit, OnDestroy {
   routeSubscription?: Subscription;
   editBillingSubscription?: Subscription;
   getBillingSubscription?: Subscription;
+  deleteBillingSubscription?: Subscription;
 
   // add constrcutor
   constructor(
@@ -90,7 +91,7 @@ export class EditBillingComponent implements OnInit, OnDestroy {
   // implement onDelete
   onDelete():void{
     if(this.id){
-      this.billingService.deleteBilling(this.id).subscribe({
+     this.deleteBillingSubscription = this.billingService.deleteBilling(this.id).subscribe({
           next: (response) => {
             this.router.navigate(['/admin/billings']);  
           },
@@ -104,6 +105,8 @@ export class EditBillingComponent implements OnInit, OnDestroy {
   // implement ngOnDestroy lifecycle hook
   ngOnDestroy(): void {
    this.getBillingSubscription?.unsubscribe();
+   this.editBillingSubscription?.unsubscribe();
+   this.deleteBillingSubscription?.unsubscribe();
   }
 
 }

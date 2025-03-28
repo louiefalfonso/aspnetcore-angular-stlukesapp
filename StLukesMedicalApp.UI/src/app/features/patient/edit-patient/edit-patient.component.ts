@@ -19,7 +19,7 @@ export class EditPatientComponent implements OnInit, OnDestroy {
   id : string | null = null;
   
   // add Subscription
-  paramsSubscription?: Subscription;
+  routeSubscription?: Subscription;
   editPatientSubscription?: Subscription;
   deletePatientSubscription? : Subscription;
 
@@ -35,7 +35,7 @@ export class EditPatientComponent implements OnInit, OnDestroy {
   // implement ngOnInit lifecycle hook
   ngOnInit(): void {
    // get the id of the patient to edit
-  this.paramsSubscription = this.route.paramMap.subscribe({
+  this.routeSubscription = this.route.paramMap.subscribe({
     next: (params) => {
       this.id = params.get('id');
 
@@ -55,7 +55,7 @@ export class EditPatientComponent implements OnInit, OnDestroy {
 
    // implement onFormSubmit
    onFormSubmit():void{
-
+    // convert this model to Request Object
     if (this.model && this.id) {
       var updatePatientRequest : UpdatePatientRequest ={
         firstName: this.model?.firstName?? '',
@@ -98,13 +98,10 @@ export class EditPatientComponent implements OnInit, OnDestroy {
       }
     }
 
-
  // implement ngOnDestroy lifecycle hook
   ngOnDestroy(): void {
-    this.paramsSubscription?.unsubscribe();
+    this.routeSubscription?.unsubscribe();
     this.editPatientSubscription?.unsubscribe();
     this.deletePatientSubscription?.unsubscribe();
   }
-
-
 }
