@@ -9,6 +9,9 @@ import { EditBillingComponent } from './features/billing/edit-billing/edit-billi
 import { DoctorListComponent } from './features/doctor/doctor-list/doctor-list.component';
 import { AddDoctorComponent } from './features/doctor/add-doctor/add-doctor.component';
 import { EditDoctorComponent } from './features/doctor/edit-doctor/edit-doctor.component';
+import { NurseListComponent } from './features/nurse/nurse-list/nurse-list.component';
+import { AddNurseComponent } from './features/nurse/add-nurse/add-nurse.component';
+import { EditNurseComponent } from './features/nurse/edit-nurse/edit-nurse.component';
 
 export const routes: Routes = [
     {
@@ -51,5 +54,17 @@ export const routes: Routes = [
     {
         path:"admin/doctors/:id",
         component: EditDoctorComponent, 
+    },
+    {
+        path:"admin/nurses",
+        component: NurseListComponent, 
+    },
+    {
+        path:"admin/nurses/add",
+        component: AddNurseComponent, 
+    },
+    {
+        path:"admin/nurses/:id",
+        component: EditNurseComponent, 
     },
 ];
