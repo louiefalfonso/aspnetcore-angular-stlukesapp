@@ -35,18 +35,17 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         }
 
         // Update Doctor
-        public  async Task<Doctor?> UpdateAsync(Doctor doctor)
+        public async Task<Doctor?> UpdateAsync(Doctor doctor)
         {
-           // Get Doctor By ID
-           var existingDoctor = dbContext.Doctors.FirstOrDefaultAsync( x => x.Id == doctor.Id);
+            var existingDoctor = await dbContext.Doctors.FirstOrDefaultAsync(x => x.Id == doctor.Id);
 
-            // Check if Doctor is not Null
-            if (existingDoctor != null) 
-            { 
+            if (existingDoctor != null)
+            {
                 dbContext.Entry(existingDoctor).CurrentValues.SetValues(doctor);
                 await dbContext.SaveChangesAsync();
                 return doctor;
             }
+
             return null;
         }
 
