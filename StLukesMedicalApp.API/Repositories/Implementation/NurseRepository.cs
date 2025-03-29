@@ -65,5 +65,12 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             }
             return null;
         }
+
+
+        // Get Count
+        public async Task<int> GetCount()
+        {
+            return await dbContext.Nurses.CountAsync();
+        }
     }
 }

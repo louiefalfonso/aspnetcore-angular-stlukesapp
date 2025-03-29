@@ -192,5 +192,14 @@ namespace StLukesMedicalApp.API.Controllers
             return Ok(doctors);
         }
 
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetDoctorsTotal()
+        {
+            var count = await doctorRepository.GetCount();
+            return Ok(count);
+        }
+
     }
 }
