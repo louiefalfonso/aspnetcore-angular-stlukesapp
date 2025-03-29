@@ -10,8 +10,6 @@ import { Patient } from '../../patient/models/patient.models';
 import { PatientService } from '../../patient/services/patient.service';
 
 
-
-
 @Component({
   selector: 'app-add-billing',
   imports: [CommonModule, FormsModule, RouterModule],
