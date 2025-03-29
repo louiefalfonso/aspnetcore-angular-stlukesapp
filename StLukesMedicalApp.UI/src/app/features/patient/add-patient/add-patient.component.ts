@@ -39,20 +39,18 @@ export class AddPatientComponent implements OnDestroy{
     }
    }
 
-  
   // add onFormSubmit
- onFormSubmit() {
-  this.addPatientSubscription = this.patientService.addPatient(this.model)
-    .subscribe({
-      next: (response) => {
-        this.router.navigate(['/admin/patients']);  
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
-}
-
+  onFormSubmit() {
+    this.addPatientSubscription = this.patientService.addPatient(this.model)
+      .subscribe({
+        next: (response) => {
+          this.router.navigate(['/admin/patients']);  
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      });
+  }
 
   // implement ngOnDestroy lifecycle hook
   ngOnDestroy(): void {

@@ -73,6 +73,12 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         {
             return await dbContext.Doctors.Where(b => b.Department.ToLower() == department.ToLower()).ToListAsync();
         }
+
+        // Get Count
+        public async Task<int> GetCount()
+        {
+            return await dbContext.Doctors.CountAsync();
+        }
     }
 }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
+using StLukesMedicalApp.API.Repositories.Implementation;
 using StLukesMedicalApp.API.Repositories.Interface;
 
 namespace StLukesMedicalApp.API.Controllers
@@ -171,6 +172,15 @@ namespace StLukesMedicalApp.API.Controllers
                 Qualifications = nurse.Qualifications,
             };
             return Ok(response);
+        }
+
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetNursesTotal()
+        {
+            var count = await nurseRepository.GetCount();
+            return Ok(count);
         }
     }
 }

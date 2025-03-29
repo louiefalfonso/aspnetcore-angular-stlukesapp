@@ -15,5 +15,7 @@ namespace StLukesMedicalApp.API.Repositories.Interface
         Task<Doctor?> DeleteAsync(Guid id);
 
         Task<IEnumerable<Doctor>> GetAllDoctorsByDepartment(string department);
+
+        Task<int> GetCount();
     }
 }
