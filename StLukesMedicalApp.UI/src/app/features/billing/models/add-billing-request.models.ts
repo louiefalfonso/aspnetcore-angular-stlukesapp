@@ -1,4 +1,4 @@
-export interface AddBillingRequest{
+export interface AddBillingRequest {
     totalAmount : string;
     paymentMethod: string;
     paymentStatus: string;
