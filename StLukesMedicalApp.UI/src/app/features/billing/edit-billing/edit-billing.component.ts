@@ -71,7 +71,8 @@ export class EditBillingComponent implements OnInit, OnDestroy {
       paymentMethod: this.model?.paymentMethod?? '',
       paymentStatus: this.model?.paymentStatus?? '',
       dateOfBilling: typeof this.model?.dateOfBilling === 'string' ? new Date(this.model.dateOfBilling) : this.model?.dateOfBilling ?? new Date(),
-      patients: this.selectedPatients ?? []
+      patients: this.selectedPatients ?? [],
+      remarks:this.model?.remarks?? ''
     }
 
     //pass this object to the service
