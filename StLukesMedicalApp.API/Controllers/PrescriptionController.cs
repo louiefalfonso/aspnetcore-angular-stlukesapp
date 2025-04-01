@@ -36,6 +36,7 @@ namespace StLukesMedicalApp.API.Controllers
                 MedicationList = request.MedicationList,
                 Dosage = request.Dosage,
                 DateIssued = request.DateIssued,
+                Remarks = request.Remarks,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>(),
             };
@@ -78,6 +79,7 @@ namespace StLukesMedicalApp.API.Controllers
                 MedicationList = prescription.MedicationList,
                 Dosage = prescription.Dosage,
                 DateIssued = prescription.DateIssued,
+                Remarks = prescription.Remarks,
                 Doctors = prescription.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -126,7 +128,7 @@ namespace StLukesMedicalApp.API.Controllers
                         MedicationList = prescription.MedicationList,
                         Dosage = prescription.Dosage,
                         DateIssued = prescription.DateIssued,
-
+                        Remarks = prescription.Remarks,
                         Doctors = prescription.Doctors.Select(x => new DoctorDto
                         {
                             Id = x.Id,
@@ -179,7 +181,7 @@ namespace StLukesMedicalApp.API.Controllers
                 MedicationList = prescription.MedicationList,
                 Dosage = prescription.Dosage,
                 DateIssued = prescription.DateIssued,
-
+                Remarks = prescription.Remarks,
                 Doctors = prescription.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -222,6 +224,7 @@ namespace StLukesMedicalApp.API.Controllers
                 MedicationList = request.MedicationList,
                 Dosage = request.Dosage,
                 DateIssued = request.DateIssued,
+                Remarks = request.Remarks,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>()
             };
@@ -268,7 +271,7 @@ namespace StLukesMedicalApp.API.Controllers
                 MedicationList = prescription.MedicationList,
                 Dosage = prescription.Dosage,
                 DateIssued = prescription.DateIssued,
-
+                Remarks = prescription.Remarks,
                 Doctors = prescription.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -321,6 +324,7 @@ namespace StLukesMedicalApp.API.Controllers
                 MedicationList = deletedPrescription.MedicationList,
                 Dosage = deletedPrescription.Dosage,
                 DateIssued = deletedPrescription.DateIssued,
+                Remarks = deletedPrescription.Remarks,
             };
             return Ok(response);
         }

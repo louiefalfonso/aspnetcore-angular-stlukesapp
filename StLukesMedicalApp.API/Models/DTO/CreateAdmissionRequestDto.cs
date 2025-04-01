@@ -7,6 +7,7 @@ namespace StLukesMedicalApp.API.Models.DTO
         public string RoomNumber { get; set; }
         public string RoomType { get; set; }
         public string AvailabilityStatus { get; set; }
+        public string Remarks { get; set; }
         public DateTime Date { get; set; }
         public Guid[] Doctors { get; set; }
         public Guid[] Patients { get; set; }

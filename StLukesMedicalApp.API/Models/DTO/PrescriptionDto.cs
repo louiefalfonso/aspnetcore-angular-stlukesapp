@@ -6,6 +6,7 @@
         public string MedicationList { get; set; }
         public string Dosage { get; set; }
         public DateTime DateIssued { get; set; }
+        public string Remarks { get; set; }
         public List<DoctorDto> Doctors { get; set; } = new List<DoctorDto>();
         public List<PatientDto> Patients { get; set; } = new List<PatientDto>();
     }

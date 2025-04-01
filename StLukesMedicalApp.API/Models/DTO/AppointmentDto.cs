@@ -9,6 +9,7 @@ namespace StLukesMedicalApp.API.Models.DTO
         public string Comments { get; set; }
         public string Diagnosis { get; set; }
         public DateTime Date { get; set; }
+        public string Remarks { get; set; }
         public List<DoctorDto> Doctors { get; set; } = new List<DoctorDto>();
         public List<PatientDto> Patients { get; set; } = new List<PatientDto>();
     }

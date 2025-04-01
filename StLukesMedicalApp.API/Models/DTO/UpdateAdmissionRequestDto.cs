@@ -8,6 +8,7 @@ namespace StLukesMedicalApp.API.Models.DTO
         public string RoomType { get; set; }
         public string AvailabilityStatus { get; set; }
         public DateTime Date { get; set; }
+        public string Remarks { get; set; }
         public List<Guid> Doctors { get; set; } = new List<Guid>();
         public List<Guid> Patients { get; set; } = new List<Guid>();
         public List<Guid> Nurses { get; set; } = new List<Guid>();
