@@ -3,5 +3,6 @@ export interface UpdateBillingRequest {
     paymentMethod: string;
     paymentStatus: string;
     dateOfBilling: Date;
+    remarks: string;
     patients : string[];
 }

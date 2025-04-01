@@ -6,5 +6,6 @@ export interface Billing {
     paymentMethod: string;
     paymentStatus: string;
     dateOfBilling: Date;
+    remarks: string;
     patients : Patient[];
 }

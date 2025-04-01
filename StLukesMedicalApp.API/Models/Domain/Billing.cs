@@ -7,6 +7,7 @@
         public string PaymentStatus { get; set; }
         public DateTime DateOfBilling { get; set; }
         public string PaymentMethod { get; set; }
+        public string Remarks { get; set; }
         public ICollection<Patient> Patients { get; set; }
     }
 }

@@ -36,6 +36,7 @@ export class AddBillingComponent implements OnDestroy, OnInit {
       totalAmount: '',
       paymentMethod: '',
       paymentStatus: '',
+      remarks: '',
       dateOfBilling: new Date(),
       patients: []
     }
