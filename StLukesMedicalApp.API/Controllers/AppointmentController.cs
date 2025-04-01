@@ -36,6 +36,7 @@ namespace StLukesMedicalApp.API.Controllers
                 Comments = request.Comments,
                 Diagnosis = request.Diagnosis,
                 Date = request.Date,
+                Remarks = request.Remarks,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>(),
             };
@@ -78,6 +79,7 @@ namespace StLukesMedicalApp.API.Controllers
                 Comments = appointment.Comments,
                 Diagnosis = appointment.Diagnosis,
                 Date = appointment.Date,
+                Remarks= appointment.Remarks,
                 Doctors = appointment.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -128,6 +130,7 @@ namespace StLukesMedicalApp.API.Controllers
                         Comments = appointment.Comments,
                         Diagnosis = appointment.Diagnosis,
                         Date = appointment.Date,
+                        Remarks = appointment.Remarks,
                         Doctors = appointment.Doctors.Select(x => new DoctorDto
                         {
                             Id = x.Id,
@@ -181,6 +184,7 @@ namespace StLukesMedicalApp.API.Controllers
                 Comments = appointment.Comments,
                 Diagnosis = appointment.Diagnosis,
                 Date = appointment.Date,
+                Remarks = appointment.Remarks,
                 Doctors = appointment.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -223,6 +227,7 @@ namespace StLukesMedicalApp.API.Controllers
                 Comments = request.Comments,
                 Diagnosis = request.Diagnosis,
                 Date = request.Date,
+                Remarks = request.Remarks,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>()
             };
@@ -270,6 +275,7 @@ namespace StLukesMedicalApp.API.Controllers
                 Comments = appointment.Comments,
                 Diagnosis = appointment.Diagnosis,
                 Date = appointment.Date,
+                Remarks = appointment.Remarks,
                 Doctors = appointment.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -322,6 +328,7 @@ namespace StLukesMedicalApp.API.Controllers
                 Comments = deletedAppointment.Comments,
                 Diagnosis = deletedAppointment.Diagnosis,
                 Date = deletedAppointment.Date,
+                Remarks = deletedAppointment.Remarks,
 
             };
             return Ok(response);

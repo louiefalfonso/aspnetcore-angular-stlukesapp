@@ -41,6 +41,7 @@ namespace StLukesMedicalApp.API.Controllers
                 RoomType = request.RoomType,
                 AvailabilityStatus = request.AvailabilityStatus,
                 Date = request.Date,
+                Remarks = request.Remarks,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>(),
                 Nurses = new List<Nurse>(),
@@ -98,6 +99,7 @@ namespace StLukesMedicalApp.API.Controllers
                 RoomType = admission.RoomType,
                 AvailabilityStatus = admission.AvailabilityStatus,
                 Date = admission.Date,
+                Remarks = admission.Remarks,
                 Doctors = admission.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -160,6 +162,7 @@ namespace StLukesMedicalApp.API.Controllers
                         RoomType = admission.RoomType,
                         AvailabilityStatus = admission.AvailabilityStatus,
                         Date = admission.Date,
+                        Remarks = admission.Remarks,
                         Doctors = admission.Doctors.Select(x => new DoctorDto
                         {
                             Id = x.Id,
@@ -226,6 +229,7 @@ namespace StLukesMedicalApp.API.Controllers
                 RoomType = admission.RoomType,
                 AvailabilityStatus = admission.AvailabilityStatus,
                 Date = admission.Date,
+                Remarks = admission.Remarks,
                 Doctors = admission.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -281,6 +285,7 @@ namespace StLukesMedicalApp.API.Controllers
                 RoomType = request.RoomType,
                 AvailabilityStatus = request.AvailabilityStatus,
                 Date = request.Date,
+                Remarks = request.Remarks,
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>(),
                 Nurses = new List<Nurse>(),
@@ -343,6 +348,7 @@ namespace StLukesMedicalApp.API.Controllers
                 RoomType = admission.RoomType,
                 AvailabilityStatus = admission.AvailabilityStatus,
                 Date = admission.Date,
+                Remarks = admission.Remarks,
                 Doctors = admission.Doctors.Select(x => new DoctorDto
                 {
                     Id = x.Id,
@@ -407,6 +413,7 @@ namespace StLukesMedicalApp.API.Controllers
                 RoomType = deletedAdmission.RoomType,
                 AvailabilityStatus = deletedAdmission.AvailabilityStatus,
                 Date = deletedAdmission.Date,
+                Remarks = deletedAdmission.Remarks,
             };
 
             return Ok(response);
