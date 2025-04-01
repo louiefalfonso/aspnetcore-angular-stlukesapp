@@ -35,6 +35,7 @@ namespace StLukesMedicalApp.API.Controllers
                 PaymentMethod = request.PaymentMethod,
                 PaymentStatus = request.PaymentStatus,
                 DateOfBilling = request.DateOfBilling,
+                Remarks = request.Remarks,
                 Patients = new List<Patient>(),
             };
 
@@ -62,6 +63,7 @@ namespace StLukesMedicalApp.API.Controllers
                 PaymentMethod = billing.PaymentMethod,
                 PaymentStatus = billing.PaymentStatus,
                 DateOfBilling= billing.DateOfBilling,
+                Remarks = billing.Remarks,
                 Patients = billing.Patients.Select(x => new PatientDto
                 {
                     Id = x.Id,
@@ -108,6 +110,7 @@ namespace StLukesMedicalApp.API.Controllers
                         PaymentMethod = billing.PaymentMethod,
                         PaymentStatus = billing.PaymentStatus,  
                         DateOfBilling = billing.DateOfBilling,
+                        Remarks = billing.Remarks,
                         Patients = billing.Patients.Select(x => new PatientDto
                         {
                             Id = x.Id,
@@ -164,6 +167,7 @@ namespace StLukesMedicalApp.API.Controllers
                 PaymentMethod = billing.PaymentMethod,
                 PaymentStatus = billing.PaymentStatus,
                 DateOfBilling = billing.DateOfBilling,
+                Remarks = billing.Remarks,
                 Patients = billing.Patients.Select(x => new PatientDto
                 {
                     Id = x.Id,
@@ -194,6 +198,7 @@ namespace StLukesMedicalApp.API.Controllers
                 PaymentMethod = request.PaymentMethod,
                 PaymentStatus = request.PaymentStatus,
                 DateOfBilling = request.DateOfBilling,
+                Remarks = request.Remarks,
                 Patients = new List<Patient>()
             };
 
@@ -227,6 +232,7 @@ namespace StLukesMedicalApp.API.Controllers
                 PaymentMethod = billing.PaymentMethod,
                 PaymentStatus = billing.PaymentStatus,
                 DateOfBilling = billing.DateOfBilling,
+                Remarks = billing.Remarks,
                 Patients = billing.Patients.Select(x => new PatientDto
                 {
                     Id = x.Id,
@@ -267,7 +273,8 @@ namespace StLukesMedicalApp.API.Controllers
                 TotalAmount = deletedBilling.TotalAmount,
                 PaymentMethod = deletedBilling.PaymentMethod,
                 PaymentStatus = deletedBilling.PaymentStatus,
-                DateOfBilling = deletedBilling.DateOfBilling
+                DateOfBilling = deletedBilling.DateOfBilling,
+                Remarks = deletedBilling.Remarks,
             };
             return Ok(response);
         }

@@ -6,6 +6,7 @@
         public string PaymentStatus { get; set; }
         public DateTime DateOfBilling { get; set; }
         public string PaymentMethod { get; set; }
+        public string Remarks { get; set; }
         public Guid[] Patients { get; set; }
     }
 }
