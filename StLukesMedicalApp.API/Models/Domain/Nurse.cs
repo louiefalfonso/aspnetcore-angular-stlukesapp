@@ -9,6 +9,8 @@
         public string PhoneNumber { get; set; }
         public string BadgeNumber { get; set; }
         public string Qualifications { get; set; }
+        public string Schedule { get; set; }
+        public string Department { get; set; }
         public ICollection<Patient> Patients { get; set; }
         public ICollection<Admission> Admissions { get; set; }
     }
