@@ -31,7 +31,9 @@ namespace StLukesMedicalApp.API.Controllers
                 PhoneNumber = request.PhoneNumber,
                 EmailAddress = request.EmailAddress,
                 BadgeNumber = request.BadgeNumber,
-                Qualifications = request.Qualifications
+                Qualifications = request.Qualifications,
+                Schedule = request.Schedule,
+                Department = request.Department,
             };
 
             // Add New Admission
@@ -46,6 +48,8 @@ namespace StLukesMedicalApp.API.Controllers
                 EmailAddress = nurse.EmailAddress,
                 BadgeNumber = nurse.BadgeNumber,
                 Qualifications = nurse.Qualifications,
+                Schedule = nurse.Schedule,
+                Department = nurse.Department,
                
             };
             return Ok(response);
@@ -74,6 +78,8 @@ namespace StLukesMedicalApp.API.Controllers
                 EmailAddress = nurse.EmailAddress,
                 BadgeNumber = nurse.BadgeNumber,
                 Qualifications = nurse.Qualifications,
+                Schedule = nurse.Schedule,
+                Department = nurse.Department,
                
             };
 
@@ -99,6 +105,8 @@ namespace StLukesMedicalApp.API.Controllers
                     EmailAddress = nurse.EmailAddress,
                     BadgeNumber = nurse.BadgeNumber,
                     Qualifications = nurse.Qualifications,
+                    Schedule = nurse.Schedule,
+                    Department = nurse.Department,
                 });
             };
 
@@ -120,6 +128,8 @@ namespace StLukesMedicalApp.API.Controllers
                 EmailAddress = request.EmailAddress,
                 BadgeNumber = request.BadgeNumber,
                 Qualifications = request.Qualifications,
+                Schedule = request.Schedule,
+                Department = request.Department,
             };
 
             // Update Nurse
@@ -141,6 +151,8 @@ namespace StLukesMedicalApp.API.Controllers
                 EmailAddress = nurse.EmailAddress,
                 BadgeNumber = nurse.BadgeNumber,
                 Qualifications = nurse.Qualifications,
+                Schedule = nurse.Schedule,
+                Department = nurse.Department,
             };
 
             return Ok(response);
@@ -170,6 +182,8 @@ namespace StLukesMedicalApp.API.Controllers
                 EmailAddress = nurse.EmailAddress,
                 BadgeNumber = nurse.BadgeNumber,
                 Qualifications = nurse.Qualifications,
+                Schedule = nurse.Schedule,
+                Department = nurse.Department,
             };
             return Ok(response);
         }

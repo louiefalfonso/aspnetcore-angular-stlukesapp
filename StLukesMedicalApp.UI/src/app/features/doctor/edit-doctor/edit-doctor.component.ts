@@ -65,8 +65,7 @@ export class EditDoctorComponent implements OnInit, OnDestroy{
     }
   } 
 
-  
-    // implement onDelete
+  // implement onDelete
     onDelete():void{
       if(this.id){
        this.deleteDoctorSubscription = this.doctorService.deleteDoctor(this.id).subscribe({
@@ -78,7 +77,7 @@ export class EditDoctorComponent implements OnInit, OnDestroy{
           }
         });
       }
-    }
+  }
 
   // implement ngOnInit lifecycle hook  
   ngOnInit(): void {

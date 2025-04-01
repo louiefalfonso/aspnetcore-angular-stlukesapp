@@ -1,1 +1,32 @@
-<p>nurse-list works!</p>
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold text-gray-700">Doctor List</h2>
+    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/nurses/add']">Add Nurse</button>
+</div>
+<div class="overflow-x-auto">
+    <ng-container *ngIf="nurses$ | async as nurses">
+        <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+              <tr class="bg-gray-100">
+                <th class="px-4 py-2 text-left text-gray-600">Full Name</th>
+                <th class="px-4 py-2 text-left text-gray-600">Email</th>
+                <th class="px-4 py-2 text-left text-gray-600">Contact Number</th>
+                <th class="px-4 py-2 text-left text-gray-600">Badge Number</th>
+                <th class="px-4 py-2 text-left text-gray-600">Department</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr class="border-t border-gray-200" *ngFor="let nurse of nurses">
+                    <td class="px-4 py-2">{{nurse.firstName}} {{nurse.lastName}}</td>
+                    <td class="px-4 py-2">{{nurse.emailAddress}}</td>
+                    <td class="px-4 py-2">{{nurse.phoneNumber}}</td>
+                    <td class="px-4 py-2">{{nurse.badgeNumber}}</td>
+                    <td class="px-4 py-2">{{nurse.department}}</td>
+                    <td class="px-4 py-2">
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"  [routerLink]="['/admin/nurses', nurse.id]">Edit</button>
+                      </td>
+                </tr>
+            </tbody>    
+        </table>      
+    </ng-container>
+</div>

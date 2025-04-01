@@ -29,16 +29,79 @@ export class NurseListComponent implements OnInit {
   ) { }
 
 
-
-
-
-
-
-
-
   // implement ngOnInit lifecycle hook
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.nurseService.getNurseCount()
+    .subscribe({
+      next: (value) => {
+        this.totalCount = value;
+         this.list = new Array(Math.ceil(value / this.pageSize))
+
+         this.nurses$ = this.nurseService.getAllNurses(
+           undefined,
+           undefined,
+           undefined,
+           this.pageNumber,
+           this.pageSize
+         );
+      }
+    })
   }
+
+  // implement search
+    onSearch(query: string) {
+      this.nurses$ = this.nurseService.getAllNurses(query);
+  }
+
+ // implement sorting
+ sort(sortBy: string, sortDirection: string) {
+  this.nurses$ = this.nurseService.getAllNurses(undefined, sortBy, sortDirection);
+}
+
+  // implement getPage
+  getPage(pageNumber: number) {
+    this.pageNumber = pageNumber;
+
+    this.nurses$ = this.nurseService.getAllNurses(
+      undefined,
+      undefined,
+      undefined,
+      this.pageNumber,
+      this.pageSize
+    );
+}
+
+  // implement getNextPage
+  getNextPage() {
+    if (this.pageNumber + 1 > this.list.length) {
+      return;
+    }
+
+    this.pageNumber += 1;
+    this.nurses$ = this.nurseService.getAllNurses(
+      undefined,
+      undefined,
+      undefined,
+      this.pageNumber,
+      this.pageSize
+    );
+}
+
+ // implemennt getPrevPage
+ getPrevPage() {
+  if (this.pageNumber - 1 < 1) {
+    return;
+  }
+
+  this.pageNumber -= 1;
+  this.nurses$ = this.nurseService.getAllNurses(
+    undefined,
+    undefined,
+    undefined,
+    this.pageNumber,
+    this.pageSize
+  );
+}
+  
 
 }
