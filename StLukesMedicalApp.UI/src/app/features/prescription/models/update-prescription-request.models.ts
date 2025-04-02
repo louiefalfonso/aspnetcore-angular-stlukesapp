@@ -1,4 +1,4 @@
-export interface UpdatePrescription {
+export interface UpdatePrescriptionRequest {
     medicationList: string;
     dosage: string;
     dateIssued: Date;

@@ -112,10 +112,18 @@ namespace StLukesMedicalApp.API.Controllers
 
         // Get All Prescriptions
         [HttpGet]
-        public async Task<IActionResult> GetAllPrescriptions()
+        public async Task<IActionResult> GetAllPrescriptions
+            (
+                // add filtering, sorting & pagination
+                [FromQuery] string? query,
+                [FromQuery] string? sortBy,
+                [FromQuery] string? sortDirection,
+                [FromQuery] int? pageNumber,
+                [FromQuery] int? pageSize
+            )
         {
             // get all prescriptions from repository
-            var prescriptions = await prescriptionRepository.GetAllAsync();
+            var prescriptions = await prescriptionRepository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
 
             // map domain model to DTO
             var response = new List<PrescriptionDto>();
@@ -327,6 +335,16 @@ namespace StLukesMedicalApp.API.Controllers
                 Remarks = deletedPrescription.Remarks,
             };
             return Ok(response);
+        }
+
+
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetPrescriptionsTotal()
+        {
+            var count = await prescriptionRepository.GetCount();
+            return Ok(count);
         }
     }
 }

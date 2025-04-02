@@ -12,6 +12,9 @@ import { EditDoctorComponent } from './features/doctor/edit-doctor/edit-doctor.c
 import { NurseListComponent } from './features/nurse/nurse-list/nurse-list.component';
 import { AddNurseComponent } from './features/nurse/add-nurse/add-nurse.component';
 import { EditNurseComponent } from './features/nurse/edit-nurse/edit-nurse.component';
+import { PrescriptionListComponent } from './features/prescription/prescription-list/prescription-list.component';
+import { AddPrescriptionComponent } from './features/prescription/add-prescription/add-prescription.component';
+import { EditPrescriptionComponent } from './features/prescription/edit-prescription/edit-prescription.component';
 
 export const routes: Routes = [
     {
@@ -66,5 +69,17 @@ export const routes: Routes = [
     {
         path:"admin/nurses/:id",
         component: EditNurseComponent, 
+    },
+    {
+        path:"admin/prescriptions",
+        component: PrescriptionListComponent, 
+    },
+    {
+        path:"admin/prescriptions/add",
+        component: AddPrescriptionComponent, 
+    },
+    {
+        path:"admin/prescriptions/:id",
+        component: EditPrescriptionComponent, 
     },
 ];
