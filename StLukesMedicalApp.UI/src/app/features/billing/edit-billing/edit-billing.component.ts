@@ -65,17 +65,17 @@ export class EditBillingComponent implements OnInit, OnDestroy {
   onFormSubmit():void{
     
     // convert this model to Request Object
-    if (this.model && this.id) {}
-    var updateBillingRequest : UpdateBillingRequest = {
-      totalAmount: this.model?.totalAmount?? '',
-      paymentMethod: this.model?.paymentMethod?? '',
-      paymentStatus: this.model?.paymentStatus?? '',
-      dateOfBilling: typeof this.model?.dateOfBilling === 'string' ? new Date(this.model.dateOfBilling) : this.model?.dateOfBilling ?? new Date(),
-      patients: this.selectedPatients ?? [],
-      remarks:this.model?.remarks?? ''
-    }
+    if (this.model && this.id) {
+      var updateBillingRequest : UpdateBillingRequest = {
+        totalAmount: this.model?.totalAmount?? '',
+        paymentMethod: this.model?.paymentMethod?? '',
+        paymentStatus: this.model?.paymentStatus?? '',
+        dateOfBilling: typeof this.model?.dateOfBilling === 'string' ? new Date(this.model.dateOfBilling) : this.model?.dateOfBilling ?? new Date(),
+        patients: this.selectedPatients ?? [],
+        remarks:this.model?.remarks?? ''
+      }
 
-    //pass this object to the service
+       //pass this object to the service
     if(this.id){
       this.editBillingSubscription =  this.billingService.updateBilling(this.id,updateBillingRequest)
       .subscribe({
@@ -87,6 +87,8 @@ export class EditBillingComponent implements OnInit, OnDestroy {
           }
         });
        }
+    }
+  
   }
 
   // implement onDelete

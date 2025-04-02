@@ -5,6 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { AddPrescriptionRequest } from '../models/add-prescription-request.models';
 import { Observable } from 'rxjs';
 import { Prescription } from '../models/prescription.models';
+import { UpdatePrescriptionRequest } from '../models/update-prescription-request.models';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,21 @@ export class PrescriptionService {
   // get prescription by ID
   getPrescriptionById(id: string) : Observable<Prescription>{
     return this.http.get<Prescription>(`${environment.apiBaseUrl}/prescriptions/${id}`);
+  }
+
+  // update prescription
+  updatePrescription(id: string, updatePrescriptionRequest : UpdatePrescriptionRequest): Observable<Prescription>{
+    return this.http.put<Prescription>(`${environment.apiBaseUrl}/prescriptions/${id}`, updatePrescriptionRequest);
+  }
+
+  // delete prescription
+  deletePrescription(id: string) : Observable<Prescription>{
+    return this.http.delete<Prescription>(`${environment.apiBaseUrl}/prescriptions/${id}`);
+  }
+
+   // get billing count
+   getPrescriptionCount(): Observable<number> {
+    return this.http.get<number>(`${environment.apiBaseUrl}/prescriptions/count`);
   }
 
 
