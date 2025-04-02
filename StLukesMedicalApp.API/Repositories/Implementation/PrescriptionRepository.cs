@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StLukesMedicalApp.API.Data;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Repositories.Interface;
@@ -24,8 +25,41 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         }
 
         // get all prescriptions
-        public async Task<IEnumerable<Prescription>> GetAllAsync()
+        public async Task<IEnumerable<Prescription>> GetAllAsync
+            (
+                // add filtering, sorting & pagination
+                string? query = null,
+                string? sortBy = null,
+                string? sortDirection = null,
+                int? pageNumber = 1,
+                int? pageSize = 100
+            )
+
         {
+            // query
+            var prescriptions = dbContext.Prescriptions.AsQueryable();
+
+            // filtering
+            if (string.IsNullOrWhiteSpace(query) == false)
+            {
+                prescriptions = prescriptions.Where(x => x.MedicationList.Contains(query));
+            }
+
+            // sorting
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if (string.Equals(sortBy, "MedicationList", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    prescriptions = isAsc ? prescriptions.OrderBy(x => x.MedicationList) : prescriptions.OrderByDescending(x => x.MedicationList);
+                }
+
+            }
+
+            // pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            prescriptions = prescriptions.Skip(skipResults ?? 0).Take(pageSize ?? 100);
+
             return await dbContext.Prescriptions.Include(x => x.Doctors).Include(x => x.Patients).ToListAsync();
         }
 
@@ -78,6 +112,13 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
 
             return null;
 
+        }
+
+
+        // Get Count
+        public async Task<int> GetCount()
+        {
+            return await dbContext.Prescriptions.CountAsync();
         }
     }
 }
