@@ -1,38 +1,115 @@
-<div class="container mx-auto p-4">
-    <h2 class="text-2xl font-bold mb-4">Patient Prescriptions</h2>
-  
-    <!-- Check if prescriptions are available -->
-    <div *ngIf="prescriptions$ | async as prescriptions; else noPrescriptions">
-      <table class="table-auto w-full border-collapse border border-gray-300">
-        <thead>
-          <tr class="bg-gray-100">
-            <th class="border border-gray-300 px-4 py-2">Prescription ID</th>
-            <th class="border border-gray-300 px-4 py-2">Medication</th>
-            <th class="border border-gray-300 px-4 py-2">Dosage</th>
-            <th class="border border-gray-300 px-4 py-2">Date Prescribed</th>
-            <th class="border border-gray-300 px-4 py-2">Doctor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let prescription of prescriptions">
-            <td class="border border-gray-300 px-4 py-2">{{ prescription.id }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ prescription.medicationList }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ prescription.dosage }}</td>
-            <td class="border border-gray-300 px-4 py-2">{{ prescription.dateIssued | date: 'short' }}</td>
-            <td class="border border-gray-300 px-4 py-2">
-                <ul>
-                    <li *ngFor="let doctor of prescription.doctors">
-                     Dr. {{ doctor.firstName }}  {{ doctor.lastName }}
-                    </li>
-                  </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <!-- Fallback if no prescriptions are found -->
-    <ng-template #noPrescriptions>
-      <p class="text-gray-500">No prescriptions found for this patient.</p>
-    </ng-template>
-  </div>
+<div class="flex justify-between items-center mb-4">
+  <h2 class="text-xl font-semibold text-gray-700">Patient's Details:</h2>
+  <button
+    class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    type="button" [routerLink]="['/admin/patients']">Back</button>
+</div>
+<div class="overflow-x-auto">
+  <ng-container *ngIf="patients$ | async as patient">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left text-gray-600">First Name</th>
+          <th class="px-4 py-2 text-left text-gray-600">Last Name</th>
+          <th class="px-4 py-2 text-left text-gray-600">Age</th>
+          <th class="px-4 py-2 text-left text-gray-600">Sex</th>
+          <th class="px-4 py-2 text-left text-gray-600">Contact Number</th>
+          <th class="px-4 py-2 text-left text-gray-600">Address</th>
+          <th class="px-4 py-2 text-left text-gray-600">Patient Type</th>
+          <th class="px-4 py-2 text-left text-gray-600">Diagnosis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-t border-gray-200">
+          <td class="px-4 py-2">{{patient.firstName}}</td>
+          <td class="px-4 py-2">{{patient.lastName}}</td>
+          <td class="px-4 py-2">{{patient.age}}</td>
+          <td class="px-4 py-2">{{patient.sex}}</td>
+          <td class="px-4 py-2">{{patient.contactNumber}}</td>
+          <td class="px-4 py-2">{{patient.address}}</td>
+          <td class="px-4 py-2">{{patient.patientType}}</td>
+          <td class="px-4 py-2">{{patient.diagnosis}}</td>
+        </tr>  
+      </tbody>
+    </table>  
+  </ng-container>
+</div>
+
+<div class="flex justify-between items-center mb-4 mt-8">
+  <h2 class="text-xl font-semibold text-gray-700">Prescription History:</h2>
+</div>
+<div class="overflow-x-auto">
+  <ng-container *ngIf="prescriptions$ | async as prescriptions; else noPrescriptions">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left text-gray-600">Prescription ID</th>
+          <th class="px-4 py-2 text-left text-gray-600">Medication</th>
+          <th class="px-4 py-2 text-left text-gray-600">Dosage</th>
+          <th class="px-4 py-2 text-left text-gray-600">Date Prescribed</th>
+          <th class="px-4 py-2 text-left text-gray-600">Doctor</th>
+          <th class="px-4 py-2 text-left text-gray-600">Instruction</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-t border-gray-200" *ngFor="let prescription of prescriptions">
+          <td class="px-4 py-2">{{ prescription.id }}</td>
+          <td class="px-4 py-2">{{ prescription.medicationList }}</td>
+          <td class="px-4 py-2">{{ prescription.dosage }}</td>
+          <td class="px-4 py-2">{{ prescription.dateIssued | date: 'short' }}</td>
+          <td class="px-4 py-2">
+            <ul>
+              <li *ngFor="let doctor of prescription.doctors">
+                Dr. {{ doctor.firstName }} {{ doctor.lastName }}
+              </li>
+            </ul>
+          </td>
+          <td class="px-4 py-2">{{ prescription.remarks}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <!-- Fallback if no prescriptions are found -->
+  <ng-template #noPrescriptions>
+    <p class="text-gray-500">No prescriptions found for this patient.</p>
+  </ng-template>
+</div>
+
+<div class="flex justify-between items-center mb-4 mt-8">
+  <h2 class="text-xl font-semibold text-gray-700">Billing History:</h2>
+</div>
+<div class="overflow-x-auto">
+  <ng-container *ngIf="billings$ | async as billings; else noBillings">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-left text-gray-600">Billing ID</th>
+          <th class="px-4 py-2 text-left text-gray-600">Date Of Billing</th>
+          <th class="px-4 py-2 text-left text-gray-600">Payment Status</th>
+          <th class="px-4 py-2 text-left text-gray-600">Payment Method</th>
+          <th class="px-4 py-2 text-left text-gray-600">Total Amount</th>
+          <th class="px-4 py-2 text-left text-gray-600">Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-t border-gray-200" *ngFor="let billing of billings">
+          <td class="px-4 py-2">{{ billing.id }}</td>
+          <td class="px-4 py-2">{{ billing.dateOfBilling | date: 'short' }}</td>
+          <td class="px-4 py-2">{{ billing.paymentStatus }}</td>
+          <td class="px-4 py-2">{{ billing.paymentMethod }}</td>
+          <td class="px-4 py-2">£{{ billing.totalAmount }}</td>
+          <td class="px-4 py-2">{{ billing.remarks }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <!-- Fallback if no prescriptions are found -->
+  <ng-template #noBillings>
+    <p class="text-gray-500">No billing details found for this patient.</p>
+  </ng-template>
+</div>
+
+
+
