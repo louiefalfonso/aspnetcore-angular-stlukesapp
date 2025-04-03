@@ -145,10 +145,18 @@ namespace StLukesMedicalApp.API.Controllers
 
         // get all admissions
         [HttpGet]
-        public async Task<IActionResult> GetAllAdmissions()
+        public async Task<IActionResult> GetAllAdmissions
+            (
+                // add filtering, sorting & pagination
+                [FromQuery] string? query,
+                [FromQuery] string? sortBy,
+                [FromQuery] string? sortDirection,
+                [FromQuery] int? pageNumber,
+                [FromQuery] int? pageSize
+            )
         {
             // get all admissions
-            var admissions = await admissionRepository.GetAllAsync();
+            var admissions = await admissionRepository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
 
             // map domain model to DTO
             var response = new List<AdmissionDto>();
@@ -417,6 +425,15 @@ namespace StLukesMedicalApp.API.Controllers
             };
 
             return Ok(response);
+        }
+
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetAdmissionsTotal()
+        {
+            var count = await admissionRepository.GetCount();
+            return Ok(count);
         }
     }
 }

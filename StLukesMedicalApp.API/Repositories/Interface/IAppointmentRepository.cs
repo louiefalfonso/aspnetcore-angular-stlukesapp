@@ -21,5 +21,7 @@ namespace StLukesMedicalApp.API.Repositories.Interface
         Task<Appointment?> UpdateAsync(Appointment appointment);
 
         Task<Appointment?> DeleteAsync(Guid id);
+
+        Task<int> GetCount();
     }
 }

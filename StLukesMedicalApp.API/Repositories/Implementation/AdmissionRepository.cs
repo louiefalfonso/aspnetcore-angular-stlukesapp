@@ -24,9 +24,49 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         }
 
         // get all admissions
-        public async Task<IEnumerable<Admission>> GetAllAsync()
+        public async Task<IEnumerable<Admission>> GetAllAsync
+            (
+                // add filtering, sorting & pagination
+                string? query = null,
+                string? sortBy = null,
+                string? sortDirection = null,
+                int? pageNumber = 1,
+                int? pageSize = 100
+            )
         {
-            return await dbContext.Admissions.Include(x => x.Doctors).Include(x => x.Patients).Include(x=> x.Nurses).ToListAsync();
+            // query
+            var admissions = dbContext.Admissions.AsQueryable();
+
+            // filtering
+            if (string.IsNullOrWhiteSpace(query) == false)
+            {
+                admissions = admissions.Where(x =>
+                    x.RoomNumber.Contains(query) ||
+                    x.RoomType.Contains(query));
+            }
+
+            // sorting
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+
+                if (string.Equals(sortBy, "roomNumber", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    admissions = isAsc ? admissions.OrderBy(x => x.RoomNumber) : admissions.OrderByDescending(x => x.RoomNumber);
+                }
+
+                if (string.Equals(sortBy, "roomType", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    admissions = isAsc ? admissions.OrderBy(x => x.RoomType) : admissions.OrderByDescending(x => x.RoomType);
+                }
+            }
+
+            // pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            admissions = admissions.Skip(skipResults ?? 0).Take(pageSize ?? 100);
+
+            return await admissions.Include(x => x.Doctors).Include(x => x.Patients).Include(x => x.Nurses).ToListAsync();
         }
 
         // get admission by ID
@@ -80,6 +120,12 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             }
 
             return null;
+        }
+
+        // Get Count
+        public async Task<int> GetCount()
+        {
+            return await dbContext.Admissions.CountAsync();
         }
 
     }

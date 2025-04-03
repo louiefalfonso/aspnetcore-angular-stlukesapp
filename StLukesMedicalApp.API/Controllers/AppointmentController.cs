@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
+using StLukesMedicalApp.API.Repositories.Implementation;
 using StLukesMedicalApp.API.Repositories.Interface;
 
 namespace StLukesMedicalApp.API.Controllers
@@ -340,6 +341,15 @@ namespace StLukesMedicalApp.API.Controllers
 
             };
             return Ok(response);
+        }
+
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetAppointmentsTotal()
+        {
+            var count = await appointmentRepository.GetCount();
+            return Ok(count);
         }
 
     }
