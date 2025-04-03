@@ -23,9 +23,65 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         }
 
         // Get All Doctors
-        public async Task<IEnumerable<Doctor>> GetAllAsync()
+        public async Task<IEnumerable<Doctor>> GetAllAsync
+            (
+                // add filtering, sorting & pagination
+                string? query = null,
+                string? sortBy = null,
+                string? sortDirection = null,
+                int? pageNumber = 1,
+                int? pageSize = 100
+            )
         {
-            return await dbContext.Doctors.ToListAsync();
+
+            // query
+            var doctors = dbContext.Doctors.AsQueryable();
+
+
+            // filtering
+            if (string.IsNullOrWhiteSpace(query) == false)
+            {
+                doctors = doctors.Where(
+                    x => x.FirstName.Contains(query) ||
+                    x.LastName.Contains(query) ||
+                    x.Specialization.Contains(query) ||
+                    x.Department.Contains(query));
+            }
+
+            // sorting
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if (string.Equals(sortBy, "firstName", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    doctors = isAsc ? doctors.OrderBy(x => x.FirstName) : doctors.OrderByDescending(x => x.FirstName);
+                }
+
+                if (string.Equals(sortBy, "lastName", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    doctors = isAsc ? doctors.OrderBy(x => x.LastName) : doctors.OrderByDescending(x => x.LastName);
+                }
+
+                if (string.Equals(sortBy, "specialization", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    doctors = isAsc ? doctors.OrderBy(x => x.Specialization) : doctors.OrderByDescending(x => x.Specialization);
+                }
+
+                if (string.Equals(sortBy, "department", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    doctors = isAsc ? doctors.OrderBy(x => x.Department) : doctors.OrderByDescending(x => x.Department);
+                }
+            }
+
+
+                // pagination
+                var skipResults = (pageNumber - 1) * pageSize;
+            doctors = doctors.Skip(skipResults ?? 0).Take(pageSize ?? 100);
+
+            return await doctors.ToListAsync();
         }
 
         // Get Doctor By ID

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
 using StLukesMedicalApp.API.Repositories.Interface;
@@ -39,17 +40,17 @@ namespace StLukesMedicalApp.API.Controllers
 
             // map domail model to dto
             var response = new PatientDto
-            {
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                Email = patient.Email,
-                ContactNumber = patient.ContactNumber,
-                Sex = patient.Sex,
-                Age = patient.Age,
-                Address = patient.Address,
-                Diagnosis = patient.Diagnosis,
-                PatientType = patient.PatientType,
-            };
+             {
+                 FirstName = patient.FirstName,
+                 LastName = patient.LastName,
+                 Email = patient.Email,
+                 ContactNumber = patient.ContactNumber,
+                 Sex = patient.Sex,
+                 Age = patient.Age,
+                 Address = patient.Address,
+                 Diagnosis = patient.Diagnosis,
+                 PatientType = patient.PatientType,
+             };
 
             return Ok(response);
         }
@@ -87,7 +88,6 @@ namespace StLukesMedicalApp.API.Controllers
                     PatientType = patient.PatientType,
                 });
             }
-
             return Ok(response);
         }
 
@@ -166,7 +166,6 @@ namespace StLukesMedicalApp.API.Controllers
                 Diagnosis = patient.Diagnosis,
                 PatientType = patient.PatientType,
             };
-
             return Ok(response);
         }
 
@@ -198,7 +197,6 @@ namespace StLukesMedicalApp.API.Controllers
                 Diagnosis = patient.Diagnosis,
                 PatientType = patient.PatientType,
             };
-
             return Ok(response);
         }
 

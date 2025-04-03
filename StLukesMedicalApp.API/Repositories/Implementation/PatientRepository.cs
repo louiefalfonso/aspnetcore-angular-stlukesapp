@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using StLukesMedicalApp.API.Data;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Repositories.Interface;
@@ -30,44 +31,54 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
                 string? sortDirection = null,
                 int? pageNumber = 1,
                 int? pageSize = 100
+
             )
         {
             // query
             var patients = dbContext.Patients.AsQueryable();
 
-            // filtering
+            //filter
             if(string.IsNullOrWhiteSpace(query) == false)
             {
-                patients = patients.Where(x =>x.FirstName.Contains(query));
+                patients = patients.Where(
+                    x => x.FirstName.Contains(query) ||
+                    x.LastName.Contains(query) ||
+                    x.Sex.Contains(query) ||
+                    x.Age.Contains(query) ||
+                    x.PatientType.Contains(query));
             }
 
             // sorting
-            if (string.IsNullOrWhiteSpace(sortBy) == false) 
-            { 
-                if(string.Equals(sortBy,"firstName", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(sortBy) == false)
+            {
+                if (string.Equals(sortBy, "FirstName", StringComparison.OrdinalIgnoreCase))
                 {
-                    var isAsc = string.Equals(sortDirection,"asc", StringComparison.OrdinalIgnoreCase)? true : false;
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+
                     patients = isAsc ? patients.OrderBy(x => x.FirstName) : patients.OrderByDescending(x => x.FirstName);
                 }
 
-                if (string.Equals(sortBy, "lastName", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(sortBy, "LasttName", StringComparison.OrdinalIgnoreCase))
                 {
                     var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+
                     patients = isAsc ? patients.OrderBy(x => x.LastName) : patients.OrderByDescending(x => x.LastName);
                 }
 
-                if (string.Equals(sortBy, "patientType", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(sortBy, "PatientType", StringComparison.OrdinalIgnoreCase))
                 {
                     var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+
                     patients = isAsc ? patients.OrderBy(x => x.PatientType) : patients.OrderByDescending(x => x.PatientType);
                 }
+
             }
 
             // pagination
             var skipResults = (pageNumber - 1) * pageSize;
             patients = patients.Skip(skipResults ?? 0).Take(pageSize ?? 100);
 
-            return await dbContext.Patients.ToListAsync();
+            return await patients.ToListAsync();
         }
 
         // Get Patient By ID

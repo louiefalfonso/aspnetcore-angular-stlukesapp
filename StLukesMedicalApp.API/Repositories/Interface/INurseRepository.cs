@@ -8,7 +8,15 @@ namespace StLukesMedicalApp.API.Repositories.Interface
 
         Task<Nurse?> GetByIdAsync(Guid id);
 
-        Task<IEnumerable<Nurse>> GetAllAsync();
+        Task<IEnumerable<Nurse>> GetAllAsync
+            (
+                // add filtering, sorting & pagination
+                string? query = null,
+                string? sortBy = null,
+                string? sortDirection = null,
+                int? pageNumber = 1,
+                int? pageSize = 100
+            );
 
         Task<Nurse?> UpdateAsync(Nurse nurse);
 

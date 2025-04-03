@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
+using StLukesMedicalApp.API.Repositories.Implementation;
 using StLukesMedicalApp.API.Repositories.Interface;
 
 namespace StLukesMedicalApp.API.Controllers
@@ -113,10 +114,18 @@ namespace StLukesMedicalApp.API.Controllers
 
         // Get All Appointments
         [HttpGet]
-        public async Task<IActionResult> GetAllAppointments()
+        public async Task<IActionResult> GetAllAppointments
+            (
+                // add filtering, sorting & pagination
+                [FromQuery] string? query,
+                [FromQuery] string? sortBy,
+                [FromQuery] string? sortDirection,
+                [FromQuery] int? pageNumber,
+                [FromQuery] int? pageSize
+            )
         {
             // Get All Appointments
-            var appointments = await appointmentRepository.GetAllAsync();
+            var appointments = await appointmentRepository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
 
             // Map Domain Model to DTO
             var response = new List<AppointmentDto>();
@@ -332,6 +341,15 @@ namespace StLukesMedicalApp.API.Controllers
 
             };
             return Ok(response);
+        }
+
+        // Get Count
+        [HttpGet]
+        [Route("count")]
+        public async Task<IActionResult> GetAppointmentsTotal()
+        {
+            var count = await appointmentRepository.GetCount();
+            return Ok(count);
         }
 
     }

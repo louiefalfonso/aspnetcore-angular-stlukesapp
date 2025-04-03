@@ -10,7 +10,6 @@ using StLukesMedicalApp.API.Repositories.Interface;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 
 // Add & Configure Swagger

@@ -1,4 +1,6 @@
-﻿namespace StLukesMedicalApp.API.Models.DTO
+﻿using System.Text.Json.Serialization;
+
+namespace StLukesMedicalApp.API.Models.DTO
 {
     public class PatientDto
     {

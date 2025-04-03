@@ -42,16 +42,24 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             // filtering
             if (string.IsNullOrWhiteSpace(query) == false)
             {
-                prescriptions = prescriptions.Where(x => x.MedicationList.Contains(query));
+                prescriptions = prescriptions.Where(x =>
+                x.MedicationList.Contains(query) ||
+                x.Dosage.Contains(query));
             }
 
             // sorting
             if (string.IsNullOrWhiteSpace(sortBy) == false)
             {
-                if (string.Equals(sortBy, "MedicationList", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(sortBy, "medicationList", StringComparison.OrdinalIgnoreCase))
                 {
                     var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
                     prescriptions = isAsc ? prescriptions.OrderBy(x => x.MedicationList) : prescriptions.OrderByDescending(x => x.MedicationList);
+                }
+
+                if (string.Equals(sortBy, "sosage", StringComparison.OrdinalIgnoreCase))
+                {
+                    var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
+                    prescriptions = isAsc ? prescriptions.OrderBy(x => x.Dosage) : prescriptions.OrderByDescending(x => x.Dosage);
                 }
 
             }
@@ -60,7 +68,7 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             var skipResults = (pageNumber - 1) * pageSize;
             prescriptions = prescriptions.Skip(skipResults ?? 0).Take(pageSize ?? 100);
 
-            return await dbContext.Prescriptions.Include(x => x.Doctors).Include(x => x.Patients).ToListAsync();
+            return await prescriptions.Include(x => x.Doctors).Include(x => x.Patients).ToListAsync();
         }
 
         // get prescription by ID

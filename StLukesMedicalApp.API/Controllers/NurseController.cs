@@ -88,10 +88,18 @@ namespace StLukesMedicalApp.API.Controllers
 
         // Get All Nurses
         [HttpGet]
-        public async Task<IActionResult> GetAllNurses()
+        public async Task<IActionResult> GetAllNurses
+            (
+                // add filtering, sorting & pagination
+                [FromQuery] string? query,
+                [FromQuery] string? sortBy,
+                [FromQuery] string? sortDirection,
+                [FromQuery] int? pageNumber,
+                [FromQuery] int? pageSize
+            )
         {
             // Get All Nurses from Repository
-            var nurses = await nurseRepository.GetAllAsync();
+            var nurses = await nurseRepository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
 
             // Map Domaihn Model to DTO
             var response = new List<NurseDto>();
