@@ -7,6 +7,6 @@ export interface Prescription {
     dosage: string;
     dateIssued: Date;
     remarks: string;
-    patients: { id: string; fiirstName: string; lastName:string }[]; 
+    patients: { id: string; firstName: string; lastName:string }[]; 
     doctors : Doctor[];
 }

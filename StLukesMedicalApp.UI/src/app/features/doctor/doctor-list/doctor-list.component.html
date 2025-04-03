@@ -1,6 +1,6 @@
 <div class="flex justify-between items-center mb-4">
     <h2 class="text-xl font-semibold text-gray-700">Doctor List</h2>
-    <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/doctors/add']" >Add Doctor</button>
+    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" [routerLink]="['/admin/doctors/add']" >Add Doctor</button>
 </div>
 <div class="overflow-x-auto">
     <ng-container *ngIf="doctors$ | async as doctors">
