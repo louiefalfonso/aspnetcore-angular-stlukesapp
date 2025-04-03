@@ -113,10 +113,18 @@ namespace StLukesMedicalApp.API.Controllers
 
         // Get All Appointments
         [HttpGet]
-        public async Task<IActionResult> GetAllAppointments()
+        public async Task<IActionResult> GetAllAppointments
+            (
+                // add filtering, sorting & pagination
+                [FromQuery] string? query,
+                [FromQuery] string? sortBy,
+                [FromQuery] string? sortDirection,
+                [FromQuery] int? pageNumber,
+                [FromQuery] int? pageSize
+            )
         {
             // Get All Appointments
-            var appointments = await appointmentRepository.GetAllAsync();
+            var appointments = await appointmentRepository.GetAllAsync(query, sortBy, sortDirection, pageNumber, pageSize);
 
             // Map Domain Model to DTO
             var response = new List<AppointmentDto>();

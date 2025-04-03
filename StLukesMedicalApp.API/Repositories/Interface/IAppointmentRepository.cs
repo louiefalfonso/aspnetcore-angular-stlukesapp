@@ -6,7 +6,15 @@ namespace StLukesMedicalApp.API.Repositories.Interface
     {
         Task<Appointment> CreateAsync(Appointment appointment);
 
-        Task<IEnumerable<Appointment>> GetAllAsync();
+        Task<IEnumerable<Appointment>> GetAllAsync
+            (
+                // add filtering, sorting & pagination
+                string? query = null,
+                string? sortBy = null,
+                string? sortDirection = null,
+                int? pageNumber = 1,
+                int? pageSize = 100
+            );
 
         Task<Appointment?> GetByIdAsync(Guid id);
 

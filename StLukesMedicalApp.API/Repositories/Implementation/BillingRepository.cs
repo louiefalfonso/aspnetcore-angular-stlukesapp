@@ -43,11 +43,13 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             // query
             var billings = dbContext.Billings.AsQueryable();
 
-
             // filtering
             if (string.IsNullOrWhiteSpace(query) == false)
             {
-                billings = billings.Where(x => x.PaymentMethod.Contains(query));
+                billings = billings.Where(x => 
+                    x.PaymentMethod.Contains(query) ||
+                    x.PaymentStatus.Contains(query) ||
+                    x.TotalAmount.Contains(query));
             }
 
             // sorting
@@ -78,7 +80,7 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             var skipResults = (pageNumber - 1) * pageSize;
             billings = billings.Skip(skipResults ?? 0).Take(pageSize ?? 100);
 
-            return await dbContext.Billings.Include(x => x.Patients).ToListAsync();
+            return await billings.Include(x => x.Patients).ToListAsync();
         }
 
         // update billing
