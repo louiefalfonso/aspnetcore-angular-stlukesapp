@@ -16,6 +16,9 @@ import { PrescriptionListComponent } from './features/prescription/prescription-
 import { AddPrescriptionComponent } from './features/prescription/add-prescription/add-prescription.component';
 import { EditPrescriptionComponent } from './features/prescription/edit-prescription/edit-prescription.component';
 import { PatientDetailComponent } from './features/patient/patient-detail/patient-detail.component';
+import { AdmissionListComponent } from './features/admission/admission-list/admission-list.component';
+import { AddAdmissionComponent } from './features/admission/add-admission/add-admission.component';
+import { EditAdmissionComponent } from './features/admission/edit-admission/edit-admission.component';
 
 export const routes: Routes = [
     {
@@ -86,5 +89,17 @@ export const routes: Routes = [
     {
         path:"admin/prescriptions/:id",
         component: EditPrescriptionComponent, 
+    },
+    {
+        path:"admin/admissions",
+        component: AdmissionListComponent, 
+    },
+    {
+        path:"admin/admissions/add",
+        component: AddAdmissionComponent, 
+    },
+    {
+        path:"admin/admissions/:id",
+        component: EditAdmissionComponent, 
     },
 ];
