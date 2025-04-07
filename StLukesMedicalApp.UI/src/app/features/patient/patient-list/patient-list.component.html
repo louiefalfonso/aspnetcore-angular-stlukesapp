@@ -29,8 +29,8 @@
             <td class="px-4 py-2">{{patient.address}}</td>
             <td class="px-4 py-2">{{patient.patientType}}</td>
             <td class="px-4 py-2">{{patient.diagnosis}}</td>
-            <td class="px-4 py-2">
-              <button class="bg-blue-500 text-white px-4 py-2 md- rounded hover:bg-blue-600"  [routerLink]="['/admin/patients/details/', patient.id]" >View</button>
+            <td class="py-2">
+              <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"  [routerLink]="['/admin/patients/details/', patient.id]" >View</button>
             </td>
             <td class="px-4 py-2">
               <button class="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600"  [routerLink]="['/admin/patients', patient.id]" >Edit</button>
