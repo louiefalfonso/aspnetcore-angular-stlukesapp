@@ -21,7 +21,7 @@ export class DoctorListComponent implements OnInit {
   totalCount?: number;
   list: number[] = [];
   pageNumber = 1;
-  pageSize = 10;
+  pageSize = 5;
 
   // add constructor
   constructor(
@@ -50,6 +50,19 @@ export class DoctorListComponent implements OnInit {
   // implement search
   onSearch(query: string) {
     this.doctors$ = this.doctorService.getAllDoctors(query);
+  }
+
+  //implement reset
+  onReset(queryText: HTMLInputElement): void {
+    queryText.value = ''; 
+    this.pageNumber = 1; 
+    this.doctors$ = this.doctorService.getAllDoctors(
+      undefined,
+      undefined,
+      undefined,
+      this.pageNumber,
+      this.pageSize
+    ); 
   }
 
   // implement sorting

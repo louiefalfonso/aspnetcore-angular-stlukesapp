@@ -1,7 +1,19 @@
-<div class="flex justify-between items-center mb-4">
-    <h2 class="text-xl font-semibold text-gray-700">Billing List</h2>
-    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" [routerLink]="['/admin/billings/add']" >Add Billing</button>
-</div>
+<div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 space-y-4 sm:space-y-0">
+    <!-- Add Billing Button -->
+    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" [routerLink]="['/admin/billings/add']">
+      Add Billing
+    </button>
+  
+    <!-- Search Box and Buttons -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-2 space-y-2 sm:space-y-0">
+      <input type="text" class="w-full sm:w-auto text-gray-700 border border-gray-200 rounded py-2 px-4 focus:outline-none focus:bg-white focus:border-gray-500" placeholder="Search Billings..." #queryText/>
+      <button type="button" class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600" (click)="onSearch(queryText.value)">Search</button>
+      <button type="button" class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600" (click)="onReset(queryText)">Reset</button>
+    </div>
+  </div>
+  
+
+<!-- Table List -->
 <div class="overflow-x-auto">
     <ng-container *ngIf="billings$ | async as billings">
         <table class="min-w-full bg-white border border-gray-200">
@@ -36,3 +48,31 @@
         </table>      
     </ng-container>
 </div>
+
+  <!--Pagination-->
+  <div class="overflow-x-auto">  
+    <div class="flex items-center justify-center bg-white px-4 py-3 sm:px-6">
+        <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
+              <!--Previous-->
+              <a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0" (click)="getPrevPage()">
+                <span class="sr-only">Previous</span>
+                <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                  <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            
+              <!--Links-->
+              <span *ngFor="let item of list;let index = index" class="page-item" >
+                <a aria-current="page" class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0" (click)="getPage(index + 1)">{{index + 1}}</a>
+              </span>          
+              
+              <!--Next-->
+              <a class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0" (click)="getPrevPage()">
+                <span class="sr-only">Next</span>
+                <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                  <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                </svg>
+              </a>
+        </nav>
+    </div>   
+  </div>

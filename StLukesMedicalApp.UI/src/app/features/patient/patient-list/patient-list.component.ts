@@ -20,7 +20,7 @@ export class PatientListComponent implements OnInit {
   totalCount?: number;
   list: number[] = [];
   pageNumber = 1;
-  pageSize = 10;
+  pageSize = 5;
 
   // add constructor
   constructor(
@@ -49,10 +49,22 @@ export class PatientListComponent implements OnInit {
 
   }
 
-
   // implement search
   onSearch(query: string) {
     this.patients$ = this.patientService.getAllPatients(query);
+  }
+
+  //implement reset
+  onReset(queryText: HTMLInputElement): void {
+    queryText.value = ''; 
+    this.pageNumber = 1; 
+    this.patients$ = this.patientService.getAllPatients(
+      undefined,
+      undefined,
+      undefined,
+      this.pageNumber,
+      this.pageSize
+    ); 
   }
 
   // implement sorting

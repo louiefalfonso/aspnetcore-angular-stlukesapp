@@ -20,7 +20,7 @@ export class PrescriptionListComponent implements OnInit  {
    totalCount?: number;
    list: number[] = [];
    pageNumber = 1;
-   pageSize = 10;
+   pageSize = 5;
 
 
   // add constructor
@@ -47,5 +47,73 @@ export class PrescriptionListComponent implements OnInit  {
       }
     })
   }
+
+   // implement search
+   onSearch(query: string) {
+    this.prescriptions$ = this.prescriptionService.getAllPrescriptions(query);
+  }
+
+   //implement reset
+   onReset(queryText: HTMLInputElement): void {
+    queryText.value = ''; 
+    this.pageNumber = 1; 
+    this.prescriptions$ = this.prescriptionService.getAllPrescriptions(
+      undefined,
+      undefined,
+      undefined,
+      this.pageNumber,
+      this.pageSize
+    ); 
+  }
+
+   // implement sorting
+   sort(sortBy: string, sortDirection: string) {
+    this.prescriptions$ = this.prescriptionService.getAllPrescriptions(undefined, sortBy, sortDirection);
+  }
+
+   // implement getPage
+   getPage(pageNumber: number) {
+    this.pageNumber = pageNumber;
+
+    this.prescriptions$ = this.prescriptionService.getAllPrescriptions(
+      undefined,
+      undefined,
+      undefined,
+      this.pageNumber,
+      this.pageSize
+    );
+  }
+
+  // implement getNextPage
+  getNextPage() {
+    if (this.pageNumber + 1 > this.list.length) {
+      return;
+    }
+
+    this.pageNumber += 1;
+    this.prescriptions$ = this.prescriptionService.getAllPrescriptions(
+      undefined,
+      undefined,
+      undefined,
+      this.pageNumber,
+      this.pageSize
+    );
+  }
+
+    // implemennt getPrevPage
+    getPrevPage() {
+      if (this.pageNumber - 1 < 1) {
+        return;
+      }
+  
+      this.pageNumber -= 1;
+      this.prescriptions$ = this.prescriptionService.getAllPrescriptions(
+        undefined,
+        undefined,
+        undefined,
+        this.pageNumber,
+        this.pageSize
+      );
+    }
 
 }
