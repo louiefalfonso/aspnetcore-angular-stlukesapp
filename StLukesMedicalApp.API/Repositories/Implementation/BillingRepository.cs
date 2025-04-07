@@ -46,9 +46,10 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             // filtering
             if (string.IsNullOrWhiteSpace(query) == false)
             {
-                billings = billings.Where(x => 
+                billings = billings.Where(x =>
                     x.PaymentMethod.Contains(query) ||
                     x.PaymentStatus.Contains(query) ||
+                    x.Patients.Any(p => p.FirstName.Contains(query) || p.LastName.Contains(query)) ||
                     x.TotalAmount.Contains(query));
             }
 

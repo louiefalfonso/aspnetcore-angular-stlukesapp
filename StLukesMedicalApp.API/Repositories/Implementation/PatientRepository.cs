@@ -45,6 +45,9 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
                     x.LastName.Contains(query) ||
                     x.Sex.Contains(query) ||
                     x.Age.Contains(query) ||
+                    x.ContactNumber.Contains(query) ||
+                    x.Address.Contains(query) ||
+                    x.Diagnosis.Contains(query) ||
                     x.PatientType.Contains(query));
             }
 
