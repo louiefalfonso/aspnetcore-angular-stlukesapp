@@ -41,9 +41,10 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             // filtering
             if (string.IsNullOrWhiteSpace(query) == false)
             {
-                doctors = doctors.Where(
-                    x => x.FirstName.Contains(query) ||
+                doctors = doctors.Where(x => 
+                    x.FirstName.Contains(query) ||
                     x.LastName.Contains(query) ||
+                    x.Email.Contains(query) ||
                     x.Specialization.Contains(query) ||
                     x.Department.Contains(query));
             }

@@ -39,12 +39,15 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             // query
             var prescriptions = dbContext.Prescriptions.AsQueryable();
 
+
             // filtering
             if (string.IsNullOrWhiteSpace(query) == false)
             {
                 prescriptions = prescriptions.Where(x =>
-                x.MedicationList.Contains(query) ||
-                x.Dosage.Contains(query));
+                    x.MedicationList.Contains(query) ||
+                    x.Dosage.Contains(query) ||
+                    x.Doctors.Any(d => d.FirstName.Contains(query) || d.LastName.Contains(query)) ||
+                    x.Patients.Any(p => p.FirstName.Contains(query) || p.LastName.Contains(query)));
             }
 
             // sorting
@@ -56,7 +59,7 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
                     prescriptions = isAsc ? prescriptions.OrderBy(x => x.MedicationList) : prescriptions.OrderByDescending(x => x.MedicationList);
                 }
 
-                if (string.Equals(sortBy, "sosage", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(sortBy, "dosage", StringComparison.OrdinalIgnoreCase))
                 {
                     var isAsc = string.Equals(sortDirection, "asc", StringComparison.OrdinalIgnoreCase) ? true : false;
                     prescriptions = isAsc ? prescriptions.OrderBy(x => x.Dosage) : prescriptions.OrderByDescending(x => x.Dosage);
