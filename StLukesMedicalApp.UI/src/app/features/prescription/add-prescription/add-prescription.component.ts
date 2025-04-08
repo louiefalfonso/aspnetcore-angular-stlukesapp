@@ -28,23 +28,23 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
   //add unsubcribe from observables
    private addPrescriptionSubscription ?: Subscription;
    
-// add constructor
-constructor(
-  private prescriptionService: PrescriptionService,
-  private patientService: PatientService,
-  private doctorService: DoctorService,
-  private router: Router,
-  private http: HttpClient
-) {
-  this.model = {
-    medicationList:'',
-    dosage:'',
-    remarks:'',
-    dateIssued: new Date(),
-    doctors:[],
-    patients: []
+  // add constructor
+  constructor(
+    private prescriptionService: PrescriptionService,
+    private patientService: PatientService,
+    private doctorService: DoctorService,
+    private router: Router,
+    private http: HttpClient
+  ) {
+    this.model = {
+      medicationList:'',
+      dosage:'',
+      remarks:'',
+      dateIssued: new Date(),
+      doctors:[],
+      patients: []
+    }
   }
-}
    
   // implement ngOnInit lifecycle hook
   ngOnInit(): void {
@@ -67,7 +67,6 @@ constructor(
       }
     })    
   }
-
 
   // implement ngOnDestroy lifecycle hook
    ngOnDestroy(): void {

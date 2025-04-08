@@ -7,8 +7,9 @@ export interface Admission {
     roomNumber: string;
     roomType: string;
     remarks: string;
+    availabilityStatus: string;
     date: Date;
-    doctors: Doctor;
-    nurses: Nurse;
-    patients :Patient;
+    doctors : Doctor[];
+    nurses: Nurse[];
+    patients: Patient[];    
 }
