@@ -36,7 +36,7 @@
   </ng-container>
 </div>
 
-
+<!-- Prescriprion History Section -->
 <ng-container *ngIf="prescriptions$ | async as prescriptions">
   <div *ngIf="prescriptions.length > 0">
     <div class="flex justify-between items-center mb-4 mt-8">
@@ -106,4 +106,37 @@
       </table>
     </div>
   </div>
+</ng-container>  
+
+<!-- Admission History Section -->
+<ng-container *ngIf="admissions$ | async as admissions">
+  <div *ngIf="admissions.length > 0">
+    <div class="flex justify-between items-center mb-4 mt-8">
+      <h2 class="text-xl font-semibold text-gray-700">Admission History:</h2>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 text-left text-gray-600">Admission ID</th>
+            <th class="px-4 py-2 text-left text-gray-600">Date</th>
+            <th class="px-4 py-2 text-left text-gray-600">Room Number</th>
+            <th class="px-4 py-2 text-left text-gray-600">Room Type</th>
+            <th class="px-4 py-2 text-left text-gray-600">Availability Status</th>
+            <th class="px-4 py-2 text-left text-gray-600">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-200" *ngFor="let admission of admissions">
+            <td class="px-4 py-2">{{ admission.id }}</td>
+            <td class="px-4 py-2">{{ admission.date | date: 'short' }}</td>
+            <td class="px-4 py-2">{{ admission.roomNumber }}</td>
+            <td class="px-4 py-2">{{ admission.roomType }}</td>
+            <td class="px-4 py-2">{{ admission.availabilityStatus }}</td>
+            <td class="px-4 py-2">{{ admission.remarks }}</td>
+          </tr>  
+        </tbody>
+      </table>  
+    </div>  
+  </div>  
 </ng-container>  

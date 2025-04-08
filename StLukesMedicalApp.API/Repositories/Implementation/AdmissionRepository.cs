@@ -42,6 +42,10 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
             {
                 admissions = admissions.Where(x =>
                     x.RoomNumber.Contains(query) ||
+                    x.AvailabilityStatus.Contains(query) ||
+                    x.Doctors.Any(d => d.FirstName.Contains(query) || d.LastName.Contains(query)) ||
+                    x.Patients.Any(p => p.FirstName.Contains(query) || p.LastName.Contains(query)) ||
+                    x.Nurses.Any(p => p.FirstName.Contains(query) || p.LastName.Contains(query)) ||
                     x.RoomType.Contains(query));
             }
 
