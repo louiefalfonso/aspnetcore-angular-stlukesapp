@@ -126,5 +126,18 @@ namespace StLukesMedicalApp.API.Repositories.Implementation
         {
             return await dbContext.Patients.CountAsync();
         }
+
+        public async Task<IEnumerable<Patient>> CreateInBulkAsync(IEnumerable<Patient> patients)
+        {
+            if (patients == null || !patients.Any())
+            {
+                throw new ArgumentException("Patients collection cannot be null or empty.");
+            }
+
+            await dbContext.Patients.AddRangeAsync(patients);
+            await dbContext.SaveChangesAsync();
+
+            return patients;
+        }
     }
 }
