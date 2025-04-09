@@ -14,9 +14,9 @@ namespace StLukesMedicalApp.API.Tests.Repository
         public PatientRepositoryTests() 
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-               .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .EnableSensitiveDataLogging()
-            .Options;
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .EnableSensitiveDataLogging()
+                .Options;
 
             dbContext = new ApplicationDbContext(options);
             dbContext.Database.EnsureDeleted();
@@ -59,7 +59,7 @@ namespace StLukesMedicalApp.API.Tests.Repository
             };
 
             var dbContext = new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase("TestDb").Options);
+                .UseInMemoryDatabase("StLukesAppDB").Options);
 
             var repository = new PatientRepository(dbContext);
 
