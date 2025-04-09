@@ -208,5 +208,17 @@ namespace StLukesMedicalApp.API.Controllers
             var count = await patientRepository.GetCount();
             return Ok(count);
         }
+
+        [HttpPost("import")]
+        public async Task<IActionResult> CreatePatientsInBulk([FromBody] IEnumerable<Patient> patients)
+        {
+            if (patients == null || !patients.Any())
+            {
+                return BadRequest("Patients collection cannot be null or empty.");
+            }
+
+            var createdPatients = await patientRepository.CreateInBulkAsync(patients);
+            return Ok(createdPatients);
+        }
     }
 }

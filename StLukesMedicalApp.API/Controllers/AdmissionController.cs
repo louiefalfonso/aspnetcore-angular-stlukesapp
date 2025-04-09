@@ -30,6 +30,7 @@ namespace StLukesMedicalApp.API.Controllers
             this.patientRepository = patientRepository;
         }
 
+    
         // add new admission
         [HttpPost]
         public async Task<IActionResult> CreateNewAdmission([FromBody] CreateAdmissionRequestDto request)
@@ -142,6 +143,7 @@ namespace StLukesMedicalApp.API.Controllers
 
             return Ok(response);
         }
+
 
         // get all admissions
         [HttpGet]
@@ -435,5 +437,7 @@ namespace StLukesMedicalApp.API.Controllers
             var count = await admissionRepository.GetCount();
             return Ok(count);
         }
+
+     
     }
 }

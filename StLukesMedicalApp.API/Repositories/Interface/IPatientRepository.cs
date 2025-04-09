@@ -23,5 +23,8 @@ namespace StLukesMedicalApp.API.Repositories.Interface
         Task<Patient?> DeleteAsync(Guid id);
 
         Task<int> GetCount();
+
+        Task<IEnumerable<Patient>> CreateInBulkAsync(IEnumerable<Patient> patients);
+
     }
 }
