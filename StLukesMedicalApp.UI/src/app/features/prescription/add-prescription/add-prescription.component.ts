@@ -27,6 +27,9 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
  
   //add unsubcribe from observables
    private addPrescriptionSubscription ?: Subscription;
+
+  // Add toast visibility property
+  showToast: boolean = false;
    
   // add constructor
   constructor(
@@ -60,7 +63,11 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
     this.prescriptionService.addNewPresctiption(this.model)
     .subscribe({
       next: (response) => {
-        this.router.navigate(['/admin/prescriptions']);  
+        this.showToast = true; 
+        setTimeout(() => {
+          this.showToast = false;
+          this.router.navigate(['/admin/prescriptions']);  
+        }, 2000);
       },
       error: (error) => {
         console.error(error);

@@ -21,6 +21,8 @@ export class AddDoctorComponent implements OnDestroy{
   // add subcribe from observables
    private addDoctorSubscription ?: Subscription;
   
+  // Add toast visibility property
+  showToast: boolean = false;
 
   // add constructor
   constructor(
@@ -44,7 +46,11 @@ export class AddDoctorComponent implements OnDestroy{
     this.addDoctorSubscription = this.doctorService.addNewDoctor(this.model)
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/admin/doctors']);  
+          this.showToast = true; 
+          setTimeout(() => {
+            this.showToast = false;
+            this.router.navigate(['/admin/doctors']);
+          }, 2000);
         },
         error: (error) => {
           console.error(error);

@@ -26,6 +26,10 @@ export class EditPatientComponent implements OnInit, OnDestroy {
   // add patient object
   model?: Patient;
 
+ // Add toast visibility property
+  showToast: boolean = false;
+  toastMessage: string = '';
+
   // add constructor and inject the necessary services
   constructor(
       private patientService: PatientService,
@@ -74,7 +78,12 @@ export class EditPatientComponent implements OnInit, OnDestroy {
       this.editPatientSubscription =  this.patientService.updatePatient(this.id,updatePatientRequest)
       .subscribe({
           next: (response) => {
-            this.router.navigate(['/admin/patients']);  
+            this.toastMessage = 'Patient Updated Successfully!';
+            this.showToast = true; 
+            setTimeout(() => {
+              this.showToast = false;
+              this.router.navigate(['/admin/patients']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);
@@ -89,7 +98,12 @@ export class EditPatientComponent implements OnInit, OnDestroy {
       if(this.id){
        this.deletePatientSubscription = this.patientService.deletePatient(this.id).subscribe({
           next: (response) => {
-            this.router.navigate(['/admin/patients']);  
+            this.toastMessage = 'Patient Deleted Successfully!';
+            this.showToast = true;
+            setTimeout(() => {
+              this.showToast = false; 
+              this.router.navigate(['/admin/patients']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);

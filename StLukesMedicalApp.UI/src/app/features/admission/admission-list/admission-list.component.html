@@ -18,38 +18,38 @@
         <table class="min-w-full bg-white border border-gray-200">
             <thead>
                 <tr class="bg-gray-100">
-                    <th class="px-4 py-2 text-left text-gray-600">Admission Date</th>
-                    <th class="px-4 py-2 text-left text-gray-600">Room Number</th>
-                    <th class="px-4 py-2 text-left text-gray-600">Room Type</th>
-                    <th class="px-4 py-2 text-left text-gray-600">Availability Status</th>
-                    <th class="px-4 py-2 text-left text-gray-600">Patient's Name</th>
-                    <th class="px-4 py-2 text-left text-gray-600">Ordered By</th>
-                    <th class="px-4 py-2 text-left text-gray-600">Assigned Nurse</th>
+                    <th class="px-2 py-2 text-center text-gray-600">Admission Date</th>
+                    <th class="px-4 py-2 text-center text-gray-600">Room Number</th>
+                    <th class="px-4 py-2 text-center text-gray-600">Room Type</th>
+                    <th class="px-4 py-2 text-center text-gray-600">Availability Status</th>
+                    <th class="px-4 py-2 text-center text-gray-600">Patient's Name</th>
+                    <th class="px-4 py-2 text-center text-gray-600">Assigned Doctor</th>
+                    <th class="px-4 py-2 text-center text-gray-600">Assigned Nurse</th>
                   <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="border-t border-gray-200" *ngFor="let admission of admissions">
-                    <td class="px-4 py-2">{{admission.date | date: 'short'}}</td>
-                    <td class="px-4 py-2">{{admission.roomNumber}}</td>
-                    <td class="px-4 py-2">{{admission.roomType}}</td>
-                    <td class="px-4 py-2">{{admission.availabilityStatus}}</td>
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-2 text-center">{{admission.date | date: 'short'}}</td>
+                    <td class="px-4 py-2 text-center">{{admission.roomNumber}}</td>
+                    <td class="px-4 py-2 text-center">{{admission.roomType}}</td>
+                    <td class="px-4 py-2 text-center">{{admission.availabilityStatus}}</td>
+                    <td class="px-4 py-2 text-center ">
                         <span *ngFor="let patient of admission.patients; let i = index">
                             {{ patient.firstName }} {{ patient.lastName }} <span *ngIf="i < admission.patients.length - 1">, </span>
                         </span>
                     </td>
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-2 text-center">
                         <span *ngFor="let doctor of admission.doctors; let i = index">
                            Dr. {{ doctor.firstName }} {{ doctor.lastName }} <span *ngIf="i < admission.doctors.length - 1">, </span>
                         </span>
                     </td>
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-2 text-center">
                         <span *ngFor="let nurse of admission.nurses; let i = index">
-                           {{ nurse.firstName }} {{ nurse.lastName }} <span *ngIf="i < admission.nurses.length - 1">, </span>
+                           {{ nurse.firstName }} {{ nurse.lastName }}, RN, BSN<span *ngIf="i < admission.nurses.length - 1">, </span>
                         </span>
                     </td>
-                    <td class="px-4 py-2">
+                    <td class="px-4 py-2 text-center">
                         <button class="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600" [routerLink]="['/admin/admissions', admission.id]" >Edit</button>
                     </td>
                 </tr>    

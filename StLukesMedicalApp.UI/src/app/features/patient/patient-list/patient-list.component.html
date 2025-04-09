@@ -18,32 +18,28 @@
       <table class="min-w-full bg-white border border-gray-200">
         <thead>
           <tr class="bg-gray-100">
-            <th class="px-4 py-2 text-left text-gray-600">First Name</th>
-            <th class="px-4 py-2 text-left text-gray-600">Last Name</th>
-            <th class="px-4 py-2 text-left text-gray-600">Age</th>
-            <th class="px-4 py-2 text-left text-gray-600">Sex</th>
-            <th class="px-4 py-2 text-left text-gray-600">Contact Number</th>
-            <th class="px-4 py-2 text-left text-gray-600">Address</th>
-            <th class="px-4 py-2 text-left text-gray-600">Patient Type</th>
-            <th class="px-4 py-2 text-left text-gray-600">Diagnosis</th>
+            <th class="px-2 py-2 text-center text-gray-600">First Name</th>
+            <th class="px-2 py-2 text-center text-gray-600">Last Name</th>
+            <th class="px-2 py-2 text-center text-gray-600">Age</th>
+            <th class="px-2 py-2 text-center text-gray-600">Sex</th>
+            <th class="px-2 py-2 text-center text-gray-600">Patient Type</th>
+            <th class="px-2 py-2 text-center text-gray-600">Diagnosis</th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr class="border-t border-gray-200" *ngFor="let patient of patients">
-            <td class="px-4 py-2">{{patient.firstName}}</td>
-            <td class="px-4 py-2">{{patient.lastName}}</td>
-            <td class="px-4 py-2">{{patient.age}}</td>
-            <td class="px-4 py-2">{{patient.sex}}</td>
-            <td class="px-4 py-2">{{patient.contactNumber}}</td>
-            <td class="px-4 py-2">{{patient.address}}</td>
-            <td class="px-4 py-2">{{patient.patientType}}</td>
-            <td class="px-4 py-2">{{patient.diagnosis}}</td>
-            <td class="py-2">
+            <td class="px-2 py-1 text-center">{{ patient.firstName }}</td>
+            <td class="px-2 py-1 text-center">{{ patient.lastName }}</td>
+            <td class="px-2 py-1 text-center">{{ patient.age }}</td>
+            <td class="px-2 py-1 text-center">{{ patient.sex }}</td>
+            <td class="px-2 py-1 text-center">{{ patient.patientType }}</td>
+            <td class="px-2 py-1">{{ patient.diagnosis }}</td>
+            <td class="py-2 text-center">
               <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"  [routerLink]="['/admin/patients/details/', patient.id]" >View</button>
             </td>
-            <td class="px-4 py-2">
+            <td class="px-2 text-center">
               <button class="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600"  [routerLink]="['/admin/patients', patient.id]" >Update</button>
             </td>
           </tr>
