@@ -118,6 +118,8 @@
             <th class="px-4 py-2 text-left text-gray-600">Room Number</th>
             <th class="px-4 py-2 text-left text-gray-600">Room Type</th>
             <th class="px-4 py-2 text-left text-gray-600">Availability Status</th>
+            <th class="px-4 py-2 text-center text-gray-600">Assigned Doctor</th>
+            <th class="px-4 py-2 text-center text-gray-600">Assigned Nurse</th>
             <th class="px-4 py-2 text-left text-gray-600">Remarks</th>
           </tr>
         </thead>
@@ -127,6 +129,20 @@
             <td class="px-4 py-2">{{ admission.roomNumber }}</td>
             <td class="px-4 py-2">{{ admission.roomType }}</td>
             <td class="px-4 py-2">{{ admission.availabilityStatus }}</td>
+            <td class="px-4 py-2">
+              <ul>
+                <li *ngFor="let doctor of admission.doctors">
+                  Dr. {{ doctor.firstName }} {{ doctor.lastName }}
+                </li>
+              </ul>
+            </td>
+            <td class="px-4 py-2">
+              <ul>
+                <li *ngFor="let nurse of admission.nurses">
+                  {{ nurse.firstName }} {{ nurse.lastName }}, RN
+                </li>
+              </ul>
+            </td>
             <td class="px-4 py-2">{{ admission.remarks }}</td>
           </tr>  
         </tbody>
