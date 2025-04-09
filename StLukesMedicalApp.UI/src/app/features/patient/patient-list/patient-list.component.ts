@@ -20,7 +20,7 @@ export class PatientListComponent implements OnInit {
   totalCount?: number;
   list: number[] = [];
   pageNumber = 1;
-  pageSize = 5;
+  pageSize = 10;
 
   // add constructor
   constructor(

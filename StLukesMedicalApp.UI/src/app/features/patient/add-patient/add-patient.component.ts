@@ -21,6 +21,9 @@ export class AddPatientComponent implements OnDestroy{
   // add unsubcribe from observables
  private addPatientSubscription ?: Subscription;
 
+  // Add toast visibility property
+  showToast: boolean = false;
+
   // add constructor
   constructor(
     private patientService : PatientService,
@@ -44,7 +47,11 @@ export class AddPatientComponent implements OnDestroy{
     this.addPatientSubscription = this.patientService.addPatient(this.model)
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/admin/patients']);  
+          this.showToast = true; 
+          setTimeout(() => {
+            this.showToast = false;
+            this.router.navigate(['/admin/patients']);
+          }, 2000);
         },
         error: (error) => {
           console.error(error);
