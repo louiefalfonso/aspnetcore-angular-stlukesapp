@@ -18,19 +18,21 @@
         <table class="min-w-full bg-white border border-gray-200">
             <thead>
                 <tr class="bg-gray-100">
-                  <th class="px-4 py-2 text-left text-gray-600">Prescription Id</th>
                   <th class="px-4 py-2 text-left text-gray-600">Date Issued</th>
-                  <th class="px-4 py-2 text-left text-gray-600">Patient's Full Name</th>
-                  <th class="px-4 py-2 text-left text-gray-600">Ordered By</th>
                   <th class="px-4 py-2 text-left text-gray-600">Medication</th>
                   <th class="px-4 py-2 text-left text-gray-600">Dosage</th>
+                  <th class="px-4 py-2 text-left text-gray-600">Patient's Full Name</th>
+                  <th class="px-4 py-2 text-left text-gray-600">Ordered By</th>
+                  
+                  <th></th>
                   <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="border-t border-gray-200" *ngFor="let prescription of prescriptions">
-                    <td class="px-4 py-2">{{prescription.id}}</td>
                     <td class="px-4 py-2">{{prescription.dateIssued | date: 'short'}}</td>
+                    <td class="px-4 py-2">{{prescription.medicationList}}</td>
+                    <td class="px-4 py-2">{{prescription.dosage}}</td>
                     <td class="px-4 py-2">
                         <span *ngFor="let patient of prescription.patients; let i = index">
                             {{ patient.firstName }} {{ patient.lastName }} <span *ngIf="i < prescription.patients.length - 1">, </span>
@@ -41,10 +43,11 @@
                           Dr.  {{ doctor.firstName }} {{ doctor.lastName }} <span *ngIf="i < prescription.doctors.length - 1">, </span>
                         </span>
                     </td>
-                    <td class="px-4 py-2">{{prescription.medicationList}}</td>
-                    <td class="px-4 py-2">{{prescription.dosage}}</td>
-                    <td class="px-4 py-2">
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/prescriptions', prescription.id]" >Edit</button>
+                    <td class="py-2 text-center">
+                      <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/prescriptions/details', prescription.id]" >View</button>
+                  </td>
+                    <td class="px-2">
+                        <button class="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600" [routerLink]="['/admin/prescriptions', prescription.id]" >Update</button>
                     </td>
                 </tr>
             </tbody>
