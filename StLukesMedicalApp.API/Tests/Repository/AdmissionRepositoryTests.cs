@@ -100,9 +100,9 @@ namespace StLukesMedicalApp.API.Tests.Repository
             {
                 Id = Guid.NewGuid(),
                 RoomNumber = "101",
-                RoomType = "Single", // Required property
-                AvailabilityStatus = "Available", // Required property
-                Remarks = "Test Admission", // Required property
+                RoomType = "Single", 
+                AvailabilityStatus = "Available", 
+                Remarks = "Test Admission",
                 Doctors = new List<Doctor>(),
                 Patients = new List<Patient>(),
                 Nurses = new List<Nurse>()
@@ -192,7 +192,6 @@ namespace StLukesMedicalApp.API.Tests.Repository
             var deletedAdmission = await admissionRepository.GetByIdAsync(admission.Id);
             Assert.Null(deletedAdmission);
         }
-
 
         [Fact]
         public async Task GetCount_ShouldReturnCorrectCount()

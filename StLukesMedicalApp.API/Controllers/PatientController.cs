@@ -3,6 +3,7 @@ using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using StLukesMedicalApp.API.Models.Domain;
 using StLukesMedicalApp.API.Models.DTO;
+using StLukesMedicalApp.API.Repositories.Implementation;
 using StLukesMedicalApp.API.Repositories.Interface;
 
 namespace StLukesMedicalApp.API.Controllers
@@ -25,6 +26,7 @@ namespace StLukesMedicalApp.API.Controllers
             // map dto to domain model
             var patient = new Patient
             {
+
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Email = request.Email,
@@ -42,6 +44,7 @@ namespace StLukesMedicalApp.API.Controllers
             // map domail model to dto
             var response = new PatientDto
              {
+                 Id = patient.Id,
                  FirstName = patient.FirstName,
                  LastName = patient.LastName,
                  Email = patient.Email,
@@ -201,6 +204,7 @@ namespace StLukesMedicalApp.API.Controllers
             return Ok(response);
         }
 
+
         // Get Count
         [HttpGet]
         [Route("count")]
@@ -209,71 +213,5 @@ namespace StLukesMedicalApp.API.Controllers
             var count = await patientRepository.GetCount();
             return Ok(count);
         }
-
-        [HttpPost("import")]
-        public async Task<IActionResult> CreatePatientsInBulk([FromBody] IEnumerable<Patient> patients)
-        {
-            if (patients == null || !patients.Any())
-            {
-                return BadRequest("Patients collection cannot be null or empty.");
-            }
-
-            // Initialize navigation properties for each patient
-            foreach (var patient in patients)
-            {
-                patient.Billings ??= new List<Billing>();
-                patient.Admissions ??= new List<Admission>();
-                patient.Appointments ??= new List<Appointment>();
-                patient.Prescriptions ??= new List<Prescription>();
-            }
-
-            try
-            {
-                var createdPatients = await patientRepository.CreateInBulkAsync(patients);
-                return Ok(createdPatients);
-            }
-            catch (Exception ex)
-            {
-                // Log the exception if necessary
-                return BadRequest("An error occurred while creating patients in bulk.");
-            }
-        }
-
-        [HttpPost("bulk")]
-        public async Task<IActionResult> CreatePatientsInBulkCSV([FromForm] IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest("CSV file is required.");
-            }
-
-            var patients = new List<Patient>();
-
-            using (var stream = new StreamReader(file.OpenReadStream()))
-            using (var csv = new CsvReader(stream, CultureInfo.InvariantCulture))
-            {
-                try
-                {
-                    patients = csv.GetRecords<Patient>().ToList();
-
-                    // Initialize navigation properties
-                    foreach (var patient in patients)
-                    {
-                        patient.Billings ??= new List<Billing>();
-                        patient.Admissions ??= new List<Admission>();
-                        patient.Appointments ??= new List<Appointment>();
-                        patient.Prescriptions ??= new List<Prescription>();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"Error parsing CSV file: {ex.Message}");
-                }
-            }
-
-            var createdPatients = await patientRepository.CreateInBulkAsync(patients);
-            return Ok(createdPatients);
-        }
-
     }
 }
