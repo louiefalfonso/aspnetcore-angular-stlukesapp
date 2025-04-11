@@ -2,15 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
-import { Observable, of, Subscription, switchMap } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AdmissionService } from '../services/admission.service';
 import { Admission } from '../models/adminssion.models';
 import { Patient } from '../../patient/models/patient.models';
-import { PatientService } from '../../patient/services/patient.service';
 import { Doctor } from '../../doctor/models/doctor.models';
-import { DoctorService } from '../../doctor/services/doctor.service';
 import { Nurse } from '../../nurse/models/nurse.models';
-import { NurseService } from '../../nurse/services/nurse.service';
 
 @Component({
   selector: 'app-admission-detail',
@@ -20,7 +17,7 @@ import { NurseService } from '../../nurse/services/nurse.service';
 })
 export class AdmissionDetailComponent implements OnInit{
 
-  // add properties for patientId, doctorId, billingId and admissionId
+  // add properties for patient, doctor and admission
   AdmissionsId!:string;
   PatientsId!: string; 
   DoctorsId!:string;
@@ -37,7 +34,7 @@ export class AdmissionDetailComponent implements OnInit{
     private route: ActivatedRoute
   ) {}
 
-  // Lifecycle hook: OnInit
+  // implement ngOnInit lifecycle hook
   ngOnInit(): void {
     
      // Get the admission ID from the route parameters

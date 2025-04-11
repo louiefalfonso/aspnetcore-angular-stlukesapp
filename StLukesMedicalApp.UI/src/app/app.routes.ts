@@ -22,6 +22,7 @@ import { EditAdmissionComponent } from './features/admission/edit-admission/edit
 import { DoctorDetailComponent } from './features/doctor/doctor-detail/doctor-detail.component';
 import { NurseDetailComponent } from './features/nurse/nurse-detail/nurse-detail.component';
 import { AdmissionDetailComponent } from './features/admission/admission-detail/admission-detail.component';
+import { PrescriptionDetailComponent } from './features/prescription/prescription-detail/prescription-detail.component';
 
 export const routes: Routes = [
     {
@@ -100,6 +101,10 @@ export const routes: Routes = [
     {
         path:"admin/prescriptions/:id",
         component: EditPrescriptionComponent, 
+    },
+    {
+        path:"admin/prescriptions/details/:id",
+        component: PrescriptionDetailComponent, 
     },
     {
         path:"admin/admissions",
