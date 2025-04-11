@@ -136,6 +136,8 @@ namespace StLukesMedicalApp.API.Controllers
                     PhoneNumber = x.PhoneNumber,
                     BadgeNumber = x.BadgeNumber,
                     Qualifications = x.Qualifications,
+                    Department =x.Department,
+                    Schedule = x.Schedule,
 
                 }).ToList()
 
@@ -208,6 +210,8 @@ namespace StLukesMedicalApp.API.Controllers
                             PhoneNumber = x.PhoneNumber,
                             BadgeNumber = x.BadgeNumber,
                             Qualifications = x.Qualifications,
+                            Department = x.Department,
+                            Schedule = x.Schedule,
 
                         }).ToList()
                     });
@@ -275,6 +279,8 @@ namespace StLukesMedicalApp.API.Controllers
                     PhoneNumber = x.PhoneNumber,
                     BadgeNumber = x.BadgeNumber,
                     Qualifications = x.Qualifications,
+                    Department = x.Department,
+                    Schedule = x.Schedule,
 
                 }).ToList()
             };
@@ -291,6 +297,7 @@ namespace StLukesMedicalApp.API.Controllers
             // convert DTO to domain model
             var admission = new Admission
             {
+                Id = id,
                 RoomNumber = request.RoomNumber,
                 RoomType = request.RoomType,
                 AvailabilityStatus = request.AvailabilityStatus,
@@ -394,6 +401,8 @@ namespace StLukesMedicalApp.API.Controllers
                     PhoneNumber = x.PhoneNumber,
                     BadgeNumber = x.BadgeNumber,
                     Qualifications = x.Qualifications,
+                    Department = x.Department,
+                    Schedule = x.Schedule
 
                 }).ToList()
             };

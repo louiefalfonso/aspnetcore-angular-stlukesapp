@@ -204,7 +204,6 @@ namespace StLukesMedicalApp.API.Controllers
             return Ok(response);
         }
 
-
         // Get Count
         [HttpGet]
         [Route("count")]
