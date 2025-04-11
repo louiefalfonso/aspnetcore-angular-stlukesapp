@@ -21,6 +21,7 @@ import { AddAdmissionComponent } from './features/admission/add-admission/add-ad
 import { EditAdmissionComponent } from './features/admission/edit-admission/edit-admission.component';
 import { DoctorDetailComponent } from './features/doctor/doctor-detail/doctor-detail.component';
 import { NurseDetailComponent } from './features/nurse/nurse-detail/nurse-detail.component';
+import { AdmissionDetailComponent } from './features/admission/admission-detail/admission-detail.component';
 
 export const routes: Routes = [
     {
@@ -111,5 +112,9 @@ export const routes: Routes = [
     {
         path:"admin/admissions/:id",
         component: EditAdmissionComponent, 
+    },
+    {
+        path:"admin/admissions/details/:id",
+        component: AdmissionDetailComponent, 
     },
 ];

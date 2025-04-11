@@ -11,8 +11,6 @@ import { PatientService } from '../../patient/services/patient.service';
 import { DoctorService } from '../../doctor/services/doctor.service';
 import { UpdatePrescriptionRequest } from '../models/update-prescription-request.models';
 
-
-
 @Component({
   selector: 'app-edit-prescription',
   imports: [RouterModule, FormsModule, CommonModule],
@@ -44,7 +42,7 @@ export class EditPrescriptionComponent implements OnInit, OnDestroy{
     private router: Router
   ) {}
 
-  // add billing object
+  // add prescription object
   prescription?: Prescription;
 
   // implement ngOnInit lifecycle hook
@@ -87,7 +85,7 @@ export class EditPrescriptionComponent implements OnInit, OnDestroy{
         doctors: this.selectedDoctors ?? [],
       }
 
-    //pass this object to the service
+    // pass this object to the service
     if(this.id){
       this.editPrescriptionSubscription =  this.prescriptionService.updatePrescription(this.id,updatePrescriptionRequest)
       .subscribe({
@@ -122,6 +120,8 @@ export class EditPrescriptionComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {
     this.getPrescriptionSubscription?.unsubscribe();
     this.routeSubscription?.unsubscribe();
+    this.editPrescriptionSubscription?.unsubscribe();
+    this.deletePrescriptionSubscription?.unsubscribe();
   }
 
 }

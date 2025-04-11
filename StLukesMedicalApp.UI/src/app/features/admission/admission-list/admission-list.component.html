@@ -25,7 +25,8 @@
                     <th class="px-4 py-2 text-center text-gray-600">Patient's Name</th>
                     <th class="px-4 py-2 text-center text-gray-600">Assigned Doctor</th>
                     <th class="px-4 py-2 text-center text-gray-600">Assigned Nurse</th>
-                  <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -46,11 +47,14 @@
                     </td>
                     <td class="px-4 py-2 text-center">
                         <span *ngFor="let nurse of admission.nurses; let i = index">
-                           {{ nurse.firstName }} {{ nurse.lastName }}, RN, BSN<span *ngIf="i < admission.nurses.length - 1">, </span>
+                           {{ nurse.firstName }} {{ nurse.lastName }}, RN<span *ngIf="i < admission.nurses.length - 1">, </span>
                         </span>
                     </td>
-                    <td class="px-4 py-2 text-center">
-                        <button class="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600" [routerLink]="['/admin/admissions', admission.id]" >Edit</button>
+                    <td class="py-2 text-center">
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" [routerLink]="['/admin/admissions/details', admission.id]" >View</button>
+                    </td>
+                    <td class="px-2 text-center">
+                        <button class="bg-violet-500 text-white px-4 py-2 rounded hover:bg-violet-600" [routerLink]="['/admin/admissions', admission.id]" >Update</button>
                     </td>
                 </tr>    
             </tbody>
