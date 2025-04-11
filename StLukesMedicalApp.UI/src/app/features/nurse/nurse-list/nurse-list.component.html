@@ -23,6 +23,7 @@
                 <th class="px-4 py-2 text-left text-gray-600">Contact Number</th>
                 <th class="px-4 py-2 text-left text-gray-600">Badge Number</th>
                 <th class="px-4 py-2 text-left text-gray-600">Department</th>
+                <th class="px-4 py-2 text-left text-gray-600">Schedule</th>
                 <th></th>
               </tr>
             </thead>
@@ -33,6 +34,7 @@
                     <td class="px-4 py-2">{{nurse.phoneNumber}}</td>
                     <td class="px-4 py-2">{{nurse.badgeNumber}}</td>
                     <td class="px-4 py-2">{{nurse.department}}</td>
+                    <td class="px-4 py-2">{{nurse.schedule}}</td>
                     <td class="px-4 py-2">
                         <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"  [routerLink]="['/admin/nurses', nurse.id]">Edit</button>
                       </td>

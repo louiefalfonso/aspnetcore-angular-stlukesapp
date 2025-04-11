@@ -32,8 +32,7 @@ export class PatientDetailComponent implements OnInit{
   patients$?: Observable<Patient>;
   admissions$?: Observable<Admission[]>; 
 
-  // add Subscription
-  routeSubscription?: Subscription;
+
 
   // add constructor
   constructor(

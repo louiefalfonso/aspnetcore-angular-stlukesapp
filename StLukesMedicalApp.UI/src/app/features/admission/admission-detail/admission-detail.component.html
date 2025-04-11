@@ -1,0 +1,135 @@
+<!-- Admission Details Section -->
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold text-gray-700">Admission Details:</h2>
+    <button
+      class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      type="button" [routerLink]="['/admin/admissions']">Back</button>
+</div>
+<div class="overflow-x-auto">
+    <ng-container *ngIf="admissions$ | async as admission">
+        <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-4 py-2 text-center text-gray-600 break-words">Admission Date</th>
+                  <th class="px-4 py-2 text-center text-gray-600 break-words">Room Number</th>
+                  <th class="px-4 py-2 text-center text-gray-600 break-words">Room Type</th>
+                  <th class="px-4 py-2 text-center text-gray-600 break-words">Availability Status</th>
+                  <th class="px-4 py-2 text-center text-gray-600 break-words">Remarks</th>
+                  <th class="px-4 py-2 text-center text-gray-600 break-words">Assigned Doctor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-t border-gray-200">
+                  <td class="px-4 py-2 text-center break-words">{{admission.date | date: 'short'}}</td>
+                  <td class="px-4 py-2 text-center break-words">RM {{ admission.roomNumber }}</td>
+                  <td class="px-4 py-2 text-center break-words">{{ admission.roomType }}</td>
+                  <td class="px-4 py-2 text-center break-words">{{admission.availabilityStatus}}</td>
+                  <td class="px-4 py-2 text-center break-words">{{admission.remarks}}</td>
+                 <td class="px-4 py-2 text-center">
+                    <span *ngFor="let doctor of admission.doctors; let i = index">
+                       Dr. {{ doctor.firstName }} {{ doctor.lastName }} <span *ngIf="i < admission.doctors.length - 1">, </span>
+                    </span>
+                </td>
+                </tr>
+            </tbody>            
+        </table>
+    </ng-container>
+</div>
+
+<!-- Patient Section --> 
+<ng-container *ngIf="patients$ | async as patients">
+  <div *ngIf="patients.length > 0">
+    <div class="flex justify-between items-center mb-4 mt-8">
+      <h2 class="text-xl font-semibold text-gray-700">Admitted Patient(s):</h2>
+    </div>
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="px-4 py-2 text-center text-gray-600">First Name</th>
+          <th class="px-4 py-2 text-center text-gray-600">Last Name</th>
+          <th class="px-4 py-2 text-center text-gray-600">Age</th>
+          <th class="px-4 py-2 text-center text-gray-600">Sex</th>
+          <th class="px-4 py-2 text-center text-gray-600">Patient Type</th>
+          <th class="px-4 py-2 text-center text-gray-600">Diagnosis</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="border-t border-gray-200" *ngFor="let patient of patients">
+          <td class="px-4 py-2 text-center">{{ patient.firstName }}</td>
+          <td class="px-4 py-2 text-center">{{ patient.lastName }}</td>
+          <td class="px-4 py-2 text-center">{{ patient.age }}</td>
+          <td class="px-4 py-2 text-center">{{ patient.sex }}</td>
+          <td class="px-4 py-2 text-center">{{ patient.patientType }}</td>
+          <td class="px-4 py-2 text-center">{{ patient.diagnosis }}</td>
+      </tbody>
+    </table>  
+  </div>
+</ng-container>
+
+<!-- Doctor Section --> 
+<ng-container *ngIf="doctors$ | async as doctors">
+  <div *ngIf="doctors.length > 0">
+    <div class="flex justify-between items-center mb-4 mt-8">
+      <h2 class="text-xl font-semibold text-gray-700">Assigned Doctor(s):</h2>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 text-left text-gray-600 break-words">Full Name</th>
+            <th class="px-4 py-2 text-left text-gray-600 break-words">Email</th>
+            <th class="px-4 py-2 text-left text-gray-600 break-words">Contact Number</th>
+            <th class="px-4 py-2 text-left text-gray-600 break-words">Specialization</th>
+            <th class="px-4 py-2 text-left text-gray-600 break-words">Department</th>
+            <th class="px-4 py-2 text-left text-gray-600 break-words">Schedule</th>
+          </tr>  
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-200" *ngFor="let doctor of doctors">
+            <td class="px-4 py-2"> Dr. {{ doctor.firstName }} {{ doctor.lastName }}</td>
+            <td class="px-4 py-2"> {{ doctor.email }}</td>
+            <td class="px-4 py-2"> {{ doctor.contactNumber }}</td>
+            <td class="px-4 py-2"> {{ doctor.specialization }}</td>
+            <td class="px-4 py-2"> {{ doctor.department }}</td>
+            <td class="px-4 py-2"> {{ doctor.schedule }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>      
+  </div>
+</ng-container> 
+
+ <!-- Nurse Section --> 
+ <ng-container *ngIf="nurses$ | async as nurses">
+  <div *ngIf="nurses.length > 0">
+    <div class="flex justify-between items-center mb-4 mt-8">
+      <h2 class="text-xl font-semibold text-gray-700">Assigned Nurse(s):</h2>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+          <th class="px-4 py-2 text-left text-gray-600">Full Name</th>
+          <th class="px-4 py-2 text-left text-gray-600">Email</th>
+          <th class="px-4 py-2 text-left text-gray-600">Contact Number</th>
+          <th class="px-4 py-2 text-left text-gray-600">Badge Number</th>
+          <th class="px-4 py-2 text-left text-gray-600">Department</th>
+          <th class="px-4 py-2 text-left text-gray-600">Schedule</th>
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-200" *ngFor="let nurse of nurses">
+            <td class="px-4 py-2">{{nurse.firstName}} {{nurse.lastName}} RN</td>
+            <td class="px-4 py-2">{{nurse.emailAddress}}</td>
+            <td class="px-4 py-2">{{nurse.phoneNumber}}</td>
+            <td class="px-4 py-2">{{nurse.badgeNumber}}</td>
+            <td class="px-4 py-2">{{nurse.department}}</td>
+            <td class="px-4 py-2">{{nurse.schedule}}</td>
+          </tr>
+        </tbody>  
+      </table>
+    </div>    
+  </div>
+</ng-container>
+
+  

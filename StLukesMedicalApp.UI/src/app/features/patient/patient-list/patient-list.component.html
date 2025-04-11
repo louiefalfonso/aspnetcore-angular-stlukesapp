@@ -30,12 +30,12 @@
         </thead>
         <tbody>
           <tr class="border-t border-gray-200" *ngFor="let patient of patients">
-            <td class="px-2 py-1 text-center">{{ patient.firstName }}</td>
-            <td class="px-2 py-1 text-center">{{ patient.lastName }}</td>
-            <td class="px-2 py-1 text-center">{{ patient.age }}</td>
-            <td class="px-2 py-1 text-center">{{ patient.sex }}</td>
-            <td class="px-2 py-1 text-center">{{ patient.patientType }}</td>
-            <td class="px-2 py-1">{{ patient.diagnosis }}</td>
+            <td class="px-2 py-2 text-center">{{ patient.firstName }}</td>
+            <td class="px-2 py-2 text-center">{{ patient.lastName }}</td>
+            <td class="px-2 py-2 text-center">{{ patient.age }}</td>
+            <td class="px-2 py-2 text-center">{{ patient.sex }}</td>
+            <td class="px-2 py-2 text-center">{{ patient.patientType }}</td>
+            <td class="px-2 py-2">{{ patient.diagnosis }}</td>
             <td class="py-2 text-center">
               <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"  [routerLink]="['/admin/patients/details/', patient.id]" >View</button>
             </td>

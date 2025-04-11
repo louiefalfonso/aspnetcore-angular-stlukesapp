@@ -34,7 +34,8 @@ export class EditPatientComponent implements OnInit, OnDestroy {
   constructor(
       private patientService: PatientService,
       private router: Router,
-      private route : ActivatedRoute,) { } 
+      private route : ActivatedRoute
+    ) { } 
 
   // implement ngOnInit lifecycle hook
   ngOnInit(): void {
