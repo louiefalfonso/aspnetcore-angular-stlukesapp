@@ -318,7 +318,7 @@ namespace StLukesMedicalApp.API.Tests.Controller
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<Exception>(() => admissionsController.CreateNewAdmission(request));
-            Assert.Equal("Database error", exception.Message); // Verify the exception message
+            Assert.Equal("Database error", exception.Message);
         }
 
         [Fact]
@@ -373,15 +373,16 @@ namespace StLukesMedicalApp.API.Tests.Controller
         [Fact]
         public async Task GetCount_ShouldReturn_Failed()
         {
-            // Arrange
-            // Simulate an exception being thrown by the repository
+            // Arrange & Simulate an exception being thrown by the repository
             mockAdmissionRepository
                 .Setup(repo => repo.GetCount())
                 .ThrowsAsync(new Exception("Database error"));
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<Exception>(() => admissionsController.GetAdmissionsTotal());
-            Assert.Equal("Database error", exception.Message); // Verify the exception message
+
+            // Verify the exception message
+            Assert.Equal("Database error", exception.Message); 
         }
 
     }

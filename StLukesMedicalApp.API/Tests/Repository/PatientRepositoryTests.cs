@@ -70,6 +70,5 @@ namespace StLukesMedicalApp.API.Tests.Repository
             Assert.Equal(2, result.Count());
             Assert.Equal(2, await dbContext.Patients.CountAsync());
         }
-
     }
 }
