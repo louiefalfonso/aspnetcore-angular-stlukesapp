@@ -30,7 +30,7 @@
             <tbody>
                 <tr class="border-t border-gray-200" *ngFor="let appointment of appointments">
                     <td class="px-4 py-2 text-center">{{appointment.date | date: 'short'}}</td>
-                    <td class="px-4 py-2 text-center ">
+                    <td class="px-4 py-2 text-center">
                         <span *ngFor="let patient of appointment.patients; let i = index">
                             {{ patient.firstName }} {{ patient.lastName }} <span *ngIf="i < appointment.patients.length - 1">, </span>
                         </span>
@@ -40,7 +40,7 @@
                             {{ patient.patientType }} <span *ngIf="i < appointment.patients.length - 1">, </span>
                         </span>
                     </td>
-                    <td class="px-4 py-2 text-center break-word">
+                    <td class="px-4 py-2 text-center">
                         <span *ngFor="let doctor of appointment.doctors; let i = index">
                         Dr. {{ doctor.firstName }} {{ doctor.lastName }} <span *ngIf="i < appointment.doctors.length - 1">, </span>
                         </span>
