@@ -18,8 +18,11 @@ export class AddNurseComponent implements OnDestroy{
   // add model
   model: AddNurseRequest;
 
- // add subcribe from observables
-   private addNurseSubscription ?: Subscription;
+  // add subcribe from observables
+  private addNurseSubscription ?: Subscription;
+
+  // Add toast visibility property
+  showToast: boolean = false;
 
   // add constructor
   constructor(
@@ -45,7 +48,11 @@ export class AddNurseComponent implements OnDestroy{
     this.addNurseSubscription = this.nurseService.addNewNurse(this.model)
       .subscribe({
         next: (response) => {
-          this.router.navigate(['/admin/nurses']);  
+          this.showToast = true; 
+          setTimeout(() => {
+            this.showToast = false;
+            this.router.navigate(['/admin/nurses']);
+          }, 2000);
         },
         error: (error) => {
           console.error(error);
