@@ -23,6 +23,11 @@ namespace StLukesMedicalApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewPatient([FromBody] CreatePatientRequestDto request)
         {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
             // map dto to domain model
             var patient = new Patient
             {
@@ -39,6 +44,7 @@ namespace StLukesMedicalApp.API.Controllers
 
             };
 
+            // Add patient to repository
             await patientRepository.CreateAsync(patient);
 
             // map domail model to dto
@@ -132,6 +138,11 @@ namespace StLukesMedicalApp.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdatePatient([FromRoute] Guid id, UpdatePatientRequestDto request)
         {
+            if (request == null)
+            {
+                return BadRequest();
+            }
+
             // convert dto to domain model
             var patient = new Patient
             {

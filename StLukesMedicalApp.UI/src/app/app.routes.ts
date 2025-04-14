@@ -23,6 +23,10 @@ import { DoctorDetailComponent } from './features/doctor/doctor-detail/doctor-de
 import { NurseDetailComponent } from './features/nurse/nurse-detail/nurse-detail.component';
 import { AdmissionDetailComponent } from './features/admission/admission-detail/admission-detail.component';
 import { PrescriptionDetailComponent } from './features/prescription/prescription-detail/prescription-detail.component';
+import { AppointmentListComponent } from './features/appointment/appointment-list/appointment-list.component';
+import { AddAppointmentComponent } from './features/appointment/add-appointment/add-appointment.component';
+import { EditAppointmentComponent } from './features/appointment/edit-appointment/edit-appointment.component';
+import { AppointmentDetailComponent } from './features/appointment/appointment-detail/appointment-detail.component';
 
 export const routes: Routes = [
     {
@@ -122,4 +126,20 @@ export const routes: Routes = [
         path:"admin/admissions/details/:id",
         component: AdmissionDetailComponent, 
     },
+    {
+        path:"admin/appointments",
+        component: AppointmentListComponent, 
+    },
+    {
+        path:"admin/appointments/add",
+        component: AddAppointmentComponent, 
+    },
+    {
+        path:"admin/appointments/:id",
+        component: EditAppointmentComponent, 
+    },
+    {
+        path:"admin/appointments/details/:id",
+        component: AppointmentDetailComponent, 
+    }
 ];
