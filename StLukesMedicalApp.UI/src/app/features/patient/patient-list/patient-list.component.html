@@ -12,6 +12,17 @@
   </div>
 </div>
 
+<!--div class="my-6">
+  <h2 class="text-lg font-semibold text-gray-700 mb-4">Patient Gender Distribution</h2>
+  <div style="display: block; width: 100%; max-width: 600px; margin: auto;">
+    <canvas baseChart
+            [data]="genderChartData"
+            [chartType]="'pie'"
+            [options]="genderChartOptions">
+    </canvas>
+  </div>
+</div-->
+
 <!-- Table List -->
 <div class="overflow-x-auto">
     <ng-container *ngIf="patients$ | async as patients">

@@ -51,7 +51,7 @@
                         <div class="relative">
                             <select class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-2 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                     name="doctors" id="doctors" [(ngModel)]="selectedDoctors" required multiple >
-                                <option *ngFor="let doctor of doctors" [value]="doctor.id" class="p-2"> Dr. {{ doctor.firstName }} {{ doctor.lastName }} - {{ doctor.id}}</option>
+                                <option *ngFor="let doctor of doctors" [value]="doctor.id" class="p-2"> Dr. {{ doctor.firstName }} {{ doctor.lastName }} - {{ doctor.specialization}}</option>
                             </select>
                         </div>
                     </ng-container>

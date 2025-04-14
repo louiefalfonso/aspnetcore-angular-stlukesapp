@@ -67,8 +67,8 @@ export class PrescriptionService {
     return this.http.delete<Prescription>(`${environment.apiBaseUrl}/prescriptions/${id}`);
   }
 
-   // get billing count
-   getPrescriptionCount(): Observable<number> {
+  // get billing count
+  getPrescriptionCount(): Observable<number> {
     return this.http.get<number>(`${environment.apiBaseUrl}/prescriptions/count`);
   }
 

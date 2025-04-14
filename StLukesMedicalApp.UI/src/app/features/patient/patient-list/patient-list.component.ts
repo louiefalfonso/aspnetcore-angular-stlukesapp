@@ -4,10 +4,12 @@ import { Observable } from 'rxjs';
 import { Patient } from '../models/patient.models';
 import { PatientService } from '../services/patient.service';
 import { CommonModule } from '@angular/common';
+import { ChartData, ChartOptions } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-patient-list',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, BaseChartDirective],
   templateUrl: './patient-list.component.html',
   styleUrl: './patient-list.component.css'
 })
@@ -21,6 +23,26 @@ export class PatientListComponent implements OnInit {
   list: number[] = [];
   pageNumber = 1;
   pageSize = 10;
+
+   // Chart data for gender distribution
+   genderChartLabels: string[] = ['Male', 'Female'];
+   genderChartData: ChartData<'pie'> = {
+     labels: this.genderChartLabels,
+     datasets: [
+       {
+         data: [0, 0], // Placeholder data
+         backgroundColor: ['#36A2EB', '#FF6384']
+       }
+     ]
+   };
+   genderChartOptions: ChartOptions<'pie'> = {
+     responsive: true,
+     plugins: {
+       legend: {
+         position: 'top'
+       }
+     }
+   };
 
   // add constructor
   constructor(
@@ -43,10 +65,17 @@ export class PatientListComponent implements OnInit {
            undefined,
            this.pageNumber,
            this.pageSize
+
+           
          );
       }
     })
 
+    this.patientService.getAllPatients().subscribe((patients) => {
+      const maleCount = patients.filter((p: Patient) => p.sex === 'Male').length;
+      const femaleCount = patients.filter((p: Patient) => p.sex === 'Female').length;
+      this.genderChartData.datasets[0].data = [maleCount, femaleCount];
+    });
   }
 
   // implement search
