@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using StLukesMedicalApp.API.Controllers;
 using StLukesMedicalApp.API.Models.Domain;
@@ -20,6 +21,91 @@ namespace StLukesMedicalApp.API.Tests.Controller
             patientsController = new PatientsController(
                 mockPatientRepository.Object
             );
+        }
+
+        [Fact]
+        [DisplayName("Create New Patient - Success")]
+        public async Task CreateNewPatientTest_Success()
+        {
+            // Arrange 
+            var patient = new Patient
+            {
+                FirstName = "Emily",
+                LastName = "Johnson",
+                Email = "emilyjohnson@gmail.co",
+                ContactNumber = "07-123456789",
+                Sex = "Female",
+                Age = "62",
+                Address = "123 Elm Street, Springfield, IL 62704",
+                Diagnosis = "Moderate fatigue and occasional headaches - She has been experiencing tiredness and mild headaches for the past few weeks.",
+                PatientType = "In Patient"
+            };
+
+            var request = new CreatePatientRequestDto
+            {
+                FirstName = "Emily",
+                LastName = "Johnson",
+                Email = "emilyjohnson@gmail.co",
+                ContactNumber = "07-123456789",
+                Sex = "Female",
+                Age = "62",
+                Address = "123 Elm Street, Springfield, IL 62704",
+                Diagnosis = "Moderate fatigue and occasional headaches - She has been experiencing tiredness and mild headaches for the past few weeks.",
+                PatientType = "In Patient"
+            };
+
+            // Simulate Patient Repository
+            mockPatientRepository
+                .Setup(repo => repo.CreateAsync(It.IsAny<Patient>()))
+                .ReturnsAsync(patient);
+
+            // Act 
+            var result = await patientsController.CreateNewPatient(request);
+
+            // Assert
+            var createdResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatient = Assert.IsType<PatientDto>(createdResult.Value);
+            Assert.Equal(patient.Id, returnedPatient.Id);
+        }
+
+        [Fact]
+        [DisplayName("Create New Patient - Failed")]
+        public async Task CreateNewPatientTest_Failed()
+        {
+            // Arrange
+            var request = new CreatePatientRequestDto
+            {
+                FirstName = "Emily",
+                LastName = "Johnson",
+                Email = "emilyjohnson@gmail.co",
+                ContactNumber = "07-123456789",
+                Sex = "Female",
+                Age = "62",
+                Address = "123 Elm Street, Springfield, IL 62704",
+                Diagnosis = "Moderate fatigue and occasional headaches - She has been experiencing tiredness and mild headaches for the past few weeks.",
+                PatientType = "In Patient"
+            };
+
+            // Exception being thrown by the repository
+            mockPatientRepository
+                 .Setup(repo => repo.CreateAsync(It.IsAny<Patient>()))
+                 .ThrowsAsync(new Exception("Database error"));
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<Exception>(() => patientsController.CreateNewPatient(request));
+            Assert.Equal("Database error", exception.Message);
+        }
+
+        [Fact]
+        [DisplayName("Create New Patient - Should Return Bad Request When Input Is Null")]
+        public async Task CreateNewPatient_ShouldReturnBadRequest_WhenInputIsNull()
+        {
+            // Act
+            var result = await patientsController.CreateNewPatient(null);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestResult>(result);
+            Assert.Equal(StatusCodes.Status400BadRequest, badRequestResult.StatusCode);
         }
 
         [Fact]
@@ -98,6 +184,224 @@ namespace StLukesMedicalApp.API.Tests.Controller
         }
 
         [Fact]
+        public async Task GetAllPatients_ShouldFilterPatientsByQuery()
+        {
+            // Arrange
+            var patients = new List<Patient>
+    {
+        new Patient
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Emily",
+            LastName = "Johnson",
+            Email = "emilyjohnson@gmail.co",
+            ContactNumber = "07-123456789",
+            Sex = "Female",
+            Age = "62",
+            Address = "123 Elm Street, Springfield, IL 62704",
+            Diagnosis = "Fatigue",
+            PatientType = "In Patient"
+        },
+        new Patient
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Michael",
+            LastName = "Brown",
+            Email = "michaelbrown@gmail.com",
+            ContactNumber = "07-987654321",
+            Sex = "Male",
+            Age = "45",
+            Address = "789 Maple Avenue, Anytown, TX 75001",
+            Diagnosis = "Back Pain",
+            PatientType = "Out Patient"
+        }
+    };
+
+            mockPatientRepository
+                .Setup(repo => repo.GetAllAsync("Fatigue", null, null, 1, 100))
+                .ReturnsAsync(patients.Where(p => p.Diagnosis.Contains("Fatigue")).ToList());
+
+            // Act
+            var result = await patientsController.GetAllPatients("Fatigue", null, null, 1, 100);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatients = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Single(returnedPatients);
+            Assert.Equal("Emily", returnedPatients.First().FirstName);
+        }
+
+        [Fact]
+        public async Task GetAllPatients_ShouldPaginatePatients()
+        {
+            // Arrange
+            var patients = new List<Patient>();
+            for (int i = 1; i <= 10; i++)
+            {
+                patients.Add(new Patient
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = $"Patient{i}",
+                    LastName = "Test",
+                    Email = $"patient{i}@example.com",
+                    ContactNumber = $"123456789{i}",
+                    Sex = "Male",
+                    Age = "30",
+                    Address = "123 Main St",
+                    Diagnosis = "Test Diagnosis",
+                    PatientType = "Out Patient"
+                });
+            }
+
+            mockPatientRepository
+                .Setup(repo => repo.GetAllAsync(null, null, null, 2, 3))
+                .ReturnsAsync(patients.Skip(3).Take(3).ToList());
+
+            // Act
+            var result = await patientsController.GetAllPatients(null, null, null, 2, 3);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatients = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Equal(3, returnedPatients.Count);
+            Assert.Equal("Patient4", returnedPatients.First().FirstName);
+        }
+
+        [Fact]
+        public async Task GetAllPatients_ShouldSortPatientsByFirstName()
+        {
+            // Arrange
+            var patients = new List<Patient>
+    {
+        new Patient
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Zara",
+            LastName = "Smith",
+            Email = "zara.smith@example.com",
+            ContactNumber = "1234567890",
+            Sex = "Female",
+            Age = "25",
+            Address = "123 Elm St",
+            Diagnosis = "Cold",
+            PatientType = "Inpatient"
+        },
+        new Patient
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Anna",
+            LastName = "Brown",
+            Email = "anna.brown@example.com",
+            ContactNumber = "0987654321",
+            Sex = "Female",
+            Age = "30",
+            Address = "456 Maple St",
+            Diagnosis = "Flu",
+            PatientType = "Outpatient"
+        }
+    };
+
+            mockPatientRepository
+                .Setup(repo => repo.GetAllAsync(null, "FirstName", "asc", 1, 100))
+                .ReturnsAsync(patients.OrderBy(p => p.FirstName).ToList());
+
+            // Act
+            var result = await patientsController.GetAllPatients(null, "FirstName", "asc", 1, 100);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatients = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Equal(2, returnedPatients.Count);
+            Assert.Equal("Anna", returnedPatients.First().FirstName);
+        }
+
+        [Fact]
+        public async Task GetAllPatients_ShouldReturnEmpty_WhenFilterDoesNotMatch()
+        {
+            // Arrange
+            mockPatientRepository
+                .Setup(repo => repo.GetAllAsync("NonExistentDiagnosis", null, null, 1, 100))
+                .ReturnsAsync(new List<Patient>());
+
+            // Act
+            var result = await patientsController.GetAllPatients("NonExistentDiagnosis", null, null, 1, 100);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatients = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Empty(returnedPatients);
+        }
+
+        [Fact]
+        public async Task GetAllPatients_ShouldReturnEmpty_WhenPageOutOfRange()
+        {
+            // Arrange
+            var patients = new List<Patient>();
+            for (int i = 1; i <= 5; i++)
+            {
+                patients.Add(new Patient
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = $"Patient{i}",
+                    LastName = "Test",
+                    Email = $"patient{i}@example.com",
+                    ContactNumber = $"123456789{i}",
+                    Sex = "Male",
+                    Age = "30",
+                    Address = "123 Main St",
+                    Diagnosis = "Test Diagnosis",
+                    PatientType = "Out Patient"
+                });
+            }
+
+            mockPatientRepository
+                .Setup(repo => repo.GetAllAsync(null, null, null, 3, 3)) // Page 3 with page size 3, but only 5 patients exist
+                .ReturnsAsync(new List<Patient>());
+
+            // Act
+            var result = await patientsController.GetAllPatients(null, null, null, 3, 3);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatients = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Empty(returnedPatients);
+        }
+
+        [Fact]
+        public async Task GetAllPatients_ShouldReturnEmpty_WhenNoPatientsExistForSorting()
+        {
+            // Arrange
+            mockPatientRepository
+                .Setup(repo => repo.GetAllAsync(null, "FirstName", "asc", 1, 100))
+                .ReturnsAsync(new List<Patient>());
+
+            // Act
+            var result = await patientsController.GetAllPatients(null, "FirstName", "asc", 1, 100);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatients = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Empty(returnedPatients);
+        }
+
+        [Fact]
+        public async Task GetAllPatients_ShouldReturnEmptyList_WhenRepositoryIsEmpty()
+        {
+            // Arrange
+            mockPatientRepository
+                .Setup(repo => repo.GetAllAsync(null, null, null, 1, 100))
+                .ReturnsAsync(new List<Patient>());
+
+            // Act
+            var result = await patientsController.GetAllPatients(null, null, null, 1, 100);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedPatients = Assert.IsType<List<PatientDto>>(okResult.Value);
+            Assert.Empty(returnedPatients);
+        }
+
+        [Fact]
         public async Task GetPatientByIdTest_Success()
         {
             // Arrange
@@ -150,74 +454,21 @@ namespace StLukesMedicalApp.API.Tests.Controller
         }
 
         [Fact]
-        public async Task CreateNewPatientTest_Success()
-        {
-            // Arrange 
-            var patient = new Patient
-            {
-                FirstName = "Emily",
-                LastName = "Johnson",
-                Email = "emilyjohnson@gmail.co",
-                ContactNumber = "07-123456789",
-                Sex = "Female",
-                Age = "62",
-                Address = "123 Elm Street, Springfield, IL 62704",
-                Diagnosis = "Moderate fatigue and occasional headaches - She has been experiencing tiredness and mild headaches for the past few weeks.",
-                PatientType = "In Patient"
-            };
-
-            var request = new CreatePatientRequestDto
-            {
-                FirstName = "Emily",
-                LastName = "Johnson",
-                Email = "emilyjohnson@gmail.co",
-                ContactNumber = "07-123456789",
-                Sex = "Female",
-                Age = "62",
-                Address = "123 Elm Street, Springfield, IL 62704",
-                Diagnosis = "Moderate fatigue and occasional headaches - She has been experiencing tiredness and mild headaches for the past few weeks.",
-                PatientType = "In Patient"
-            };
-
-            // Simulate Patient Repository
-            mockPatientRepository
-                .Setup(repo => repo.CreateAsync(It.IsAny<Patient>()))
-                .ReturnsAsync(patient);
-
-            // Act 
-            var result = await patientsController.CreateNewPatient(request);
-
-            // Assert
-            var createdResult = Assert.IsType<OkObjectResult>(result);
-            var returnedPatient = Assert.IsType<PatientDto>(createdResult.Value);
-            Assert.Equal(patient.Id, returnedPatient.Id);
-        }
-
-        [Fact]
-        public async Task CreateNewPatientTest_Failed()
+        public async Task GetPatientById_ShouldReturnNotFound_WhenIdIsInvalid()
         {
             // Arrange
-            var request = new CreatePatientRequestDto
-            {
-                FirstName = "Emily",
-                LastName = "Johnson",
-                Email = "emilyjohnson@gmail.co",
-                ContactNumber = "07-123456789",
-                Sex = "Female",
-                Age = "62",
-                Address = "123 Elm Street, Springfield, IL 62704",
-                Diagnosis = "Moderate fatigue and occasional headaches - She has been experiencing tiredness and mild headaches for the past few weeks.",
-                PatientType = "In Patient"
-            };
+            var invalidPatientId = Guid.NewGuid();
 
-            // Exception being thrown by the repository
-           mockPatientRepository
-                .Setup(repo => repo.CreateAsync(It.IsAny<Patient>()))
-                .ThrowsAsync(new Exception("Database error"));
+            mockPatientRepository
+                .Setup(repo => repo.GetByIdAsync(invalidPatientId))
+                .ReturnsAsync((Patient?)null);
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAsync<Exception>(() => patientsController.CreateNewPatient(request));
-            Assert.Equal("Database error", exception.Message);
+            // Act
+            var result = await patientsController.GetPatientById(invalidPatientId);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundResult>(result);
+            Assert.Equal(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
         }
 
         [Fact]
@@ -308,6 +559,20 @@ namespace StLukesMedicalApp.API.Tests.Controller
         }
 
         [Fact]
+        public async Task UpdatePatient_ShouldReturnBadRequest_WhenInputIsNull()
+        {
+            // Arrange
+            var patientId = Guid.NewGuid();
+
+            // Act
+            var result = await patientsController.UpdatePatient(patientId, null);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestResult>(result);
+            Assert.Equal(StatusCodes.Status400BadRequest, badRequestResult.StatusCode);
+        }
+
+        [Fact]
         public async Task DeletePatientTest_Success()
         {
             // Arrange 
@@ -360,13 +625,31 @@ namespace StLukesMedicalApp.API.Tests.Controller
         }
 
         [Fact]
+        public async Task DeletePatient_ShouldReturnNotFound_WhenPatientIdIsInvalid()
+        {
+            // Arrange
+            var invalidPatientId = Guid.NewGuid();
+
+            mockPatientRepository
+                .Setup(repo => repo.DeleteAsync(invalidPatientId))
+                .ReturnsAsync((Patient?)null);
+
+            // Act
+            var result = await patientsController.DeletePatient(invalidPatientId);
+
+            // Assert
+            var notFoundResult = Assert.IsType<NotFoundResult>(result);
+            Assert.Equal(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [Fact]
         public async Task GetPatientsTotalCount_Success()
         {
             // Arrange
             var count = 5;
-           mockPatientRepository
-                .Setup(repo => repo.GetCount())
-                .ReturnsAsync(count);
+            mockPatientRepository
+                 .Setup(repo => repo.GetCount())
+                 .ReturnsAsync(count);
 
             // Act
             var result = await patientsController.GetPatientsTotal();
@@ -377,6 +660,22 @@ namespace StLukesMedicalApp.API.Tests.Controller
             Assert.Equal(count, returnedCount);
         }
 
+        [Fact]
+        public async Task GetPatientsTotal_ShouldReturnZero_WhenRepositoryIsEmpty()
+        {
+            // Arrange
+            mockPatientRepository
+                .Setup(repo => repo.GetCount())
+                .ReturnsAsync(0);
+
+            // Act
+            var result = await patientsController.GetPatientsTotal();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnedCount = Assert.IsType<int>(okResult.Value);
+            Assert.Equal(0, returnedCount);
+        }
     }
 }
 

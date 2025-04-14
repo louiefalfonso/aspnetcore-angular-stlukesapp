@@ -306,6 +306,322 @@ namespace StLukesMedicalApp.API.Tests.Repository
             Assert.Null(result);
         }
 
+        [Fact]
+        public async Task GetPatientTotal_ShouldFail_WhenPatientDoesNotExist()
+        {
+            // Arrange & Ensure the database is empty
+            dbContext.Patients.RemoveRange(dbContext.Patients);
+            await dbContext.SaveChangesAsync();
+
+            // Act
+            var count = await patientRepository.GetCount();
+
+            // Assert & Expecting 0 since no patients exist
+            Assert.Equal(0, count);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnFilteredPatients()
+        {
+            // Arrange
+            var patient1 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Emily",
+                LastName = "Johnson",
+                Email = "emilyjohnson@gmail.co",
+                ContactNumber = "07-123456789",
+                Sex = "Female",
+                Age = "62",
+                Address = "123 Elm Street, Springfield, IL 62704",
+                Diagnosis = "Fatigue",
+                PatientType = "In Patient"
+            };
+
+            var patient2 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Michael",
+                LastName = "Brown",
+                Email = "michaelbrown@gmail.com",
+                ContactNumber = "07-987654321",
+                Sex = "Male",
+                Age = "45",
+                Address = "789 Maple Avenue, Anytown, TX 75001",
+                Diagnosis = "Back Pain",
+                PatientType = "Out Patient"
+            };
+
+            await patientRepository.CreateAsync(patient1);
+            await patientRepository.CreateAsync(patient2);
+
+            // Act
+            var result = await patientRepository.GetAllAsync(query: "Fatigue");
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal("Emily", result.First().FirstName);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnPaginatedPatients()
+        {
+            // Arrange
+            for (int i = 1; i <= 10; i++)
+            {
+                await patientRepository.CreateAsync(new Patient
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = $"Patient{i}",
+                    LastName = "Test",
+                    Email = $"patient{i}@example.com",
+                    ContactNumber = $"123456789{i}",
+                    Sex = "Male",
+                    Age = "30",
+                    Address = "123 Main St",
+                    Diagnosis = "Test Diagnosis",
+                    PatientType = "Out Patient"
+                });
+            }
+
+            // Act
+            var result = await patientRepository.GetAllAsync(pageNumber: 2, pageSize: 3);
+
+            // Assert
+            Assert.Equal(3, result.Count());
+            Assert.Equal("Patient4", result.First().FirstName);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldReturnSortedPatients()
+        {
+            // Arrange
+            var patient1 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Zara",
+                LastName = "Smith",
+                Email = "zara.smith@example.com",
+                ContactNumber = "1234567890",
+                Sex = "Female",
+                Age = "25",
+                Address = "123 Elm St",
+                Diagnosis = "Cold",
+                PatientType = "Inpatient"
+            };
+
+            var patient2 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Anna",
+                LastName = "Brown",
+                Email = "anna.brown@example.com",
+                ContactNumber = "0987654321",
+                Sex = "Female",
+                Age = "30",
+                Address = "456 Maple St",
+                Diagnosis = "Flu",
+                PatientType = "Outpatient"
+            };
+
+            await patientRepository.CreateAsync(patient1);
+            await patientRepository.CreateAsync(patient2);
+
+            // Act
+            var result = await patientRepository.GetAllAsync(sortBy: "FirstName", sortDirection: "asc");
+
+            // Assert
+            Assert.Equal(2, result.Count());
+            Assert.Equal("Anna", result.First().FirstName);
+        }
+
+        [Fact]
+        public async Task UpdateAsync_ShouldUpdatePatientDetails()
+        {
+            // Arrange
+            var patient = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Emily",
+                LastName = "Johnson",
+                Email = "emilyjohnson@gmail.co",
+                ContactNumber = "07-123456789",
+                Sex = "Female",
+                Age = "62",
+                Address = "123 Elm Street, Springfield, IL 62704",
+                Diagnosis = "Fatigue",
+                PatientType = "In Patient"
+            };
+
+            await patientRepository.CreateAsync(patient);
+
+            // Act
+            patient.FirstName = "UpdatedEmily";
+            var updatedPatient = await patientRepository.UpdateAsync(patient);
+
+            // Assert
+            Assert.NotNull(updatedPatient);
+            Assert.Equal("UpdatedEmily", updatedPatient.FirstName);
+        }
+
+        [Fact]
+        public async Task DeleteAllPatients_ShouldRemoveAllPatients()
+        {
+            // Arrange
+            await patientRepository.CreateAsync(new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john.doe@example.com",
+                ContactNumber = "1234567890",
+                Sex = "Male",
+                Age = "30",
+                Address = "123 Main St",
+                Diagnosis = "Flu",
+                PatientType = "Outpatient"
+            });
+
+            await patientRepository.CreateAsync(new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Jane",
+                LastName = "Smith",
+                Email = "jane.smith@example.com",
+                ContactNumber = "0987654321",
+                Sex = "Female",
+                Age = "25",
+                Address = "456 Elm St",
+                Diagnosis = "Cold",
+                PatientType = "Inpatient"
+            });
+
+            // Act
+            dbContext.Patients.RemoveRange(dbContext.Patients);
+            await dbContext.SaveChangesAsync();
+
+            // Assert
+            var count = await patientRepository.GetCount();
+            Assert.Equal(0, count);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldFilterPatientsByQuery()
+        {
+            // Arrange
+            var patient1 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Emily",
+                LastName = "Johnson",
+                Email = "emilyjohnson@gmail.co",
+                ContactNumber = "07-123456789",
+                Sex = "Female",
+                Age = "62",
+                Address = "123 Elm Street, Springfield, IL 62704",
+                Diagnosis = "Fatigue",
+                PatientType = "In Patient"
+            };
+
+            var patient2 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Michael",
+                LastName = "Brown",
+                Email = "michaelbrown@gmail.com",
+                ContactNumber = "07-987654321",
+                Sex = "Male",
+                Age = "45",
+                Address = "789 Maple Avenue, Anytown, TX 75001",
+                Diagnosis = "Back Pain",
+                PatientType = "Out Patient"
+            };
+
+            await patientRepository.CreateAsync(patient1);
+            await patientRepository.CreateAsync(patient2);
+
+            // Act
+            var result = await patientRepository.GetAllAsync(query: "Fatigue");
+
+            // Assert
+            Assert.Single(result);
+            Assert.Equal("Emily", result.First().FirstName);
+        }
+
+
+        [Fact]
+        public async Task GetAllAsync_ShouldPaginatePatients()
+        {
+            // Arrange
+            for (int i = 1; i <= 10; i++)
+            {
+                await patientRepository.CreateAsync(new Patient
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = $"Patient{i}",
+                    LastName = "Test",
+                    Email = $"patient{i}@example.com",
+                    ContactNumber = $"123456789{i}",
+                    Sex = "Male",
+                    Age = "30",
+                    Address = "123 Main St",
+                    Diagnosis = "Test Diagnosis",
+                    PatientType = "Out Patient"
+                });
+            }
+
+            // Act
+            var result = await patientRepository.GetAllAsync(pageNumber: 2, pageSize: 3);
+
+            // Assert
+            Assert.Equal(3, result.Count());
+            Assert.Equal("Patient4", result.First().FirstName);
+        }
+
+        [Fact]
+        public async Task GetAllAsync_ShouldSortPatientsByFirstName()
+        {
+            // Arrange
+            var patient1 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Zara",
+                LastName = "Smith",
+                Email = "zara.smith@example.com",
+                ContactNumber = "1234567890",
+                Sex = "Female",
+                Age = "25",
+                Address = "123 Elm St",
+                Diagnosis = "Cold",
+                PatientType = "Inpatient"
+            };
+
+            var patient2 = new Patient
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "Anna",
+                LastName = "Brown",
+                Email = "anna.brown@example.com",
+                ContactNumber = "0987654321",
+                Sex = "Female",
+                Age = "30",
+                Address = "456 Maple St",
+                Diagnosis = "Flu",
+                PatientType = "Outpatient"
+            };
+
+            await patientRepository.CreateAsync(patient1);
+            await patientRepository.CreateAsync(patient2);
+
+            // Act
+            var result = await patientRepository.GetAllAsync(sortBy: "FirstName", sortDirection: "asc");
+
+            // Assert
+            Assert.Equal(2, result.Count());
+            Assert.Equal("Anna", result.First().FirstName);
+        }
+
+
 
     }
 }
