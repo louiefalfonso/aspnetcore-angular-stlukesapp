@@ -66,7 +66,7 @@ export class AddAdmissionComponent implements OnInit, OnDestroy  {
 
   // add onFormSubmit
   onFormSubmit() {
-    this.admissionService.addNewAdmission(this.model)
+   this.addAdmissionsSubscription = this.admissionService.addNewAdmission(this.model)
     .subscribe({
       next: (response) => {
         this.router.navigate(['/admin/admissions']);  
