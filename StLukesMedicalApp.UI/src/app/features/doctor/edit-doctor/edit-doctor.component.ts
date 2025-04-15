@@ -32,6 +32,33 @@ export class EditDoctorComponent implements OnInit, OnDestroy{
     private router: Router,
     private route : ActivatedRoute,) { } 
 
+  // Add toast visibility property
+  showToast: boolean = false;
+  toastMessage: string = '';
+
+  
+  // implement ngOnInit lifecycle hook  
+  ngOnInit(): void {
+    
+    // get the id of the doctor to edit
+    this.routeSubscription = this.route.paramMap.subscribe({
+      next: (params) => {
+        this.id = params.get('id');
+  
+        if(this.id){
+          this.doctorService.getDoctorById(this.id).subscribe({
+            next: (response)=>{
+              this.model= response
+            },
+            error: (error) => {
+              console.error(error);
+            }
+          })
+        }
+      }
+     })
+  }
+
 
   // implement onFormSubmit 
   onFormSubmit():void {
@@ -53,8 +80,13 @@ export class EditDoctorComponent implements OnInit, OnDestroy{
       this.editDoctorSubscription =  this.doctorService.updateDoctor(this.id,updateDoctorRequest)
       .subscribe({
           next: (response) => {
-            this.router.navigate(['/admin/doctors']);  
-            console.log("update doctor success")
+            this.toastMessage = 'Doctor Updated Successfully!';
+            this.showToast = true; 
+            setTimeout(() => {
+              this.showToast = false;
+              this.router.navigate(['/admin/doctors']);
+            }, 2000);
+            
           },
           error: (error) => {
             console.error(error);
@@ -70,35 +102,18 @@ export class EditDoctorComponent implements OnInit, OnDestroy{
       if(this.id){
        this.deleteDoctorSubscription = this.doctorService.deleteDoctor(this.id).subscribe({
           next: (response) => {
-            this.router.navigate(['/admin/doctors']);  
+            this.toastMessage = 'Doctor Deleted Successfully!';
+            this.showToast = true;
+            setTimeout(() => {
+              this.showToast = false; 
+              this.router.navigate(['/admin/doctors']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);
           }
         });
       }
-  }
-
-  // implement ngOnInit lifecycle hook  
-  ngOnInit(): void {
-    
-    // get the id of the doctor to edit
-    this.routeSubscription = this.route.paramMap.subscribe({
-      next: (params) => {
-        this.id = params.get('id');
-  
-        if(this.id){
-          this.doctorService.getDoctorById(this.id).subscribe({
-            next: (response)=>{
-              this.model= response
-            },
-            error: (error) => {
-              console.error(error);
-            }
-          })
-        }
-      }
-     })
   }
 
   // implement ngOnDestroy lifecycle hook

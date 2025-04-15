@@ -24,6 +24,9 @@ export class AddBillingComponent implements OnDestroy, OnInit {
 
   //add unsubcribe from observables
   private addBillingSubscription ?: Subscription;
+
+  // Add toast visibility property
+  showToast: boolean = false;
   
   // add constructor
   constructor(
@@ -53,7 +56,12 @@ export class AddBillingComponent implements OnDestroy, OnInit {
     this.billingService.addBilling(this.model)
     .subscribe({
       next: (response) => {
-        this.router.navigate(['/admin/billings']);  
+        this.showToast = true; 
+        setTimeout(() => {
+          this.showToast = false;
+          this.router.navigate(['/admin/billings']);
+        }, 2000);
+      
       },
       error: (error) => {
         console.error(error);

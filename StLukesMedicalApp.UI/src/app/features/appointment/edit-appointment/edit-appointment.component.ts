@@ -45,6 +45,10 @@ export class EditAppointmentComponent implements OnInit, OnDestroy {
   // add admission object
   appointment?: Appointment;
 
+   // Add toast visibility property
+   showToast: boolean = false;
+   toastMessage: string = '';
+
    // implement ngOnInit lifecycle hook
   ngOnInit(): void {
     // get all patients
@@ -93,7 +97,12 @@ export class EditAppointmentComponent implements OnInit, OnDestroy {
         this.editAppointmentSubscription = this.appointmentService.updateAppointment(this.id, updateAppointmentRequest)
         .subscribe({
           next: (response) => {
-            this.router.navigate(['/admin/appointments']);  
+            this.toastMessage = 'Appointment Updated Successfully!';
+            this.showToast = true; 
+            setTimeout(() => {
+              this.showToast = false;
+              this.router.navigate(['/admin/appointments']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);

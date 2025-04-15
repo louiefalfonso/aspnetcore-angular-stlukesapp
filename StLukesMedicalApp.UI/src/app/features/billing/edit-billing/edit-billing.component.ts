@@ -39,6 +39,10 @@ export class EditBillingComponent implements OnInit, OnDestroy {
   // add billing object
   billing?: Billing;
 
+  // Add toast visibility property
+  showToast: boolean = false;
+  toastMessage: string = '';
+
   // implement ngOnInit lifecycle hook
   ngOnInit(): void {
 
@@ -80,7 +84,12 @@ export class EditBillingComponent implements OnInit, OnDestroy {
       this.editBillingSubscription =  this.billingService.updateBilling(this.id,updateBillingRequest)
       .subscribe({
           next: (response) => {
-            this.router.navigate(['/admin/billings']);  
+            this.toastMessage = 'Billing Updated Successfully!';
+            this.showToast = true; 
+            setTimeout(() => {
+              this.showToast = false;
+              this.router.navigate(['/admin/billings']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);
@@ -95,8 +104,13 @@ export class EditBillingComponent implements OnInit, OnDestroy {
   onDelete():void{
     if(this.id){
      this.deleteBillingSubscription = this.billingService.deleteBilling(this.id).subscribe({
-          next: (response) => {
-            this.router.navigate(['/admin/billings']);  
+          next: (response) => {     
+            this.toastMessage = 'Billing Deleted Successfully!';
+            this.showToast = true; 
+            setTimeout(() => {
+              this.showToast = false;
+              this.router.navigate(['/admin/billings']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);
