@@ -26,12 +26,15 @@ export class EditPrescriptionComponent implements OnInit, OnDestroy{
   doctors$? : Observable<Doctor[]>;
   selectedDoctors?: string[];
 
-
   // add Subscription
   routeSubscription?: Subscription;
   editPrescriptionSubscription?: Subscription;
   getPrescriptionSubscription?: Subscription;
   deletePrescriptionSubscription?: Subscription;
+
+   // Add toast visibility property
+   showToast: boolean = false;
+   toastMessage: string = '';
 
   // add constrcutor
   constructor(
@@ -89,8 +92,13 @@ export class EditPrescriptionComponent implements OnInit, OnDestroy{
     if(this.id){
       this.editPrescriptionSubscription =  this.prescriptionService.updatePrescription(this.id,updatePrescriptionRequest)
       .subscribe({
-          next: (response) => {
-            this.router.navigate(['/admin/prescriptions']);  
+          next: (response) => { 
+            this.toastMessage = 'Prescription Updated Successfully!';
+            this.showToast = true; 
+            setTimeout(() => {
+              this.showToast = false;
+              this.router.navigate(['/admin/prescriptions']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);
@@ -101,13 +109,17 @@ export class EditPrescriptionComponent implements OnInit, OnDestroy{
 
   }
 
-  
    // implement onDelete
    onDelete():void{
     if(this.id){
      this.deletePrescriptionSubscription = this.prescriptionService.deletePrescription(this.id).subscribe({
-          next: (response) => {
-            this.router.navigate(['/admin/prescriptions']);  
+          next: (response) => { 
+            this.toastMessage = 'Prescription Deleted Successfully!';
+            this.showToast = true;
+            setTimeout(() => {
+              this.showToast = false; 
+              this.router.navigate(['/admin/prescriptions']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);

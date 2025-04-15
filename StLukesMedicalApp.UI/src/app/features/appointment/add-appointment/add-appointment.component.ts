@@ -69,7 +69,7 @@ export class AddAppointmentComponent implements OnInit, OnDestroy{
         this.showToast = true; 
         setTimeout(() => {
           this.showToast = false;
-          this.router.navigate(['/admin/appointment']);
+          this.router.navigate(['/admin/appointments']);
         }, 2000);
       },
       error: (error) => {

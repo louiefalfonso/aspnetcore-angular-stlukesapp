@@ -1,1 +1,108 @@
-<p>appointment-detail works!</p>
+<!-- Appointment Details Section -->
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold text-gray-700">Appointment Details:</h2>
+    <button
+      class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      type="button" [routerLink]="['/admin/appointments']">Back</button>
+</div>
+<div class="overflow-x-auto">
+    <ng-container *ngIf="appointments$ | async as appointment">
+        <table class="min-w-full bg-white border border-gray-200">
+            <thead>
+                <tr class="bg-gray-100">
+                  <th class="px-4 py-2 text-center text-gray-600">Appointment Date</th>
+                  <th class="px-4 py-2 text-center text-gray-600">Status</th>
+                  <th class="px-4 py-2 text-center text-gray-600">Appointment For</th>
+                  <th class="px-4 py-2 text-center text-gray-600">Assigned Doctor</th>
+                  <th class="px-4 py-2 text-center text-gray-600">Diagnosis</th>
+                  <th class="px-4 py-2 text-center text-gray-600">Comments</th>
+                  <th class="px-4 py-2 text-center text-gray-600">Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-t border-gray-200">
+                    <td class="px-4 py-2 text-center">{{appointment.date | date: 'M/d/yy h:mm a'}}</td>
+                    <td class="px-4 py-2 text-center">{{appointment.status}}</td>
+                    <td class="px-4 py-2 text-center">
+                        <span *ngFor="let patient of appointment.patients; let i = index">
+                           {{ patient.firstName }} {{ patient.lastName }} <span *ngIf="i < appointment.patients.length - 1">, </span>
+                        </span>
+                    </td>
+                    <td class="px-4 py-2 text-center">
+                        <span *ngFor="let doctor of appointment.doctors; let i = index">
+                           Dr. {{ doctor.firstName }} {{ doctor.lastName }} <span *ngIf="i < appointment.doctors.length - 1">, </span>
+                        </span>
+                    </td>
+                    <td class="px-4 py-2 text-center">{{appointment.diagnosis}}</td>
+                    <td class="px-4 py-2 text-center">{{appointment.comments}}</td>
+                    <td class="px-4 py-2 text-center">{{appointment.remarks}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </ng-container>
+</div>
+
+<!-- Patient Section --> 
+<ng-container *ngIf="patients$ | async as patients">
+    <div *ngIf="patients.length > 0">
+      <div class="flex justify-between items-center mb-4 mt-8">
+        <h2 class="text-xl font-semibold text-gray-700">Admitted Patient(s):</h2>
+      </div>
+      <table class="min-w-full bg-white border border-gray-200">
+        <thead>
+          <tr class="bg-gray-100">
+            <th class="px-4 py-2 text-center text-gray-600">First Name</th>
+            <th class="px-4 py-2 text-center text-gray-600">Last Name</th>
+            <th class="px-4 py-2 text-center text-gray-600">Age</th>
+            <th class="px-4 py-2 text-center text-gray-600">Sex</th>
+            <th class="px-4 py-2 text-center text-gray-600">Patient Type</th>
+            <th class="px-4 py-2 text-center text-gray-600">Diagnosis</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-200" *ngFor="let patient of patients">
+            <td class="px-4 py-2 text-center">{{ patient.firstName }}</td>
+            <td class="px-4 py-2 text-center">{{ patient.lastName }}</td>
+            <td class="px-4 py-2 text-center">{{ patient.age }}</td>
+            <td class="px-4 py-2 text-center">{{ patient.sex }}</td>
+            <td class="px-4 py-2 text-center">{{ patient.patientType }}</td>
+            <td class="px-4 py-2 text-center">{{ patient.diagnosis }}</td>
+        </tbody>
+      </table>  
+    </div>
+  </ng-container>
+
+  <!-- Doctor Section --> 
+<ng-container *ngIf="doctors$ | async as doctors">
+    <div *ngIf="doctors.length > 0">
+      <div class="flex justify-between items-center mb-4 mt-8">
+        <h2 class="text-xl font-semibold text-gray-700">Assigned Doctor(s):</h2>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="px-4 py-2 text-left text-gray-600 break-words">Full Name</th>
+              <th class="px-4 py-2 text-left text-gray-600 break-words">Email</th>
+              <th class="px-4 py-2 text-left text-gray-600 break-words">Contact Number</th>
+              <th class="px-4 py-2 text-left text-gray-600 break-words">Specialization</th>
+              <th class="px-4 py-2 text-left text-gray-600 break-words">Department</th>
+              <th class="px-4 py-2 text-left text-gray-600 break-words">Schedule</th>
+            </tr>  
+          </thead>
+          <tbody>
+            <tr class="border-t border-gray-200" *ngFor="let doctor of doctors">
+              <td class="px-4 py-2"> Dr. {{ doctor.firstName }} {{ doctor.lastName }}</td>
+              <td class="px-4 py-2"> {{ doctor.email }}</td>
+              <td class="px-4 py-2"> {{ doctor.contactNumber }}</td>
+              <td class="px-4 py-2"> {{ doctor.specialization }}</td>
+              <td class="px-4 py-2"> {{ doctor.department }}</td>
+              <td class="px-4 py-2"> {{ doctor.schedule }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>      
+    </div>
+  </ng-container> 

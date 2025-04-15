@@ -12,7 +12,7 @@
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="date">
                     Appointment Date:
                 </label>
-                <input class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="date" type="date" name="date" [ngModel]="model.date | date: 'yyy-MM-dd'" (ngModelChange)="model.date = $event" value="{{model.date}}">
+                <input class="appearance-none block w-full text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="date" type="datetime-local" name="date" [ngModel]="model.date | date: 'yyyy-MM-ddTHH:mm'" (ngModelChange)="model.date = $event" value="{{model.date}}">
             </div>
         </div>
 

@@ -26,12 +26,15 @@ export class EditNurseComponent  implements OnInit, OnDestroy {
   // add patient object
   model?: Nurse;
 
+   // Add toast visibility property
+   showToast: boolean = false;
+   toastMessage: string = '';
+
   // add constructor and inject the necessary services
   constructor(
     private nurseService: NurseService,
     private router: Router,
     private route : ActivatedRoute,) { } 
-
 
   // implement onFormSubmit 
   onFormSubmit():void {
@@ -53,7 +56,12 @@ export class EditNurseComponent  implements OnInit, OnDestroy {
         this.editNurseSubscription =  this.nurseService.updateNurse(this.id,updateNurseRequest)
         .subscribe({
             next: (response) => {
-              this.router.navigate(['/admin/nurses']);  
+              this.toastMessage = 'Nurse Updated Successfully!';
+              this.showToast = true; 
+              setTimeout(() => {
+                this.showToast = false;
+                this.router.navigate(['/admin/nurses']);
+              }, 2000);
             },
             error: (error) => {
               console.error(error);
@@ -68,7 +76,12 @@ export class EditNurseComponent  implements OnInit, OnDestroy {
       if(this.id){
        this.deleteNurseSubscription = this.nurseService.deleteNurse(this.id).subscribe({
           next: (response) => {
-            this.router.navigate(['/admin/nurses']);  
+            this.toastMessage = 'NUrses Deleted Successfully!';
+            this.showToast = true;
+            setTimeout(() => {
+              this.showToast = false; 
+              this.router.navigate(['/admin/nurses']);
+            }, 2000);
           },
           error: (error) => {
             console.error(error);
