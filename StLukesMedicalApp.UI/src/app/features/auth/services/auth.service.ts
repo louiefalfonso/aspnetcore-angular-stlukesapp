@@ -4,7 +4,7 @@ import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../../environments/environment';
-import { LoginsRequest } from '../models/login-request.models';
+import { LoginRequest } from '../models/login-request.models';
 import { LoginResponse } from '../models/login-response.models';
 
 @Injectable({
@@ -19,44 +19,41 @@ export class AuthService {
     private cookieService: CookieService
   ) { }
 
-
   // user
-  user(): Observable<User | undefined>{
+  user() : Observable<User | undefined> {
     return this.$user.asObservable();
   }
 
-
   // login
-  login(request: LoginsRequest): Observable<LoginResponse>{
-    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`,{
+  login(request: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`, {
       email: request.email,
       password: request.password
     });
   }
 
-
   // set user
-  setUser(user: User): void{
+  setUser(user: User): void {
     this.$user.next(user);
     localStorage.setItem('user-email', user.email);
     localStorage.setItem('user-roles', user.roles.join(','));
   }
 
-
   // get user
-  getUser():User | undefined {
+  getUser(): User | undefined {
     const email = localStorage.getItem('user-email');
     const roles = localStorage.getItem('user-roles');
 
-      if(email && roles){
-       const user : User = {
+    if (email && roles) {
+      const user: User = {
         email: email,
         roles: roles.split(',')
-       };
+      };
 
-       return user;
-      }
-      return undefined;
+      return user;
+    }
+
+    return undefined;
   }
 
   // logout
@@ -66,6 +63,5 @@ export class AuthService {
     this.cookieService.delete('Authorization', '/');
     this.$user.next(undefined);
   }
-
 
 }

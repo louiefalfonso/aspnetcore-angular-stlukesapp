@@ -34,10 +34,12 @@ export const routes: Routes = [
     {
         path:"",
         component: HomeComponent,
+        canActivate: [authGuard]  
     },
     {
         path:"admin/patients",
-        component: PatientListComponent, 
+        component: PatientListComponent,
+        canActivate: [authGuard]  
     },
     {
         path:"admin/patients/add",
