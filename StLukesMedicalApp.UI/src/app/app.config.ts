@@ -4,6 +4,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 
 import { routes } from './app.routes';
+import { authInterceptor } from './core/auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,5 +12,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useValue :authInterceptor,
+      multi: true
+    }
   ],
 };

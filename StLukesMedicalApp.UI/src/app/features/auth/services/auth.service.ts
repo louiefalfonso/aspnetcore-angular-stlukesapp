@@ -3,13 +3,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../../../../environments/environment';
+import { LoginsRequest } from '../models/login-request.models';
+import { LoginResponse } from '../models/login-response.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  $user = new BehaviorSubject<User | undefined(undefined);
+  $user = new BehaviorSubject<User | undefined>(undefined);
 
   constructor(
     private http: HttpClient,
@@ -21,4 +24,48 @@ export class AuthService {
   user(): Observable<User | undefined>{
     return this.$user.asObservable();
   }
+
+
+  // login
+  login(request: LoginsRequest): Observable<LoginResponse>{
+    return this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`,{
+      email: request.email,
+      password: request.password
+    });
+  }
+
+
+  // set user
+  setUser(user: User): void{
+    this.$user.next(user);
+    localStorage.setItem('user-email', user.email);
+    localStorage.setItem('user-roles', user.roles.join(','));
+  }
+
+
+  // get user
+  getUser():User | undefined {
+    const email = localStorage.getItem('user-email');
+    const roles = localStorage.getItem('user-roles');
+
+      if(email && roles){
+       const user : User = {
+        email: email,
+        roles: roles.split(',')
+       };
+
+       return user;
+      }
+      return undefined;
+  }
+
+  // logout
+  logout(): void {
+    localStorage.clear();
+    sessionStorage.clear();
+    this.cookieService.delete('Authorization', '/');
+    this.$user.next(undefined);
+  }
+
+
 }
