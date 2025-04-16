@@ -27,12 +27,13 @@ import { AppointmentListComponent } from './features/appointment/appointment-lis
 import { AddAppointmentComponent } from './features/appointment/add-appointment/add-appointment.component';
 import { EditAppointmentComponent } from './features/appointment/edit-appointment/edit-appointment.component';
 import { AppointmentDetailComponent } from './features/appointment/appointment-detail/appointment-detail.component';
+import { LoginComponent } from './features/auth/login/login.component';
+import { authGuard } from './features/auth/guards/auth.guard';
 
 export const routes: Routes = [
     {
         path:"",
         component: HomeComponent,
-        
     },
     {
         path:"admin/patients",
@@ -40,106 +41,137 @@ export const routes: Routes = [
     },
     {
         path:"admin/patients/add",
-        component: AddPatientComponent, 
+        component: AddPatientComponent,
+        canActivate: [authGuard] 
     },
     {
         path:"admin/patients/:id",
         component: EditPatientComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/patients/details/:id",
         component: PatientDetailComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/billings",
         component: BillingListComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/billings/add",
-        component: AddBillingComponent, 
+        component: AddBillingComponent,
+        canActivate: [authGuard]  
     },
     {
         path:"admin/billings/:id",
         component: EditBillingComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/doctors",
         component: DoctorListComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/doctors/add",
         component: AddDoctorComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/doctors/:id",
-        component: EditDoctorComponent, 
+        component: EditDoctorComponent,
+        canActivate: [authGuard]  
     },
     {
         path:"admin/doctors/details/:id",
         component: DoctorDetailComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/nurses",
         component: NurseListComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/nurses/add",
-        component: AddNurseComponent, 
+        component: AddNurseComponent,
+        canActivate: [authGuard]  
     },
     {
         path:"admin/nurses/:id",
-        component: EditNurseComponent, 
+        component: EditNurseComponent,
+        canActivate: [authGuard]  
     },
     {
         path:"admin/nurses/details/:id",
         component: NurseDetailComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/prescriptions",
         component: PrescriptionListComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/prescriptions/add",
         component: AddPrescriptionComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/prescriptions/:id",
         component: EditPrescriptionComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/prescriptions/details/:id",
         component: PrescriptionDetailComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/admissions",
         component: AdmissionListComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/admissions/add",
         component: AddAdmissionComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/admissions/:id",
         component: EditAdmissionComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/admissions/details/:id",
-        component: AdmissionDetailComponent, 
+        component: AdmissionDetailComponent,
+        canActivate: [authGuard]  
     },
     {
         path:"admin/appointments",
         component: AppointmentListComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/appointments/add",
         component: AddAppointmentComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/appointments/:id",
         component: EditAppointmentComponent, 
+        canActivate: [authGuard] 
     },
     {
         path:"admin/appointments/details/:id",
         component: AppointmentDetailComponent, 
-    }
+        canActivate: [authGuard] 
+    },
+    {
+        path:"login",
+        component: LoginComponent, 
+    },
+
 ];
