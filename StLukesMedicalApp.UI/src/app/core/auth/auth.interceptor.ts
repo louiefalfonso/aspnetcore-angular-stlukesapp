@@ -4,25 +4,28 @@ import { CookieService } from 'ngx-cookie-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
- const cookieService = inject(CookieService);
+  const cookieService = inject(CookieService);
 
- // check if the request should be intercepted
- if (shouldIntercepRequest(req)){
+  // Check if the request should be intercepted
+  if (shouldInterceptRequest(req)) {
 
-    // clone the request and set the authorization header
+    // Clone the request and set the Authorization header
     const authReq = req.clone({
-      setHeaders:{
-        'Authorization' : cookieService.get('Authorization')
+      setHeaders: {
+        'Authorization': cookieService.get('Authorization')
       }
     });
+
     return next(authReq);
-  };
-  
+  }
+
   return next(req);
+ 
 };
 
-
-// function to determin if the request should be intercepted
-function shouldIntercepRequest (req:any):boolean {
+// Function to determine if the request should be intercepted
+function shouldInterceptRequest(req: any): boolean {
   return req.urlWithParams.indexOf('addAuth=true') > -1;
 }
+
+

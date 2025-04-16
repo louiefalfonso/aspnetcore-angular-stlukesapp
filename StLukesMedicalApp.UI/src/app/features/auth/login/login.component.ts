@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { LoginsRequest } from '../models/login-request.models';
+import { LoginRequest } from '../models/login-request.models';
 import { AuthService } from '../services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -14,7 +14,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginComponent {
 
-  model: LoginsRequest;
+  model: LoginRequest;
 
   constructor(
     private router : Router,
@@ -27,27 +27,25 @@ export class LoginComponent {
     };
   }
 
-  // implement form submit
   onFormSubmit(): void {
     this.authService.login(this.model)
     .subscribe({
       next: (response) => {
-
-        // set auth cookie
+        // Set Auth Cookie
         this.cookieService.set('Authorization', `Bearer ${response.token}`,
-          undefined, '/' , undefined, true, 'Strict');
+        undefined, '/', undefined, true, 'Strict');
 
-        // set user
+        // Set User
         this.authService.setUser({
           email: response.email,
           roles: response.roles
         });
-        
-        // redirect back to home page
+
+        // Redirect back to Home
         this.router.navigateByUrl('/');
-      },
-      error: (error) => {}
-    })
+
+      }
+    });
   }
 
 }

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { User } from '../../features/auth/models/user.model';
+import { AuthService } from '../../features/auth/services/auth.service';
 
 
 @Component({
@@ -9,11 +11,39 @@ import { RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+
+  user?: User;
+
+  constructor(
+    private authService: AuthService,
+    private router: Router) {
+  }
+
+  ngOnInit(): void {
+    
+    this.authService.user()
+    .subscribe({
+      next: (response) => {
+        this.user = response;
+      }
+    });
+
+    this.user = this.authService.getUser();
+
+  }
+  
+  onLogout(): void {
+    this.authService.logout();
+    this.router.navigateByUrl('/');
+  }
+
 
   isMobileMenuOpen = false;
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
+
+
 }

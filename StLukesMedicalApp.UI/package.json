@@ -20,6 +20,7 @@
     "@tailwindcss/postcss": "^4.0.17",
     "chart.js": "^4.4.8",
     "dotenv": "^16.4.7",
+    "jwt-decode": "^4.0.0",
     "ng2-charts": "^8.0.0",
     "ngx-cookie-service": "^19.1.2",
     "postcss": "^8.5.3",
