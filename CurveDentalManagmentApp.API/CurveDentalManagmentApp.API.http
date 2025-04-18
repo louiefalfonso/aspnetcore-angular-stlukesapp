@@ -1,0 +1,6 @@
+@CurveDentalManagmentApp.API_HostAddress = http://localhost:5020
+
+GET {{CurveDentalManagmentApp.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
